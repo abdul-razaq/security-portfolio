@@ -1,0 +1,782 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { getBlogPost, type BlogPost } from '@/lib/api';
+import { portableTextToMarkdown } from '@/lib/portableText';
+
+export default function BlogPostPage() {
+  const params = useParams();
+  const [isVisible, setIsVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const slug = params.id as string;
+
+  useEffect(() => {
+    setIsVisible(true);
+    
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY;
+      const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+      setScrollProgress(Math.min(100, Math.max(0, progress)));
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    async function fetchPost() {
+      setLoading(true);
+      try {
+        const fetchedPost = await getBlogPost(slug);
+        setPost(fetchedPost);
+      } catch (error) {
+        console.error('Error loading blog post:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (slug) {
+      fetchPost();
+    }
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <section style={{
+        minHeight: '100vh',
+        paddingTop: 'clamp(100px, 12vw, 140px)',
+        paddingBottom: 'clamp(80px, 10vw, 120px)',
+        background: '#0a0a0a',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            display: 'inline-block',
+            width: '48px',
+            height: '48px',
+            border: '3px solid rgba(139,0,0,0.3)',
+            borderTopColor: '#8B0000',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }} />
+        </div>
+        <style jsx>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </section>
+    );
+  }
+
+  if (!post) {
+    return (
+      <section style={{
+        minHeight: '100vh',
+        paddingTop: 'clamp(100px, 12vw, 140px)',
+        paddingBottom: 'clamp(80px, 10vw, 120px)',
+        background: '#0a0a0a',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{ textAlign: 'center', padding: '0 24px' }}>
+          <h1 style={{ fontSize: '48px', fontWeight: 700, color: '#fff', marginBottom: '16px' }}>
+            Post Not <span style={{ color: '#8B0000' }}>Found</span>
+          </h1>
+          <p style={{ fontSize: '18px', color: '#666', marginBottom: '32px' }}>
+            The blog post you're looking for doesn't exist.
+          </p>
+          <Link
+            href="/blog"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 24px',
+              borderRadius: '10px',
+              fontSize: '16px',
+              fontWeight: 500,
+              textDecoration: 'none',
+              background: 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)',
+              color: '#ffffff',
+            }}
+          >
+            Back to Blog
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
+
+  // Parse content into structured format
+  const parseContent = (content: any) => {
+    if (!content) return [];
+    
+    // If content is already a string (markdown), split it
+    if (typeof content === 'string') {
+      const lines = content.split('\n');
+      const parsed: Array<{ type: string; content: string; level?: number }> = [];
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        if (line.startsWith('# ')) {
+          parsed.push({ type: 'h1', content: line.replace('# ', '') });
+        } else if (line.startsWith('## ')) {
+          parsed.push({ type: 'h2', content: line.replace('## ', '') });
+        } else if (line.startsWith('### ')) {
+          parsed.push({ type: 'h3', content: line.replace('### ', '') });
+        } else if (line.startsWith('- ')) {
+          parsed.push({ type: 'li', content: line.replace('- ', '') });
+        } else if (line.startsWith('**') && line.endsWith('**')) {
+          parsed.push({ type: 'strong', content: line.replace(/\*\*/g, '') });
+        } else if (line.trim() === '') {
+          parsed.push({ type: 'spacer', content: '' });
+        } else {
+          parsed.push({ type: 'p', content: line });
+        }
+      }
+      
+      return parsed;
+    }
+    
+    // If content is Portable Text, convert to markdown first
+    const markdown = portableTextToMarkdown(content);
+    return parseContent(markdown);
+  };
+
+  const parsedContent = parseContent(post.content);
+
+  return (
+    <article
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        paddingTop: 'clamp(100px, 12vw, 140px)',
+        paddingBottom: 'clamp(80px, 10vw, 120px)',
+        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Scroll Progress Bar */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '3px',
+        background: 'rgba(139,0,0,0.2)',
+        zIndex: 100,
+      }}>
+        <div style={{
+          height: '100%',
+          width: `${scrollProgress}%`,
+          background: 'linear-gradient(90deg, #8B0000 0%, #a31515 100%)',
+          transition: 'width 0.1s ease',
+          boxShadow: '0 0 10px rgba(139,0,0,0.5)',
+        }} />
+      </div>
+
+      {/* Premium Background Effects */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {/* Top border glow */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+          opacity: 0.5,
+        }} />
+        
+        {/* Floating orbs */}
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          left: '10%',
+          width: '500px',
+          height: '500px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(139,0,0,0.1) 0%, transparent 70%)',
+          filter: 'blur(100px)',
+          animation: 'float 20s ease-in-out infinite',
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '10%',
+          width: '600px',
+          height: '600px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(139,0,0,0.08) 0%, transparent 70%)',
+          filter: 'blur(120px)',
+          animation: 'float 25s ease-in-out infinite reverse',
+        }} />
+        
+        {/* Grid pattern */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.02,
+          backgroundImage: `linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px)`,
+          backgroundSize: '100px 100px',
+        }} />
+      </div>
+
+      <div style={{
+        position: 'relative',
+        zIndex: 10,
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '0 clamp(20px, 4vw, 24px)',
+      }}>
+        {/* Back Button */}
+        <div style={{
+          marginBottom: '48px',
+          transition: 'all 1s ease',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateX(0)' : 'translateX(-20px)',
+        }}>
+          <Link
+            href="/blog"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '12px 20px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 500,
+              color: 'rgba(255,255,255,0.7)',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.05)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#8B0000';
+              e.currentTarget.style.gap = '14px';
+              e.currentTarget.style.background = 'rgba(139,0,0,0.1)';
+              e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
+              e.currentTarget.style.gap = '10px';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Blog</span>
+          </Link>
+        </div>
+
+        {/* Article Header */}
+        <header style={{
+          marginBottom: '64px',
+          paddingBottom: '48px',
+          borderBottom: '1px solid rgba(139,0,0,0.2)',
+          transition: 'all 1s ease 0.2s',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        }}>
+          {/* Category Badge */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '8px 18px',
+            borderRadius: '9999px',
+            fontSize: '13px',
+            fontWeight: 600,
+            marginBottom: '24px',
+            background: 'rgba(139,0,0,0.15)',
+            color: '#8B0000',
+            border: '1px solid rgba(139,0,0,0.25)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#8B0000',
+              boxShadow: '0 0 8px rgba(139,0,0,0.6)',
+            }} />
+            {post.category}
+          </div>
+
+          {/* Title */}
+          <h1 style={{
+            fontSize: 'clamp(40px, 6vw, 64px)',
+            fontWeight: 700,
+            color: '#ffffff',
+            marginBottom: '32px',
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+          }}>
+            {post.title}
+          </h1>
+
+          {/* Excerpt */}
+          <p style={{
+            fontSize: 'clamp(18px, 2.2vw, 22px)',
+            lineHeight: 1.7,
+            color: 'rgba(255,255,255,0.6)',
+            marginBottom: '32px',
+            fontWeight: 400,
+          }}>
+            {post.excerpt}
+          </p>
+
+          {/* Meta Information */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '24px',
+            flexWrap: 'wrap',
+            padding: '24px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+            border: '1px solid rgba(255,255,255,0.05)',
+          }}>
+            {/* Author */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+            }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #8B0000 0%, #a31515 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#ffffff',
+                boxShadow: '0 4px 16px rgba(139,0,0,0.3)',
+              }}>
+                AS
+              </div>
+              <div>
+                <div style={{
+                  fontSize: '14px',
+                  color: 'rgba(255,255,255,0.4)',
+                  marginBottom: '2px',
+                }}>
+                  Written by
+                </div>
+                <div style={{
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                }}>
+                  {post.author || 'AbdulRazaq Suleiman'}
+                </div>
+              </div>
+            </div>
+
+            <div style={{
+              width: '1px',
+              height: '32px',
+              background: 'rgba(255,255,255,0.1)',
+            }} />
+
+            {/* Date */}
+            <div>
+              <div style={{
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '2px',
+              }}>
+                Published
+              </div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: 500,
+                color: 'rgba(255,255,255,0.8)',
+              }}>
+                {formatDate(post.publishedAt)}
+              </div>
+            </div>
+
+            <div style={{
+              width: '1px',
+              height: '32px',
+              background: 'rgba(255,255,255,0.1)',
+            }} />
+
+            {/* Read Time */}
+            <div>
+              <div style={{
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '2px',
+              }}>
+                Reading time
+              </div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: 500,
+                color: 'rgba(255,255,255,0.8)',
+              }}>
+                {post.readTime || '5 min read'}
+              </div>
+            </div>
+          </div>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              marginTop: '32px',
+            }}>
+              {post.tags.map((tag, i) => (
+                <span
+                  key={i}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '10px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,0.7)',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    transition: 'all 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(139,0,0,0.15)';
+                    e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                    e.currentTarget.style.color = '#8B0000';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {/* Article Content */}
+        <div style={{
+          transition: 'all 1s ease 0.4s',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        }}>
+          <div style={{
+            fontSize: 'clamp(17px, 2vw, 19px)',
+            lineHeight: 1.85,
+            color: 'rgba(255,255,255,0.75)',
+          }}>
+            {parsedContent.map((item, i) => {
+              if (item.type === 'h1') {
+                return (
+                  <h1
+                    key={i}
+                    style={{
+                      fontSize: 'clamp(36px, 4vw, 44px)',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      marginTop: '56px',
+                      marginBottom: '24px',
+                      lineHeight: 1.2,
+                      letterSpacing: '-0.02em',
+                      position: 'relative',
+                      paddingLeft: '24px',
+                    }}
+                  >
+                    <span style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '4px',
+                      height: '60%',
+                      background: 'linear-gradient(180deg, #8B0000 0%, rgba(139,0,0,0.3) 100%)',
+                      borderRadius: '2px',
+                    }} />
+                    {item.content}
+                  </h1>
+                );
+              }
+              if (item.type === 'h2') {
+                return (
+                  <h2
+                    key={i}
+                    style={{
+                      fontSize: 'clamp(28px, 3.5vw, 34px)',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      marginTop: '48px',
+                      marginBottom: '20px',
+                      lineHeight: 1.3,
+                      letterSpacing: '-0.01em',
+                    }}
+                  >
+                    {item.content}
+                  </h2>
+                );
+              }
+              if (item.type === 'h3') {
+                return (
+                  <h3
+                    key={i}
+                    style={{
+                      fontSize: 'clamp(22px, 2.8vw, 26px)',
+                      fontWeight: 600,
+                      color: '#ffffff',
+                      marginTop: '36px',
+                      marginBottom: '16px',
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {item.content}
+                  </h3>
+                );
+              }
+              if (item.type === 'li') {
+                return (
+                  <li
+                    key={i}
+                    style={{
+                      marginLeft: '28px',
+                      marginBottom: '12px',
+                      paddingLeft: '8px',
+                      position: 'relative',
+                    }}
+                  >
+                    <span style={{
+                      position: 'absolute',
+                      left: '-20px',
+                      top: '0.8em',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: '#8B0000',
+                      boxShadow: '0 0 8px rgba(139,0,0,0.5)',
+                    }} />
+                    {item.content}
+                  </li>
+                );
+              }
+              if (item.type === 'strong') {
+                return (
+                  <strong
+                    key={i}
+                    style={{
+                      color: '#ffffff',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {item.content}
+                  </strong>
+                );
+              }
+              if (item.type === 'spacer') {
+                return <div key={i} style={{ height: '24px' }} />;
+              }
+              if (item.type === 'p') {
+                // Check for bold text within paragraph
+                const parts = item.content.split(/(\*\*.*?\*\*)/g);
+                return (
+                  <p
+                    key={i}
+                    style={{
+                      marginBottom: '24px',
+                    }}
+                  >
+                    {parts.map((part, j) => {
+                      if (part.startsWith('**') && part.endsWith('**')) {
+                        return (
+                          <strong
+                            key={j}
+                            style={{
+                              color: '#ffffff',
+                              fontWeight: 600,
+                            }}
+                          >
+                            {part.replace(/\*\*/g, '')}
+                          </strong>
+                        );
+                      }
+                      return <span key={j}>{part}</span>;
+                    })}
+                  </p>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+
+        {/* Article Footer */}
+        <footer style={{
+          marginTop: '80px',
+          paddingTop: '48px',
+          borderTop: '1px solid rgba(139,0,0,0.2)',
+          transition: 'all 1s ease 0.6s',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        }}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '32px',
+          }}>
+            {/* Share Section */}
+            <div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: 600,
+                color: '#ffffff',
+                marginBottom: '20px',
+              }}>
+                Share this article
+              </h3>
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                flexWrap: 'wrap',
+              }}>
+                {[
+                  { name: 'X', icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z', href: 'https://x.com/ant1g3n' },
+                  { name: 'LinkedIn', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z', href: 'https://linkedin.com/in/abdulrazaq-suleiman' },
+                ].map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '12px',
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.6)',
+                      transition: 'all 0.3s ease',
+                      textDecoration: 'none',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(139,0,0,0.15)';
+                      e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                      e.currentTarget.style.color = '#8B0000';
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                      e.currentTarget.style.color = 'rgba(255,255,255,0.6)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                    aria-label={`Share on ${social.name}`}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d={social.icon} />
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Back to Blog */}
+            <div style={{
+              padding: '32px',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.02) 100%)',
+              border: '1px solid rgba(139,0,0,0.2)',
+              textAlign: 'center',
+            }}>
+              <h3 style={{
+                fontSize: '20px',
+                fontWeight: 600,
+                color: '#ffffff',
+                marginBottom: '16px',
+              }}>
+                Enjoyed this article?
+              </h3>
+              <p style={{
+                fontSize: '15px',
+                color: 'rgba(255,255,255,0.5)',
+                marginBottom: '24px',
+              }}>
+                Explore more security articles and case studies.
+              </p>
+              <Link
+                href="/blog"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '14px 28px',
+                  borderRadius: '12px',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                  background: 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)',
+                  boxShadow: '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  color: '#ffffff',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
+                }}
+              >
+                <span>View All Articles</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0) translateX(0);
+          }
+          50% {
+            transform: translateY(-20px) translateX(10px);
+          }
+        }
+      `}</style>
+    </article>
+  );
+}
