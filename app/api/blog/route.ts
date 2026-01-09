@@ -7,7 +7,8 @@ export async function GET(request: Request) {
     const category = searchParams.get('category');
     const featured = searchParams.get('featured');
 
-    let query = `*[_type == "post"] | order(publishedAt desc) {
+    // Base query structure
+    const baseFields = `{
       _id,
       title,
       "slug": slug.current,
@@ -23,44 +24,24 @@ export async function GET(request: Request) {
       "mainImageAlt": mainImage.alt
     }`;
 
-    // Apply filters
-    if (category && category !== 'All') {
-      query = `*[_type == "post" && category == $category] | order(publishedAt desc) {
-        _id,
-        title,
-        "slug": slug.current,
-        excerpt,
-        category,
-        tags,
-        featured,
-        publishedAt,
-        readTime,
-        author,
-        content,
-        "mainImage": mainImage.asset->url,
-        "mainImageAlt": mainImage.alt
-      }`;
-    }
+    let query: string;
+    let params: Record<string, any> = {};
 
+    // Build query based on filters
     if (featured === 'true') {
-      query = `*[_type == "post" && featured == true] | order(publishedAt desc) {
-        _id,
-        title,
-        "slug": slug.current,
-        excerpt,
-        category,
-        tags,
-        featured,
-        publishedAt,
-        readTime,
-        author,
-        content,
-        "mainImage": mainImage.asset->url,
-        "mainImageAlt": mainImage.alt
-      }`;
+      // Featured posts only
+      query = `*[_type == "post" && featured == true] | order(publishedAt desc) ${baseFields}`;
+    } else if (category && category !== 'All') {
+      // Filter by category - handle both array and string (backward compatibility)
+      // Match posts where the category array contains the selected category, or where category equals it (old format)
+      query = `*[_type == "post" && ($category in category || category == $category)] | order(publishedAt desc) ${baseFields}`;
+      params = { category };
+    } else {
+      // All posts (no filter)
+      query = `*[_type == "post"] | order(publishedAt desc) ${baseFields}`;
     }
 
-    const posts = await client.fetch(query, category && category !== 'All' ? { category } : {});
+    const posts = await client.fetch(query, params);
 
     return NextResponse.json({ posts: posts || [] }, { status: 200 });
   } catch (error) {

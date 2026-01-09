@@ -33,8 +33,9 @@ export const postType = defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Category',
-      type: 'string',
+      title: 'Categories',
+      type: 'array',
+      of: [{type: 'string'}],
       options: {
         list: [
           {title: 'Case Study', value: 'Case Study'},
@@ -42,9 +43,12 @@ export const postType = defineType({
           {title: 'Exploitation', value: 'Exploitation'},
           {title: 'API Security', value: 'API Security'},
           {title: 'Methodology', value: 'Methodology'},
+          {title: 'Enumeration', value: 'Enumeration'},
+          {title: 'Reconnaissance & Intelligence Gathering', value: 'Reconnaissance & Intelligence Gathering'},
         ],
+        layout: 'tags',
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'tags',
@@ -114,9 +118,13 @@ export const postType = defineType({
     prepare(selection) {
       const {title, category, featured, publishedAt} = selection
       const date = publishedAt ? new Date(publishedAt).toLocaleDateString() : ''
+      // Handle category as array or string (backward compatibility)
+      const categoryDisplay = Array.isArray(category) 
+        ? (category.length > 0 ? category.join(', ') : 'Uncategorized')
+        : (category || 'Uncategorized')
       return {
         title,
-        subtitle: `${category || 'Uncategorized'}${featured ? ' ⭐' : ''} • ${date}`,
+        subtitle: `${categoryDisplay}${featured ? ' ⭐' : ''} • ${date}`,
       }
     },
   },

@@ -7,7 +7,7 @@ export interface BlogPost {
   title: string;
   slug: string;
   excerpt: string;
-  category: string;
+  category: string | string[]; // Support both single string (backward compatibility) and array
   tags: string[];
   featured: boolean;
   publishedAt: string;

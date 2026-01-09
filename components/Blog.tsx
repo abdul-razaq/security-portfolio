@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { getBlogPosts, type BlogPost } from '@/lib/api';
 import { portableTextToPlainText } from '@/lib/portableText';
 
-const categories = ['All', 'Case Study', 'Tool Development', 'Exploitation', 'API Security', 'Methodology'];
+const categories = ['All', 'Case Study', 'Tool Development', 'Exploitation', 'API Security', 'Methodology', 'Enumeration', 'Reconnaissance & Intelligence Gathering'];
 
 export function Blog() {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isVisible, setIsVisible] = useState(false);
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -237,11 +239,25 @@ export function Blog() {
 
         {/* Blog Posts Grid */}
         {!loading && (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: '32px',
-          }} className="md:grid-cols-2 lg:grid-cols-3">
+          <>
+            <style jsx>{`
+              .blog-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 24px;
+              }
+              @media (min-width: 768px) {
+                .blog-grid {
+                  grid-template-columns: repeat(2, 1fr);
+                }
+              }
+              @media (min-width: 1024px) {
+                .blog-grid {
+                  grid-template-columns: repeat(3, 1fr);
+                }
+              }
+            `}</style>
+            <div className="blog-grid">
             {posts.length === 0 && !loading && (
               <div style={{
                 gridColumn: '1 / -1',
@@ -251,13 +267,14 @@ export function Blog() {
               }}>
                 <p style={{ fontSize: '18px', marginBottom: '16px' }}>No blog posts found.</p>
                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.3)' }}>
-                  Check back later or <Link href="/admin" style={{ color: '#8B0000', textDecoration: 'underline' }}>create a post</Link> in the admin panel.
+                  Check back later for new articles.
                 </p>
               </div>
             )}
             {posts.map((post, index) => (
               <article
                 key={post._id}
+                onClick={() => router.push(`/blog/${post.slug}`)}
                 style={{
                   position: 'relative',
                   padding: '32px',
@@ -274,6 +291,9 @@ export function Blog() {
                     ? 'inset 0 1px 0 rgba(255,255,255,0.03)'
                     : 'inset 0 1px 0 rgba(255,255,255,0.02)',
                   cursor: 'pointer',
+                  overflow: 'hidden',
+                  wordWrap: 'break-word',
+                  wordBreak: 'break-word',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
@@ -305,19 +325,35 @@ export function Blog() {
                   </div>
                 )}
 
-                {/* Category Badge */}
+                {/* Category Badges */}
                 <div style={{
-                  display: 'inline-block',
-                  padding: '6px 14px',
-                  borderRadius: '9999px',
-                  fontSize: '12px',
-                  fontWeight: 500,
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
                   marginBottom: '20px',
-                  background: 'rgba(139,0,0,0.15)',
-                  color: '#8B0000',
-                  border: '1px solid rgba(139,0,0,0.2)',
                 }}>
-                  {post.category}
+                  {((Array.isArray(post.category) ? post.category : (post.category ? [post.category] : [])).filter(Boolean)).map((cat, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'inline-block',
+                        padding: '6px 14px',
+                        borderRadius: '9999px',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        background: 'rgba(139,0,0,0.15)',
+                        color: '#8B0000',
+                        border: '1px solid rgba(139,0,0,0.2)',
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                      title={cat}
+                    >
+                      {cat}
+                    </div>
+                  ))}
                 </div>
 
                 {/* Date & Read Time */}
@@ -328,10 +364,11 @@ export function Blog() {
                   marginBottom: '16px',
                   fontSize: '13px',
                   color: 'rgba(255,255,255,0.4)',
+                  flexWrap: 'wrap',
                 }}>
-                  <span>{formatDate(post.publishedAt)}</span>
-                  <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
-                  <span>{post.readTime || '5 min read'}</span>
+                  <span style={{ whiteSpace: 'nowrap' }}>{formatDate(post.publishedAt)}</span>
+                  <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
+                  <span style={{ whiteSpace: 'nowrap' }}>{post.readTime || '5 min read'}</span>
                 </div>
 
                 {/* Title */}
@@ -341,6 +378,11 @@ export function Blog() {
                   color: '#ffffff',
                   marginBottom: '12px',
                   lineHeight: 1.3,
+                  overflow: 'hidden',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  wordBreak: 'break-word',
                 }}>
                   {post.title}
                 </h3>
@@ -351,6 +393,11 @@ export function Blog() {
                   color: 'rgba(255,255,255,0.5)',
                   lineHeight: 1.7,
                   marginBottom: '24px',
+                  overflow: 'hidden',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  wordBreak: 'break-word',
                 }}>
                   {post.excerpt}
                 </p>
@@ -373,7 +420,12 @@ export function Blog() {
                           color: 'rgba(255,255,255,0.6)',
                           background: 'rgba(255,255,255,0.05)',
                           border: '1px solid rgba(255,255,255,0.08)',
+                          maxWidth: '100%',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
                         }}
+                        title={tag}
                       >
                         {tag}
                       </span>
@@ -384,6 +436,9 @@ export function Blog() {
                 {/* Read More Link */}
                 <Link
                   href={`/blog/${post.slug}`}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering the article's onClick
+                  }}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -393,6 +448,8 @@ export function Blog() {
                     color: '#8B0000',
                     textDecoration: 'none',
                     transition: 'all 0.3s ease',
+                    position: 'relative',
+                    zIndex: 10,
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.gap = '12px';
@@ -410,7 +467,8 @@ export function Blog() {
                 </Link>
               </article>
             ))}
-          </div>
+            </div>
+          </>
         )}
       </div>
 

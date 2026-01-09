@@ -260,6 +260,7 @@ export default function BlogPostPage() {
               gap: '10px',
               padding: '12px 20px',
               borderRadius: '12px',
+              fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
               fontSize: '15px',
               fontWeight: 500,
               color: 'rgba(255,255,255,0.7)',
@@ -267,6 +268,7 @@ export default function BlogPostPage() {
               transition: 'all 0.3s ease',
               background: 'rgba(255,255,255,0.03)',
               border: '1px solid rgba(255,255,255,0.05)',
+              letterSpacing: '-0.01em',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = '#8B0000';
@@ -297,51 +299,70 @@ export default function BlogPostPage() {
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
         }}>
-          {/* Category Badge */}
+          {/* Category Badges */}
           <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
+            display: 'flex',
+            flexWrap: 'wrap',
             gap: '10px',
-            padding: '8px 18px',
-            borderRadius: '9999px',
-            fontSize: '13px',
-            fontWeight: 600,
             marginBottom: '24px',
-            background: 'rgba(139,0,0,0.15)',
-            color: '#8B0000',
-            border: '1px solid rgba(139,0,0,0.25)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
           }}>
-            <span style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#8B0000',
-              boxShadow: '0 0 8px rgba(139,0,0,0.6)',
-            }} />
-            {post.category}
+            {((Array.isArray(post.category) ? post.category : (post.category ? [post.category] : [])).filter(Boolean)).map((cat, idx) => (
+              <div
+                key={idx}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '8px 18px',
+                  borderRadius: '9999px',
+                  fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  background: 'rgba(139,0,0,0.15)',
+                  color: '#8B0000',
+                  border: '1px solid rgba(139,0,0,0.25)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                <span style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: '#8B0000',
+                  boxShadow: '0 0 8px rgba(139,0,0,0.6)',
+                }} />
+                {cat}
+              </div>
+            ))}
           </div>
 
           {/* Title */}
           <h1 style={{
+            fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
             fontSize: 'clamp(40px, 6vw, 64px)',
             fontWeight: 700,
             color: '#ffffff',
             marginBottom: '32px',
             lineHeight: 1.15,
             letterSpacing: '-0.02em',
+            textRendering: 'optimizeLegibility',
+            fontFeatureSettings: "'kern' 1, 'liga' 1",
           }}>
             {post.title}
           </h1>
 
           {/* Excerpt */}
           <p style={{
+            fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
             fontSize: 'clamp(18px, 2.2vw, 22px)',
-            lineHeight: 1.7,
-            color: 'rgba(255,255,255,0.6)',
+            lineHeight: 1.75,
+            color: 'rgba(255,255,255,0.65)',
             marginBottom: '32px',
             fontWeight: 400,
+            letterSpacing: '-0.012em',
+            textRendering: 'optimizeLegibility',
+            fontFeatureSettings: "'kern' 1, 'liga' 1",
           }}>
             {post.excerpt}
           </p>
@@ -379,17 +400,21 @@ export default function BlogPostPage() {
                 AS
               </div>
               <div>
+              <div style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '2px',
+                letterSpacing: '0.01em',
+              }}>
+                Written by
+              </div>
                 <div style={{
-                  fontSize: '14px',
-                  color: 'rgba(255,255,255,0.4)',
-                  marginBottom: '2px',
-                }}>
-                  Written by
-                </div>
-                <div style={{
+                  fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                   fontSize: '16px',
                   fontWeight: 600,
                   color: '#ffffff',
+                  letterSpacing: '-0.01em',
                 }}>
                   {post.author || 'AbdulRazaq Suleiman'}
                 </div>
@@ -405,16 +430,20 @@ export default function BlogPostPage() {
             {/* Date */}
             <div>
               <div style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '14px',
                 color: 'rgba(255,255,255,0.4)',
                 marginBottom: '2px',
+                letterSpacing: '0.01em',
               }}>
                 Published
               </div>
               <div style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '16px',
                 fontWeight: 500,
                 color: 'rgba(255,255,255,0.8)',
+                letterSpacing: '-0.01em',
               }}>
                 {formatDate(post.publishedAt)}
               </div>
@@ -429,16 +458,20 @@ export default function BlogPostPage() {
             {/* Read Time */}
             <div>
               <div style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '14px',
                 color: 'rgba(255,255,255,0.4)',
                 marginBottom: '2px',
+                letterSpacing: '0.01em',
               }}>
                 Reading time
               </div>
               <div style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '16px',
                 fontWeight: 500,
                 color: 'rgba(255,255,255,0.8)',
+                letterSpacing: '-0.01em',
               }}>
                 {post.readTime || '5 min read'}
               </div>
@@ -459,12 +492,14 @@ export default function BlogPostPage() {
                   style={{
                     padding: '8px 16px',
                     borderRadius: '10px',
+                    fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                     fontSize: '13px',
                     fontWeight: 500,
                     color: 'rgba(255,255,255,0.7)',
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.08)',
                     transition: 'all 0.3s ease',
+                    letterSpacing: '-0.005em',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(139,0,0,0.15)';
@@ -491,9 +526,16 @@ export default function BlogPostPage() {
           transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
         }}>
           <div style={{
-            fontSize: 'clamp(17px, 2vw, 19px)',
-            lineHeight: 1.85,
-            color: 'rgba(255,255,255,0.75)',
+            fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
+            fontSize: 'clamp(18px, 2.2vw, 21px)',
+            lineHeight: 1.95,
+            color: 'rgba(255,255,255,0.95)',
+            textRendering: 'optimizeLegibility',
+            fontFeatureSettings: "'kern' 1, 'liga' 1",
+            letterSpacing: '-0.01em',
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale',
+            fontWeight: 400,
           }}>
             {parsedContent.map((item, i) => {
               if (item.type === 'h1') {
@@ -501,15 +543,20 @@ export default function BlogPostPage() {
                   <h1
                     key={i}
                     style={{
+                      fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                       fontSize: 'clamp(36px, 4vw, 44px)',
                       fontWeight: 700,
                       color: '#ffffff',
                       marginTop: '56px',
                       marginBottom: '24px',
-                      lineHeight: 1.2,
+                      lineHeight: 1.25,
                       letterSpacing: '-0.02em',
                       position: 'relative',
                       paddingLeft: '24px',
+                      textRendering: 'optimizeLegibility',
+                      fontFeatureSettings: "'kern' 1, 'liga' 1",
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
                     }}
                   >
                     <span style={{
@@ -531,13 +578,18 @@ export default function BlogPostPage() {
                   <h2
                     key={i}
                     style={{
+                      fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                       fontSize: 'clamp(28px, 3.5vw, 34px)',
                       fontWeight: 700,
                       color: '#ffffff',
                       marginTop: '48px',
                       marginBottom: '20px',
-                      lineHeight: 1.3,
-                      letterSpacing: '-0.01em',
+                      lineHeight: 1.35,
+                      letterSpacing: '-0.015em',
+                      textRendering: 'optimizeLegibility',
+                      fontFeatureSettings: "'kern' 1, 'liga' 1",
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
                     }}
                   >
                     {item.content}
@@ -549,12 +601,18 @@ export default function BlogPostPage() {
                   <h3
                     key={i}
                     style={{
+                      fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                       fontSize: 'clamp(22px, 2.8vw, 26px)',
                       fontWeight: 600,
                       color: '#ffffff',
                       marginTop: '36px',
                       marginBottom: '16px',
                       lineHeight: 1.4,
+                      letterSpacing: '-0.01em',
+                      textRendering: 'optimizeLegibility',
+                      fontFeatureSettings: "'kern' 1, 'liga' 1",
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
                     }}
                   >
                     {item.content}
@@ -566,10 +624,19 @@ export default function BlogPostPage() {
                   <li
                     key={i}
                     style={{
+                      fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                       marginLeft: '28px',
-                      marginBottom: '12px',
+                      marginBottom: '16px',
                       paddingLeft: '8px',
                       position: 'relative',
+                      lineHeight: 1.9,
+                      letterSpacing: '-0.01em',
+                      textRendering: 'optimizeLegibility',
+                      fontFeatureSettings: "'kern' 1, 'liga' 1",
+                      color: 'rgba(255,255,255,0.95)',
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
+                      fontWeight: 400,
                     }}
                   >
                     <span style={{
@@ -591,8 +658,13 @@ export default function BlogPostPage() {
                   <strong
                     key={i}
                     style={{
+                      fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                       color: '#ffffff',
                       fontWeight: 600,
+                      letterSpacing: '-0.005em',
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
+                      textRendering: 'optimizeLegibility',
                     }}
                   >
                     {item.content}
@@ -609,7 +681,16 @@ export default function BlogPostPage() {
                   <p
                     key={i}
                     style={{
-                      marginBottom: '24px',
+                      fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
+                      marginBottom: '32px',
+                      lineHeight: 1.95,
+                      letterSpacing: '-0.01em',
+                      textRendering: 'optimizeLegibility',
+                      fontFeatureSettings: "'kern' 1, 'liga' 1",
+                      color: 'rgba(255,255,255,0.95)',
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
+                      fontWeight: 400,
                     }}
                   >
                     {parts.map((part, j) => {
@@ -618,15 +699,31 @@ export default function BlogPostPage() {
                           <strong
                             key={j}
                             style={{
+                              fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                               color: '#ffffff',
                               fontWeight: 600,
+                              letterSpacing: '-0.005em',
+                              WebkitFontSmoothing: 'antialiased',
+                              MozOsxFontSmoothing: 'grayscale',
+                              textRendering: 'optimizeLegibility',
                             }}
                           >
                             {part.replace(/\*\*/g, '')}
                           </strong>
                         );
                       }
-                      return <span key={j}>{part}</span>;
+                      return (
+                        <span 
+                          key={j}
+                          style={{
+                            color: 'rgba(255,255,255,0.95)',
+                            WebkitFontSmoothing: 'antialiased',
+                            MozOsxFontSmoothing: 'grayscale',
+                          }}
+                        >
+                          {part}
+                        </span>
+                      );
                     })}
                   </p>
                 );
@@ -653,10 +750,12 @@ export default function BlogPostPage() {
             {/* Share Section */}
             <div>
               <h3 style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '18px',
                 fontWeight: 600,
                 color: '#ffffff',
                 marginBottom: '20px',
+                letterSpacing: '-0.01em',
               }}>
                 Share this article
               </h3>
@@ -718,17 +817,22 @@ export default function BlogPostPage() {
               textAlign: 'center',
             }}>
               <h3 style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '20px',
                 fontWeight: 600,
                 color: '#ffffff',
                 marginBottom: '16px',
+                letterSpacing: '-0.01em',
               }}>
                 Enjoyed this article?
               </h3>
               <p style={{
+                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                 fontSize: '15px',
                 color: 'rgba(255,255,255,0.5)',
                 marginBottom: '24px',
+                lineHeight: 1.7,
+                letterSpacing: '-0.01em',
               }}>
                 Explore more security articles and case studies.
               </p>
