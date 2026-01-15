@@ -57,7 +57,7 @@ export function Hero() {
 
           {/* Role Display */}
           <div className="hero-role-container">
-            <span className="hero-role">I Focus on Offensive Web Application Security</span>
+            <span className="hero-role">I specialize in Web Application Offensive Security</span>
           </div>
 
           {/* Description - Refined Typography */}
