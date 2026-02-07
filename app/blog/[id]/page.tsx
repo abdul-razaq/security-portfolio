@@ -129,25 +129,72 @@ export default function BlogPostPage() {
     // If content is already a string (markdown), split it
     if (typeof content === 'string') {
       const lines = content.split('\n');
-      const parsed: Array<{ type: string; content: string; level?: number }> = [];
+      const parsed: Array<{ type: string; content: string; level?: number; meta?: any }> = [];
+      let i = 0;
       
-      for (let i = 0; i < lines.length; i++) {
+      while (i < lines.length) {
         const line = lines[i];
         
         if (line.startsWith('# ')) {
           parsed.push({ type: 'h1', content: line.replace('# ', '') });
-        } else if (line.startsWith('## ')) {
+          i++;
+          continue;
+        }
+        if (line.startsWith('## ')) {
           parsed.push({ type: 'h2', content: line.replace('## ', '') });
-        } else if (line.startsWith('### ')) {
+          i++;
+          continue;
+        }
+        if (line.startsWith('### ')) {
           parsed.push({ type: 'h3', content: line.replace('### ', '') });
-        } else if (line.startsWith('- ')) {
+          i++;
+          continue;
+        }
+        if (line.startsWith('> ')) {
+          parsed.push({ type: 'blockquote', content: line.replace('> ', '') });
+          i++;
+          continue;
+        }
+        if (line.startsWith('```')) {
+          const lang = line.replace('```', '').trim() || 'text';
+          const codeLines: string[] = [];
+          i++;
+          while (i < lines.length && !lines[i].startsWith('```')) {
+            codeLines.push(lines[i]);
+            i++;
+          }
+          parsed.push({ type: 'codeblock', content: codeLines.join('\n'), meta: { lang } });
+          if (i < lines.length && lines[i].startsWith('```')) {
+            i++;
+          }
+          continue;
+        }
+        if (line.startsWith('- ')) {
           parsed.push({ type: 'li', content: line.replace('- ', '') });
-        } else if (line.startsWith('**') && line.endsWith('**')) {
+          i++;
+          continue;
+        }
+        if (line.startsWith('![')) {
+          const match = line.match(/!\[(.*?)\]\((.*?)\)/);
+          if (match) {
+            parsed.push({ type: 'image', content: match[2], meta: { alt: match[1] } });
+            i++;
+            continue;
+          }
+        }
+        if (line.startsWith('**') && line.endsWith('**')) {
           parsed.push({ type: 'strong', content: line.replace(/\*\*/g, '') });
-        } else if (line.trim() === '') {
+          i++;
+          continue;
+        }
+        if (line.trim() === '') {
           parsed.push({ type: 'spacer', content: '' });
-        } else {
+          i++;
+          continue;
+        }
+        {
           parsed.push({ type: 'p', content: line });
+          i++;
         }
       }
       
@@ -536,6 +583,11 @@ export default function BlogPostPage() {
             WebkitFontSmoothing: 'antialiased',
             MozOsxFontSmoothing: 'grayscale',
             fontWeight: 400,
+            maxWidth: '820px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            paddingLeft: '4px',
+            paddingRight: '4px',
           }}>
             {parsedContent.map((item, i) => {
               if (item.type === 'h1') {
@@ -544,15 +596,15 @@ export default function BlogPostPage() {
                     key={i}
                     style={{
                       fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
-                      fontSize: 'clamp(36px, 4vw, 44px)',
+                      fontSize: 'clamp(36px, 4vw, 46px)',
                       fontWeight: 700,
                       color: '#ffffff',
-                      marginTop: '56px',
-                      marginBottom: '24px',
+                      marginTop: '64px',
+                      marginBottom: '28px',
                       lineHeight: 1.25,
                       letterSpacing: '-0.02em',
                       position: 'relative',
-                      paddingLeft: '24px',
+                      paddingLeft: '20px',
                       textRendering: 'optimizeLegibility',
                       fontFeatureSettings: "'kern' 1, 'liga' 1",
                       WebkitFontSmoothing: 'antialiased',
@@ -562,10 +614,9 @@ export default function BlogPostPage() {
                     <span style={{
                       position: 'absolute',
                       left: 0,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
+                      top: '0.3em',
                       width: '4px',
-                      height: '60%',
+                      height: '0.8em',
                       background: 'linear-gradient(180deg, #8B0000 0%, rgba(139,0,0,0.3) 100%)',
                       borderRadius: '2px',
                     }} />
@@ -579,11 +630,11 @@ export default function BlogPostPage() {
                     key={i}
                     style={{
                       fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
-                      fontSize: 'clamp(28px, 3.5vw, 34px)',
+                      fontSize: 'clamp(28px, 3.5vw, 36px)',
                       fontWeight: 700,
                       color: '#ffffff',
-                      marginTop: '48px',
-                      marginBottom: '20px',
+                      marginTop: '56px',
+                      marginBottom: '24px',
                       lineHeight: 1.35,
                       letterSpacing: '-0.015em',
                       textRendering: 'optimizeLegibility',
@@ -605,8 +656,8 @@ export default function BlogPostPage() {
                       fontSize: 'clamp(22px, 2.8vw, 26px)',
                       fontWeight: 600,
                       color: '#ffffff',
-                      marginTop: '36px',
-                      marginBottom: '16px',
+                      marginTop: '40px',
+                      marginBottom: '18px',
                       lineHeight: 1.4,
                       letterSpacing: '-0.01em',
                       textRendering: 'optimizeLegibility',
@@ -619,17 +670,37 @@ export default function BlogPostPage() {
                   </h3>
                 );
               }
+              if (item.type === 'blockquote') {
+                return (
+                  <blockquote
+                    key={i}
+                    style={{
+                      margin: '32px 0',
+                      padding: '20px 24px',
+                      borderLeft: '3px solid rgba(139,0,0,0.5)',
+                      background: 'rgba(255,255,255,0.03)',
+                      borderRadius: '12px',
+                      color: 'rgba(255,255,255,0.85)',
+                      fontStyle: 'italic',
+                      lineHeight: 1.9,
+                      letterSpacing: '-0.01em',
+                    }}
+                  >
+                    {item.content}
+                  </blockquote>
+                );
+              }
               if (item.type === 'li') {
                 return (
                   <li
                     key={i}
                     style={{
                       fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
-                      marginLeft: '28px',
+                      marginLeft: '26px',
                       marginBottom: '16px',
                       paddingLeft: '8px',
                       position: 'relative',
-                      lineHeight: 1.9,
+                      lineHeight: 1.95,
                       letterSpacing: '-0.01em',
                       textRendering: 'optimizeLegibility',
                       fontFeatureSettings: "'kern' 1, 'liga' 1",
@@ -643,8 +714,8 @@ export default function BlogPostPage() {
                       position: 'absolute',
                       left: '-20px',
                       top: '0.8em',
-                      width: '6px',
-                      height: '6px',
+                      width: '5px',
+                      height: '5px',
                       borderRadius: '50%',
                       background: '#8B0000',
                       boxShadow: '0 0 8px rgba(139,0,0,0.5)',
@@ -672,7 +743,65 @@ export default function BlogPostPage() {
                 );
               }
               if (item.type === 'spacer') {
-                return <div key={i} style={{ height: '24px' }} />;
+                return <div key={i} style={{ height: '28px' }} />;
+              }
+              if (item.type === 'codeblock') {
+                return (
+                  <pre
+                    key={i}
+                    style={{
+                      margin: '32px 0',
+                      padding: '18px 20px',
+                      borderRadius: '12px',
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.03) 100%)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      overflowX: 'auto',
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                      fontSize: '0.95em',
+                      lineHeight: 1.75,
+                      color: 'rgba(255,255,255,0.9)',
+                    }}
+                  >
+                    <code>{item.content}</code>
+                  </pre>
+                );
+              }
+              if (item.type === 'image') {
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      margin: '36px 0',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img
+                      src={item.content}
+                      alt={(item.meta && item.meta.alt) || ''}
+                      style={{
+                        maxWidth: '100%',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+                      }}
+                    />
+                    {item.meta && item.meta.alt && (
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
+                          fontSize: '13px',
+                          color: 'rgba(255,255,255,0.5)',
+                          letterSpacing: '-0.005em',
+                        }}
+                      >
+                        {item.meta.alt}
+                      </span>
+                    )}
+                  </div>
+                );
               }
               if (item.type === 'p') {
                 // Check for bold text within paragraph
@@ -682,8 +811,8 @@ export default function BlogPostPage() {
                     key={i}
                     style={{
                       fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
-                      marginBottom: '32px',
-                      lineHeight: 1.95,
+                      marginBottom: '30px',
+                      lineHeight: 1.98,
                       letterSpacing: '-0.01em',
                       textRendering: 'optimizeLegibility',
                       fontFeatureSettings: "'kern' 1, 'liga' 1",
@@ -711,6 +840,41 @@ export default function BlogPostPage() {
                             {part.replace(/\*\*/g, '')}
                           </strong>
                         );
+                      }
+                      if (/`[^`]+`/.test(part)) {
+                        const segments = part.split(/(`[^`]+`)/g);
+                        return segments.map((seg, k) => {
+                          if (seg.startsWith('`') && seg.endsWith('`')) {
+                            return (
+                              <code
+                                key={`${j}-${k}`}
+                                style={{
+                                  background: 'rgba(255,255,255,0.06)',
+                                  border: '1px solid rgba(255,255,255,0.1)',
+                                  borderRadius: '6px',
+                                  padding: '2px 6px',
+                                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                                  fontSize: '0.95em',
+                                  color: 'rgba(255,255,255,0.9)',
+                                }}
+                              >
+                                {seg.slice(1, -1)}
+                              </code>
+                            );
+                          }
+                          return (
+                            <span 
+                              key={`${j}-${k}`}
+                              style={{
+                                color: 'rgba(255,255,255,0.95)',
+                                WebkitFontSmoothing: 'antialiased',
+                                MozOsxFontSmoothing: 'grayscale',
+                              }}
+                            >
+                              {seg}
+                            </span>
+                          );
+                        });
                       }
                       return (
                         <span 
