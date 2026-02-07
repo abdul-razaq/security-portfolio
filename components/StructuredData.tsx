@@ -2,10 +2,10 @@ export function StructuredData() {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Security Professional',
-    jobTitle: 'Penetration Tester | Offensive Security Specialist | Application Security Engineer',
+    name: 'AbdulRazaq Suleiman',
+    jobTitle: 'Offensive Security Engineer - Web & APIs | Application Security Engineer',
     description:
-      'Expert offensive security professional specializing in penetration testing, offensive security, and application security engineering.',
+      'Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://yourdomain.com',
     sameAs: [
       'https://github.com',

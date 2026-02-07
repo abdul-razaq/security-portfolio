@@ -141,7 +141,7 @@ export function AboutSection() {
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
               }}>
-                Web App Security Specialist
+                Offensive Security Engineer - Web & APIs
               </span>
             </div>
             <h2 style={{
@@ -153,9 +153,9 @@ export function AboutSection() {
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
             }}>
-              Specialized in <br />
+              Offensive Security Engineer <br />
               <span style={{ position: 'relative', display: 'inline-block' }}>
-                <span style={{ color: '#8B0000' }}>Web Application</span>
+                <span style={{ color: '#8B0000' }}>Web & APIs</span>
                 <svg style={{
                   position: 'absolute',
                   bottom: '-8px',
@@ -165,7 +165,7 @@ export function AboutSection() {
                 }} viewBox="0 0 200 8" fill="none">
                   <path d="M0 4C50 4 50 7 100 7C150 7 150 1 200 1" stroke="#8B0000" strokeWidth="2" strokeLinecap="round" />
                 </svg>
-              </span> Offensive Security
+              </span>
             </h2>
           </div>
 
@@ -207,7 +207,7 @@ export function AboutSection() {
                     textRendering: 'optimizeLegibility',
                     fontFeatureSettings: "'kern' 1, 'liga' 1",
                   }}>
-                    I specialize exclusively in <span style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>offensive security testing of web applications</span>. Through deep reconnaissance, comprehensive enumeration, and thorough vulnerability analysis, I identify and exploit security weaknesses that automated tools miss.
+                    As an <span style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>Application Security Engineer</span>, I conduct deep reconnaissance, comprehensive enumeration, and thorough vulnerability analysis to identify and exploit security weaknesses in web applications and APIs.
                   </p>
 
                   <p style={{
@@ -221,7 +221,7 @@ export function AboutSection() {
                     textRendering: 'optimizeLegibility',
                     fontFeatureSettings: "'kern' 1, 'liga' 1",
                   }}>
-                    My expertise encompasses full-spectrum penetration testing of web applications—from manual exploitation techniques and custom tool development in <span style={{ color: '#8B0000', fontWeight: 500 }}>Go</span> to deep understanding of web architectures, authentication mechanisms, and OWASP Top 10 vulnerabilities. I focus on finding critical flaws that automated scanners miss.
+                    My expertise encompasses full-spectrum penetration testing of web applications and APIs—from manual exploitation techniques and custom tool development in <span style={{ color: '#8B0000', fontWeight: 500 }}>Go</span> to deep understanding of web architectures, authentication mechanisms, and OWASP Top 10 vulnerabilities. I focus on finding critical flaws that automated scanners miss.
                   </p>
                 </>
               )}

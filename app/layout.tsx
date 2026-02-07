@@ -34,17 +34,19 @@ const satoshi = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
-    default: "AbdulRazaq Suleiman | Security Professional",
+    default: "AbdulRazaq Suleiman | Offensive Security Engineer",
     template: "%s | AbdulRazaq Suleiman",
   },
   description:
-    "Expert offensive security professional specializing in penetration testing, offensive security, and application security engineering.",
+    "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
   keywords: [
+    "offensive security engineer",
+    "application security engineer",
+    "web application security",
     "penetration testing",
     "offensive security",
-    "web application security",
-    "application security",
     "cybersecurity",
+    "API security",
   ],
   authors: [{ name: "AbdulRazaq Suleiman" }],
   icons: {
@@ -55,14 +57,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "AbdulRazaq Suleiman | Security Professional",
-    description: "Expert offensive security professional specializing in penetration testing and offensive security.",
+    title: "AbdulRazaq Suleiman | Offensive Security Engineer - Web & APIs",
+    description: "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "AbdulRazaq Suleiman Portfolio" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AbdulRazaq Suleiman | Security Professional",
-    description: "Expert offensive security professional specializing in penetration testing and offensive security.",
+    title: "AbdulRazaq Suleiman | Offensive Security Engineer",
+    description: "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
   },
   robots: {
     index: true,

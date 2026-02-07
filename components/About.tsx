@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export function About() {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,23 +10,25 @@ export function About() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section 
-      ref={sectionRef}
-      className="about-section"
-    >
+    <section ref={sectionRef} className="about-section">
       <style jsx>{`
         .about-section {
           position: relative;
           min-height: 100vh;
           padding: clamp(80px, 10vw, 120px) 0;
-          background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+          background: linear-gradient(
+            180deg,
+            #050505 0%,
+            #0a0a0a 50%,
+            #050505 100%
+          );
           overflow: hidden;
         }
 
@@ -42,7 +44,12 @@ export function About() {
           left: 0;
           width: 100%;
           height: 1px;
-          background: linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%);
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            #8b0000 50%,
+            transparent 100%
+          );
           opacity: 0.5;
         }
 
@@ -53,7 +60,11 @@ export function About() {
           width: 400px;
           height: 400px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 70%);
+          background: radial-gradient(
+            circle,
+            rgba(139, 0, 0, 0.05) 0%,
+            transparent 70%
+          );
           opacity: 0.6;
         }
 
@@ -64,7 +75,11 @@ export function About() {
           width: 500px;
           height: 500px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(139,0,0,0.04) 0%, transparent 70%);
+          background: radial-gradient(
+            circle,
+            rgba(139, 0, 0, 0.04) 0%,
+            transparent 70%
+          );
           opacity: 0.6;
         }
 
@@ -72,8 +87,9 @@ export function About() {
           position: absolute;
           inset: 0;
           opacity: 0.02;
-          background-image: linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), 
-                            linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px);
+          background-image:
+            linear-gradient(rgba(139, 0, 0, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 0, 0, 0.3) 1px, transparent 1px);
           background-size: 100px 100px;
         }
 
@@ -84,20 +100,24 @@ export function About() {
           padding: 8px 20px;
           border-radius: 9999px;
           margin-bottom: 24px;
-          background: rgba(139,0,0,0.1);
-          border: 1px solid rgba(139,0,0,0.2);
+          background: rgba(139, 0, 0, 0.1);
+          border: 1px solid rgba(139, 0, 0, 0.2);
         }
 
         .about-badge-dot {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: #8B0000;
+          background: #8b0000;
         }
 
         .about-badge-text {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
-          color: #8B0000;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
+          color: #8b0000;
           font-size: 12px;
           font-weight: 600;
           letter-spacing: 0.1em;
@@ -105,7 +125,11 @@ export function About() {
         }
 
         .about-heading {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(42px, 6vw, 72px);
           font-weight: 700;
           color: #ffffff;
@@ -115,16 +139,22 @@ export function About() {
         }
 
         .about-subtitle {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(17px, 2.2vw, 22px);
-          color: rgba(255,255,255,0.65);
+          color: rgba(255, 255, 255, 0.65);
           max-width: 720px;
           margin: 0 auto;
           line-height: 1.75;
           letter-spacing: -0.012em;
           font-weight: 400;
           text-rendering: optimizeLegibility;
-          font-feature-settings: 'kern' 1, 'liga' 1;
+          font-feature-settings:
+            "kern" 1,
+            "liga" 1;
         }
 
         .about-content-grid {
@@ -141,7 +171,11 @@ export function About() {
         }
 
         .about-section-title {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(28px, 3vw, 36px);
           font-weight: 700;
           color: #ffffff;
@@ -151,9 +185,13 @@ export function About() {
         }
 
         .about-text {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 17px;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255, 255, 255, 0.7);
           line-height: 1.8;
           letter-spacing: -0.01em;
         }
@@ -164,7 +202,7 @@ export function About() {
         }
 
         .about-text-highlight {
-          color: #8B0000;
+          color: #8b0000;
           font-weight: 500;
         }
 
@@ -178,15 +216,23 @@ export function About() {
         .about-tech-item {
           padding: 20px;
           border-radius: 16px;
-          background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-          border: 1px solid rgba(255,255,255,0.05);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.01) 100%
+          );
+          border: 1px solid rgba(255, 255, 255, 0.05);
           text-align: center;
           transition: all 0.3s ease;
         }
 
         .about-tech-item:hover {
-          background: linear-gradient(135deg, rgba(139,0,0,0.1) 0%, rgba(139,0,0,0.05) 100%);
-          border-color: rgba(139,0,0,0.3);
+          background: linear-gradient(
+            135deg,
+            rgba(139, 0, 0, 0.1) 0%,
+            rgba(139, 0, 0, 0.05) 100%
+          );
+          border-color: rgba(139, 0, 0, 0.3);
           transform: translateY(-2px);
         }
 
@@ -196,10 +242,14 @@ export function About() {
         }
 
         .about-tech-name {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 14px;
           font-weight: 600;
-          color: rgba(255,255,255,0.8);
+          color: rgba(255, 255, 255, 0.8);
           letter-spacing: 0.01em;
         }
 
@@ -220,35 +270,55 @@ export function About() {
           padding: 32px;
           border-radius: 20px;
           text-align: center;
-          background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-          border: 1px solid rgba(255,255,255,0.05);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.01) 100%
+          );
+          border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .about-stat-value {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 48px;
           font-weight: 700;
-          color: #8B0000;
+          color: #8b0000;
           margin-bottom: 8px;
           letter-spacing: -0.03em;
         }
 
         .about-stat-label {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 14px;
-          color: rgba(255,255,255,0.5);
+          color: rgba(255, 255, 255, 0.5);
           letter-spacing: 0.01em;
         }
 
         .about-highlights-card {
           padding: 40px;
           border-radius: 24px;
-          background: linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.02) 100%);
-          border: 1px solid rgba(139,0,0,0.25);
+          background: linear-gradient(
+            135deg,
+            rgba(139, 0, 0, 0.08) 0%,
+            rgba(139, 0, 0, 0.02) 100%
+          );
+          border: 1px solid rgba(139, 0, 0, 0.25);
         }
 
         .about-highlights-title {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 22px;
           font-weight: 700;
           color: #ffffff;
@@ -272,14 +342,18 @@ export function About() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #8B0000;
+          background: #8b0000;
           flex-shrink: 0;
         }
 
         .about-highlight-text {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 15px;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255, 255, 255, 0.7);
           letter-spacing: -0.01em;
         }
 
@@ -295,12 +369,20 @@ export function About() {
           text-align: center;
           padding: 64px 32px;
           border-radius: 24px;
-          background: linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.02) 100%);
-          border: 1px solid rgba(139,0,0,0.25);
+          background: linear-gradient(
+            135deg,
+            rgba(139, 0, 0, 0.08) 0%,
+            rgba(139, 0, 0, 0.02) 100%
+          );
+          border: 1px solid rgba(139, 0, 0, 0.25);
         }
 
         .about-cta-title {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(32px, 4vw, 48px);
           font-weight: 700;
           color: #ffffff;
@@ -310,9 +392,13 @@ export function About() {
         }
 
         .about-cta-description {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(16px, 2vw, 18px);
-          color: rgba(255,255,255,0.6);
+          color: rgba(255, 255, 255, 0.6);
           line-height: 1.7;
           margin-bottom: 32px;
           max-width: 560px;
@@ -328,13 +414,19 @@ export function About() {
           gap: 12px;
           padding: 20px 44px;
           border-radius: 14px;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-weight: 600;
           font-size: 16px;
           text-decoration: none;
           transition: all 0.3s ease;
-          background: linear-gradient(135deg, #8B0000 0%, #6d0000 100%);
-          box-shadow: 0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+          background: linear-gradient(135deg, #8b0000 0%, #6d0000 100%);
+          box-shadow:
+            0 4px 24px rgba(139, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
           color: #ffffff;
           letter-spacing: 0.02em;
           border: none;
@@ -345,9 +437,10 @@ export function About() {
 
         .about-cta-button:hover {
           transform: translateY(-3px);
-          box-shadow: 0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+          box-shadow:
+            0 6px 30px rgba(139, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-
       `}</style>
 
       {/* Background Effects */}
@@ -358,55 +451,123 @@ export function About() {
         <div className="about-grid" />
       </div>
 
-      <div style={{
-        position: 'relative',
-        zIndex: 10,
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: '0 24px',
-      }}>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          maxWidth: "1280px",
+          margin: "0 auto",
+          padding: "0 24px",
+        }}
+      >
         {/* Hero Section */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '80px',
-          opacity: isVisible ? 1 : 0,
-          transition: 'opacity 0.6s ease',
-        }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "80px",
+            opacity: isVisible ? 1 : 0,
+            transition: "opacity 0.6s ease",
+          }}
+        >
           <div className="about-badge">
             <div className="about-badge-dot" />
             <span className="about-badge-text">About Me</span>
           </div>
           <h1 className="about-heading">
-            Offensive Security <span style={{ color: '#8B0000' }}>Specialist</span>
+            Offensive Security <span style={{ color: "#8B0000" }}>Engineer</span>
           </h1>
           <p className="about-subtitle">
-            Specializing in web application penetration testing with a strong foundation in full stack development and programming.
+            Specializing in web application penetration testing and Application
+            Security Engineering with a strong foundation in full stack
+            development.
           </p>
         </div>
 
         {/* Main Content */}
         <div className="about-content-grid">
           {/* Left Column - Story */}
-          <div style={{
-            opacity: isVisible ? 1 : 0,
-            transition: 'opacity 0.6s ease 0.1s',
-          }}>
+          <div
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transition: "opacity 0.6s ease 0.1s",
+            }}
+          >
             <h2 className="about-section-title">My Journey</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+            >
               <p className="about-text">
-                My journey in technology began with <span className="about-text-emphasis">full stack web development</span>, where I built robust applications using the <span className="about-text-highlight">JavaScript stack</span>—React, Node.js, Express, and modern frontend frameworks. This foundation gave me deep insight into how web applications are built, how they function, and where their vulnerabilities might lie.
+                My journey in technology began with{" "}
+                <span className="about-text-emphasis">
+                  full stack web development
+                </span>
+                , where I built robust applications using the{" "}
+                <span className="about-text-highlight">JavaScript stack</span>
+                —React, Node.js, Express, and modern frontend frameworks. This
+                foundation gave me deep insight into how web applications are
+                built, how they function, and where their vulnerabilities might
+                lie.
               </p>
               <p className="about-text">
-                I have a <span className="about-text-emphasis">strong programming background</span> and a genuine love for <span className="about-text-highlight">Go</span> and <span className="about-text-highlight">Python</span>. These languages have become essential tools in my security work, allowing me to develop custom security testing tools, automate vulnerability assessments, and create proof-of-concept exploits that demonstrate real-world security risks.
+                I have a{" "}
+                <span className="about-text-emphasis">
+                  strong programming background
+                </span>{" "}
+                and a genuine love for{" "}
+                <span className="about-text-highlight">Go</span> and{" "}
+                <span className="about-text-highlight">Python</span>. These
+                languages have become essential tools in my security work,
+                allowing me to develop custom security testing tools, automate
+                vulnerability assessments, and create proof-of-concept exploits
+                that demonstrate real-world security risks.
               </p>
               <p className="about-text">
-                While I appreciate the art of building applications, my true passion lies in <span className="about-text-emphasis">offensive security and securing web applications</span>. The challenge of thinking like an attacker, identifying vulnerabilities before they're exploited, and systematically breaking down security defenses is what drives my work.
+                While I appreciate the art of building applications, my true
+                passion lies in{" "}
+                <span className="about-text-emphasis">
+                  offensive security and securing web applications
+                </span>
+                . The challenge of thinking like an attacker, identifying
+                vulnerabilities before they're exploited, and systematically
+                breaking down security defenses is what drives my work.
               </p>
               <p className="about-text">
-                Today, I specialize in <span className="about-text-emphasis">web application penetration testing</span>, conducting comprehensive security assessments through manual testing, custom tool development, and deep understanding of web application architectures. My development background gives me a unique perspective—I understand both <span className="about-text-highlight">how applications are built</span> and <span className="about-text-highlight">how they can be broken</span>.
+                Today, I specialize in{" "}
+                <span className="about-text-emphasis">
+                  web application penetration testing
+                </span>
+                , conducting comprehensive security assessments through manual
+                testing, custom tool development, and deep understanding of web
+                application architectures. My development background gives me a
+                unique perspective—I understand both{" "}
+                <span className="about-text-highlight">
+                  how applications are built
+                </span>{" "}
+                and{" "}
+                <span className="about-text-highlight">
+                  how they can be broken
+                </span>
+                .
               </p>
               <p className="about-text">
-                I focus extensively on the <span className="about-text-emphasis">OWASP Top 10</span> vulnerabilities, systematically testing for <span className="about-text-highlight">injection flaws</span>, <span className="about-text-highlight">broken authentication</span>, <span className="about-text-highlight">sensitive data exposure</span>, and other <span className="about-text-emphasis">critical security weaknesses</span> that pose real threats to web applications. This methodical approach ensures comprehensive coverage of the most common and dangerous vulnerabilities affecting modern web applications.
+                I focus extensively on the{" "}
+                <span className="about-text-emphasis">OWASP Top 10</span>{" "}
+                vulnerabilities, systematically testing for{" "}
+                <span className="about-text-highlight">injection flaws</span>,{" "}
+                <span className="about-text-highlight">
+                  broken authentication
+                </span>
+                ,{" "}
+                <span className="about-text-highlight">
+                  sensitive data exposure
+                </span>
+                , and other{" "}
+                <span className="about-text-emphasis">
+                  critical security weaknesses
+                </span>{" "}
+                that pose real threats to web applications. This methodical
+                approach ensures comprehensive coverage of the most common and
+                dangerous vulnerabilities affecting modern web applications.
               </p>
             </div>
 
@@ -440,10 +601,12 @@ export function About() {
           </div>
 
           {/* Right Column - Stats & Highlights */}
-          <div style={{
-            opacity: isVisible ? 1 : 0,
-            transition: 'opacity 0.6s ease 0.2s',
-          }}>
+          <div
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transition: "opacity 0.6s ease 0.2s",
+            }}
+          >
             {/* Stats Grid */}
             <div className="about-stats-grid">
               <div className="about-stat-card">
@@ -461,12 +624,12 @@ export function About() {
               <h3 className="about-highlights-title">What I Do</h3>
               <div className="about-highlights-list">
                 {[
-                  'Conduct penetration testing of web applications to identify vulnerabilities',
-                  'Develop custom security tools in Go and Python',
-                  'Create proof-of-concept exploits for identified vulnerabilities',
-                  'Conduct manual security assessments',
-                  'Leverage full stack development knowledge for security testing',
-                  'Share knowledge through blogging and technical writing',
+                  "Conduct penetration testing of web applications to identify vulnerabilities",
+                  "Develop custom security tools in Go and Python",
+                  "Create proof-of-concept exploits for identified vulnerabilities",
+                  "Conduct manual security assessments",
+                  "Leverage full stack development knowledge for security testing",
+                  "Share knowledge through blogging and technical writing",
                 ].map((item, i) => (
                   <div key={i} className="about-highlight-item">
                     <div className="about-highlight-dot" />
@@ -479,44 +642,54 @@ export function About() {
         </div>
 
         {/* CTA Section */}
-        <div className="about-cta-wrapper" style={{
-          opacity: isVisible ? 1 : 0,
-          transition: 'opacity 0.6s ease 0.3s',
-        }}>
+        <div
+          className="about-cta-wrapper"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: "opacity 0.6s ease 0.3s",
+          }}
+        >
           <div className="about-cta-content">
             <h2 className="about-cta-title">
-              Ready to <span style={{ color: '#8B0000' }}>Secure</span> Your Web Applications?
+              Ready to <span style={{ color: "#8B0000" }}>Secure</span> Your Web
+              Applications?
             </h2>
             <p className="about-cta-description">
-              I provide expert penetration testing for web applications, uncovering and helping remediate critical vulnerabilities. Reach out to discuss how I can help secure your systems.
+              I provide expert penetration testing for web applications,
+              uncovering and helping remediate critical vulnerabilities. Reach
+              out to discuss how I can help secure your systems.
             </p>
-            <Link 
+            <Link
               href="/contact"
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '20px 44px',
-                borderRadius: '14px',
-                fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "20px 44px",
+                borderRadius: "14px",
+                fontFamily:
+                  "var(--font-satoshi), system-ui, -apple-system, sans-serif",
                 fontWeight: 600,
-                fontSize: '16px',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-                background: 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)',
-                boxShadow: '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-                color: '#ffffff',
-                letterSpacing: '0.02em',
-                border: 'none',
-                cursor: 'pointer',
+                fontSize: "16px",
+                textDecoration: "none",
+                transition: "all 0.3s ease",
+                background: "linear-gradient(135deg, #8B0000 0%, #6d0000 100%)",
+                boxShadow:
+                  "0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
+                color: "#ffffff",
+                letterSpacing: "0.02em",
+                border: "none",
+                cursor: "pointer",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)";
               }}
             >
               Let&apos;s Talk

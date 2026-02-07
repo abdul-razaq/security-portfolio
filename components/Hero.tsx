@@ -57,13 +57,13 @@ export function Hero() {
 
           {/* Role Display */}
           <div className="hero-role-container">
-            <span className="hero-role">I specialize in Web Application Offensive Security</span>
+            <span className="hero-role">Offensive Security Engineer - Web & APIs</span>
           </div>
 
           {/* Description - Refined Typography */}
           <div className="hero-description">
             <p className="hero-description-paragraph">
-              <span className="hero-description-emphasis">Specializing in web application penetration testing</span>, I conduct <span className="hero-description-highlight">deep reconnaissance</span>, <span className="hero-description-highlight">comprehensive enumeration</span>, and <span className="hero-description-highlight">thorough vulnerability analysis</span> to identify and exploit security weaknesses.
+              As an <span className="hero-description-emphasis">Application Security Engineer</span>, I conduct <span className="hero-description-highlight">deep reconnaissance</span>, <span className="hero-description-highlight">comprehensive enumeration</span>, and <span className="hero-description-highlight">thorough vulnerability analysis</span> to identify and exploit security weaknesses.
             </p>
             <p className="hero-description-paragraph">
               My expertise encompasses <span className="hero-description-emphasis">full-spectrum penetration testing</span> of web applications, identifying and exploiting vulnerabilities that automated tools miss. I focus on the critical flaws that pose real threats to application security.
