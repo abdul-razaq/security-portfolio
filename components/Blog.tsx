@@ -244,7 +244,7 @@ export function Blog() {
               .blog-grid {
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 24px;
+                gap: 28px;
               }
               @media (min-width: 768px) {
                 .blog-grid {
@@ -277,7 +277,7 @@ export function Blog() {
                 onClick={() => router.push(`/blog/${post.slug}`)}
                 style={{
                   position: 'relative',
-                  padding: '32px',
+                  padding: '36px',
                   borderRadius: '24px',
                   opacity: isVisible ? 1 : 0,
                   transition: `opacity 0.6s ease ${index * 50}ms`,
@@ -330,7 +330,7 @@ export function Blog() {
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: '8px',
-                  marginBottom: '20px',
+                  marginBottom: '24px',
                 }}>
                   {((Array.isArray(post.category) ? post.category : (post.category ? [post.category] : [])).filter(Boolean)).map((cat, idx) => (
                     <div
@@ -361,7 +361,7 @@ export function Blog() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '12px',
-                  marginBottom: '16px',
+                  marginBottom: '18px',
                   fontSize: '13px',
                   color: 'rgba(255,255,255,0.4)',
                   flexWrap: 'wrap',
@@ -373,11 +373,11 @@ export function Blog() {
 
                 {/* Title */}
                 <h3 style={{
-                  fontSize: '22px',
+                  fontSize: '24px',
                   fontWeight: 700,
                   color: '#ffffff',
-                  marginBottom: '12px',
-                  lineHeight: 1.3,
+                  marginBottom: '14px',
+                  lineHeight: 1.35,
                   overflow: 'hidden',
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
@@ -389,13 +389,13 @@ export function Blog() {
 
                 {/* Excerpt */}
                 <p style={{
-                  fontSize: '15px',
+                  fontSize: '16px',
                   color: 'rgba(255,255,255,0.5)',
-                  lineHeight: 1.7,
-                  marginBottom: '24px',
+                  lineHeight: 1.85,
+                  marginBottom: '28px',
                   overflow: 'hidden',
                   display: '-webkit-box',
-                  WebkitLineClamp: 3,
+                  WebkitLineClamp: 4,
                   WebkitBoxOrient: 'vertical',
                   wordBreak: 'break-word',
                 }}>
@@ -442,7 +442,7 @@ export function Blog() {
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '8px',
+                    gap: '10px',
                     fontSize: '14px',
                     fontWeight: 500,
                     color: '#8B0000',
@@ -452,11 +452,11 @@ export function Blog() {
                     zIndex: 10,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.gap = '12px';
+                    e.currentTarget.style.gap = '14px';
                     e.currentTarget.style.color = '#a31515';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.gap = '8px';
+                    e.currentTarget.style.gap = '10px';
                     e.currentTarget.style.color = '#8B0000';
                   }}
                 >
