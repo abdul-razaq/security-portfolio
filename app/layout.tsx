@@ -2,8 +2,8 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { StructuredData } from "@/components/StructuredData";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Great_Vibes } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 // Handwritten signature font for logo
@@ -18,21 +18,63 @@ const satoshi = localFont({
   variable: "--font-satoshi",
   display: "swap",
   src: [
-    { path: "../public/fonts/Satoshi-Light.otf", weight: "300", style: "normal" },
-    { path: "../public/fonts/Satoshi-LightItalic.otf", weight: "300", style: "italic" },
-    { path: "../public/fonts/Satoshi-Regular.otf", weight: "400", style: "normal" },
-    { path: "../public/fonts/Satoshi-Italic.otf", weight: "400", style: "italic" },
-    { path: "../public/fonts/Satoshi-Medium.otf", weight: "500", style: "normal" },
-    { path: "../public/fonts/Satoshi-MediumItalic.otf", weight: "500", style: "italic" },
-    { path: "../public/fonts/Satoshi-Bold.otf", weight: "700", style: "normal" },
-    { path: "../public/fonts/Satoshi-BoldItalic.otf", weight: "700", style: "italic" },
-    { path: "../public/fonts/Satoshi-Black.otf", weight: "900", style: "normal" },
-    { path: "../public/fonts/Satoshi-BlackItalic.otf", weight: "900", style: "italic" },
+    {
+      path: "../public/fonts/Satoshi-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-LightItalic.otf",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Satoshi-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-Italic.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Satoshi-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-MediumItalic.otf",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Satoshi-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-BoldItalic.otf",
+      weight: "700",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/Satoshi-Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Satoshi-BlackItalic.otf",
+      weight: "900",
+      style: "italic",
+    },
   ],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
   title: {
     default: "AbdulRazaq Suleiman | Offensive Security Engineer",
     template: "%s | AbdulRazaq Suleiman",
@@ -50,21 +92,30 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "AbdulRazaq Suleiman" }],
   icons: {
-    icon: '/icon.svg',
-    shortcut: '/icon.svg',
-    apple: '/icon.svg',
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
     title: "AbdulRazaq Suleiman | Offensive Security Engineer - Web & APIs",
-    description: "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "AbdulRazaq Suleiman Portfolio" }],
+    description:
+      "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "AbdulRazaq Suleiman Portfolio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "AbdulRazaq Suleiman | Offensive Security Engineer",
-    description: "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
+    description:
+      "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
   },
   robots: {
     index: true,
@@ -72,13 +123,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={`${satoshi.variable} ${greatVibes.variable}`}>
       <head>
         <StructuredData />
       </head>
-      <body className={satoshi.className}>
+      <body className={satoshi.className} suppressHydrationWarning={true}>
         <Header />
         <main>{children}</main>
         <Footer />
