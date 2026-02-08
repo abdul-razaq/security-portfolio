@@ -188,6 +188,77 @@ export default function BlogPostPage() {
       }> = [];
       let i = 0;
 
+      const isCodeLike = (ln: string) => {
+        const l = ln.trim();
+        if (!l) return false;
+        if (/^```/.test(l)) return true;
+        if (/^<\w+/.test(l)) return true; // HTML/XML start
+        if (/^\s*<?php/.test(l)) return true; // PHP start
+        if (/^\s*\{/.test(l) || /\}\s*$/.test(l)) return true; // brace blocks
+        if (
+          /;\s*$/.test(l) &&
+          /(const|let|var|function|class|return|import|export|new)\b/.test(l)
+        )
+          return true; // JS/TS lines
+        if (/^\s*(def|class)\b.*:\s*$/.test(l)) return true; // Python signature
+        if (/^\s*(from|import)\b/.test(l)) return true; // Python import
+        if (/^\s*["'][^"']+["']\s*:\s*.+[,}]?$/.test(l)) return true; // JSON kv
+        if (
+          /^\s*(sudo|curl|wget|git|npm|yarn|pnpm)\b/.test(l) ||
+          /^\$[a-z_]/.test(l)
+        )
+          return true; // Bash
+        return false;
+      };
+
+      const isStrongCodeStart = (ln: string) => {
+        const l = ln.trim();
+        return (
+          /^<\w+/.test(l) ||
+          /^\s*<?php/.test(l) ||
+          /^\s*(def|class)\b.*:\s*$/.test(l) ||
+          /^\s*(from|import)\b/.test(l) ||
+          (/;\s*$/.test(l) &&
+            /(const|let|var|function|class|return|import|export|new)\b/.test(
+              l,
+            )) ||
+          /^\s*["'][^"']+["']\s*:\s*.+[,}]?$/.test(l)
+        );
+      };
+
+      const guessLang = (block: string) => {
+        const s = block.toLowerCase();
+        if (s.includes("<?php")) return "php";
+        if (/<[a-z]/.test(s)) return "html";
+        if (/^\s*[\{\[]/.test(s) && /":/.test(s)) return "json";
+        if (
+          /^\s*(const|let|var|import|export|function|class)\b/.test(s) ||
+          /;\s*$/.test(s) ||
+          /=>/.test(s)
+        )
+          return "js";
+        if (/^\s*(def|from|import|class|print)\b/.test(s) || /:\s*$/.test(s))
+          return "python";
+        if (
+          /^\s*(sudo|curl|wget|git|npm|yarn|pnpm)\b/.test(s) ||
+          /^\$[a-z_]/.test(s)
+        )
+          return "bash";
+        if (/{\s*$/.test(s) && /}/.test(s) && /;/.test(s)) return "css"; // very rough
+        return "text";
+      };
+      const normalizeLangLabel = (s: string) => {
+        const l = s.trim().toLowerCase();
+        if (["php"].includes(l)) return "php";
+        if (["javascript", "js"].includes(l)) return "js";
+        if (["typescript", "ts"].includes(l)) return "ts";
+        if (["python", "py"].includes(l)) return "python";
+        if (["html", "xml"].includes(l)) return "html";
+        if (["css"].includes(l)) return "css";
+        if (["bash", "sh", "shell"].includes(l)) return "bash";
+        return "";
+      };
+
       while (i < lines.length) {
         const line = lines[i];
 
@@ -256,10 +327,45 @@ export default function BlogPostPage() {
           i++;
           continue;
         }
-        {
-          parsed.push({ type: "p", content: line });
-          i++;
+        // Auto-detect unfenced code blocks
+        if (isCodeLike(line)) {
+          const codeLines: string[] = [];
+          let label: string | undefined;
+          if (i > 0) {
+            const prevRaw = lines[i - 1];
+            const prev = prevRaw.trim();
+            const normalized = normalizeLangLabel(prev);
+            if (normalized) {
+              label = normalized;
+              if (
+                parsed.length > 0 &&
+                parsed[parsed.length - 1].type === "p" &&
+                parsed[parsed.length - 1].content.trim() === prevRaw.trim()
+              ) {
+                parsed.pop();
+              }
+            }
+          }
+          while (
+            i < lines.length &&
+            (isCodeLike(lines[i]) || lines[i].trim() === "")
+          ) {
+            codeLines.push(lines[i]);
+            i++;
+          }
+          const code = codeLines.join("\n");
+          if (codeLines.length >= 2 || isStrongCodeStart(line)) {
+            parsed.push({
+              type: "codeblock",
+              content: code,
+              meta: { lang: label || guessLang(code) },
+            });
+            continue;
+          }
         }
+        // Paragraph fallback
+        parsed.push({ type: "p", content: line });
+        i++;
       }
 
       return parsed;
@@ -386,6 +492,34 @@ export default function BlogPostPage() {
           colored = wrap("#a8e6a2", text);
         } else if (/^\s-\w+/.test(text)) {
           colored = wrap("#8B0000", text);
+        }
+        parts.push(colored);
+        last = start + text.length;
+      }
+      parts.push(src.slice(last));
+      return parts.join("");
+    }
+
+    if (["py", "python"].includes(l)) {
+      const keywordSet =
+        "def|class|return|import|from|as|if|elif|else|for|while|try|except|finally|with|lambda|pass|break|continue|yield|global|nonlocal|assert|raise|del|in|is|and|or|not|True|False|None";
+      const token =
+        /#[^\n]*|"""[\s\S]*?"""|'''\s*[\s\S]*?'''|"(?:[^"\n\\]|\\.)*"|'(?:[^'\n\\]|\\.)*'|\b(?:def|class|return|import|from|as|if|elif|else|for|while|try|except|finally|with|lambda|pass|break|continue|yield|global|nonlocal|assert|raise|del|in|is|and|or|not|True|False|None)\b|\b\d+(?:\.\d+)?\b/g;
+      const parts: string[] = [];
+      let last = 0;
+      for (const m of src.matchAll(token)) {
+        const start = m.index ?? 0;
+        const text = m[0];
+        if (start > last) parts.push(src.slice(last, start));
+        let colored = text;
+        if (text.startsWith("#") || text.startsWith('"""') || text.startsWith("'''")) {
+          colored = wrap("rgba(255,255,255,0.5)", text);
+        } else if (text.startsWith('"') || text.startsWith("'")) {
+          colored = wrap("#a8e6a2", text);
+        } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
+          colored = wrap("#8B0000", text);
+        } else if (/^\d+(?:\.\d+)?$/.test(text)) {
+          colored = wrap("#f7c873", text);
         }
         parts.push(colored);
         last = start + text.length;
@@ -1174,34 +1308,54 @@ export default function BlogPostPage() {
                           }}
                           style={{
                             position: "absolute",
-                            top: "10px",
-                            right: "10px",
+                            top: "12px",
+                            right: "12px",
                             padding: "6px 10px",
                             borderRadius: "8px",
                             fontSize: "12px",
                             fontWeight: 600,
-                            background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            color: "rgba(255,255,255,0.8)",
+                            background: "rgba(255,255,255,0.08)",
+                            border: "1px solid rgba(255,255,255,0.15)",
+                            color: "#ffffff",
                             cursor: "pointer",
                           }}
                         >
                           Copy
                         </button>
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "12px",
+                            left: "12px",
+                            padding: "4px 8px",
+                            borderRadius: "8px",
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            letterSpacing: "0.06em",
+                            textTransform: "uppercase",
+                            color: "#800020",
+                            background: "rgba(128,0,32,0.10)",
+                            border: "1px solid rgba(128,0,32,0.25)",
+                          }}
+                        >
+                          {(item.meta?.lang || "code").toString()}
+                        </span>
                         <pre
                           style={{
                             margin: 0,
-                            padding: "18px 20px",
-                            borderRadius: "12px",
+                            padding: "22px 22px 22px 22px",
+                            borderRadius: "14px",
                             background:
-                              "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.03) 100%)",
-                            border: "1px solid rgba(255,255,255,0.08)",
+                              "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
+                            border: "1px solid rgba(139,0,0,0.25)",
                             overflowX: "auto",
                             fontFamily:
                               'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
                             fontSize: "0.95em",
                             lineHeight: 1.75,
-                            color: "rgba(255,255,255,0.9)",
+                            color: "#ffffff",
+                            boxShadow:
+                              "0 8px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
                           }}
                         >
                           <code

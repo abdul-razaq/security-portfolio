@@ -534,11 +534,11 @@ export function About() {
               <p className="about-text">
                 Today, I specialize in{" "}
                 <span className="about-text-emphasis">
-                  web application penetration testing
+                  Application Security Engineering
                 </span>
                 , conducting comprehensive security assessments through manual
                 testing, custom tool development, and deep understanding of web
-                application architectures. My development background gives me a
+                applications, architectures and APIs. My development background gives me a
                 unique perspective—I understand both{" "}
                 <span className="about-text-highlight">
                   how applications are built
