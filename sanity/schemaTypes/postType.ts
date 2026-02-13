@@ -29,7 +29,7 @@ export const postType = defineType({
       type: 'text',
       rows: 3,
       description: 'Short description of the blog post',
-      validation: (Rule) => Rule.required().max(200),
+      validation: (Rule) => Rule.required().max(800),
     }),
     defineField({
       name: 'category',

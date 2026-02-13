@@ -2,9 +2,18 @@
 
 import { getBlogPost, type BlogPost } from "@/lib/api";
 import { portableTextToMarkdown } from "@/lib/portableText";
+import { Lora } from "next/font/google";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+// Reading-optimized serif for long-form body text (professional blog typography)
+const lora = Lora({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-reading",
+  display: "swap",
+});
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -322,8 +331,8 @@ export default function BlogPostPage() {
           i++;
           continue;
         }
+        // Skip blank lines — spacing is handled by element margins only (avoids double gaps from Markdown line breaks)
         if (line.trim() === "") {
-          parsed.push({ type: "spacer", content: "" });
           i++;
           continue;
         }
@@ -578,15 +587,23 @@ export default function BlogPostPage() {
       ? window.location.origin
       : process.env.NEXT_PUBLIC_SITE_URL || "";
   const shareUrl = post ? `${siteBase}/blog/${post.slug}` : siteBase;
+  // X/Twitter: compose title + excerpt, truncate to 256 so tweet (text + space + t.co URL) stays under 280
+  const xTweetText =
+    post?.title && post?.excerpt
+      ? `${post.title} – ${post.excerpt}`
+      : post?.title || post?.excerpt || "";
+  const xTweetTextTruncated =
+    xTweetText.length > 256 ? `${xTweetText.slice(0, 253)}…` : xTweetText;
   const shareToX = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
     shareUrl,
-  )}&text=${encodeURIComponent(post?.title || "")}`;
+  )}&text=${encodeURIComponent(xTweetTextTruncated)}`;
   const shareToLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
     shareUrl,
   )}`;
 
   return (
     <article
+      className={lora.variable}
       style={{
         position: "relative",
         minHeight: "100vh",
@@ -679,16 +696,17 @@ export default function BlogPostPage() {
       </div>
 
       <div
+        className="blog-page-container"
         style={{
           position: "relative",
           zIndex: 10,
           maxWidth: "1280px",
           margin: "0 auto",
-          padding: "0 clamp(20px, 4vw, 24px)",
         }}
       >
         {/* Back Button */}
         <div
+          className="blog-back-wrap"
           style={{
             marginBottom: "48px",
             transition: "all 1s ease",
@@ -746,68 +764,53 @@ export default function BlogPostPage() {
 
         {/* Article Layout */}
         <div className="article-layout">
-          {/* Left TOC (desktop) */}
           {tocItems.length > 0 && (
-            <aside className="toc">
-              <div
-                style={{
-                  padding: "16px",
-                  borderRadius: "16px",
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily:
-                      "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: "rgba(255,255,255,0.7)",
-                    marginBottom: "12px",
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                  }}
-                >
+            <div className="toc-mobile">
+              <div className="toc-mobile-inner">
+                <div className="toc-mobile-label">
+                  <span className="toc-label-accent" />
                   On this page
                 </div>
-                <div>
+                <nav className="toc-mobile-links" aria-label="Table of contents">
                   {tocItems.map((t) => (
                     <a
                       key={t.id}
                       href={`#${t.id}`}
-                      style={{
-                        display: "block",
-                        padding: "8px 12px",
-                        borderRadius: "10px",
-                        textDecoration: "none",
-                        transition: "all 0.2s ease",
-                        color:
-                          currentSection === t.id
-                            ? "#ffffff"
-                            : "rgba(255,255,255,0.6)",
-                        marginLeft: t.level === 3 ? "12px" : "0px",
-                        border:
-                          currentSection === t.id
-                            ? "1px solid rgba(255,255,255,0.1)"
-                            : "1px solid transparent",
-                        background:
-                          currentSection === t.id
-                            ? "rgba(255,255,255,0.05)"
-                            : "transparent",
-                      }}
+                      className={`toc-mobile-link ${t.level === 3 ? "toc-link--sub" : ""} ${currentSection === t.id ? "toc-link--active" : ""}`}
                     >
                       {t.text}
                     </a>
                   ))}
+                </nav>
+              </div>
+            </div>
+          )}
+          {/* Desktop TOC (sidebar) */}
+          {tocItems.length > 0 && (
+            <aside className="toc">
+              <div className="toc-inner">
+                <div className="toc-label">
+                  <span className="toc-label-accent" />
+                  On this page
                 </div>
+                <nav className="toc-links" aria-label="Table of contents">
+                  {tocItems.map((t) => (
+                    <a
+                      key={t.id}
+                      href={`#${t.id}`}
+                      className={`toc-link ${t.level === 3 ? "toc-link--sub" : ""} ${currentSection === t.id ? "toc-link--active" : ""}`}
+                    >
+                      {t.text}
+                    </a>
+                  ))}
+                </nav>
               </div>
             </aside>
           )}
           <div className="article-content">
             {/* Article Header */}
             <header
+              className="blog-article-header"
               style={{
                 marginBottom: "64px",
                 paddingBottom: "48px",
@@ -867,37 +870,43 @@ export default function BlogPostPage() {
                   ))}
               </div>
 
-              {/* Title */}
+              {/* Title — serif for editorial hierarchy, pairs with body */}
               <h1
+                className="blog-post-title"
                 style={{
                   fontFamily:
-                    "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                    "var(--font-reading), Georgia, 'Times New Roman', serif",
                   fontSize: "clamp(40px, 6vw, 64px)",
                   fontWeight: 700,
                   color: "#ffffff",
                   marginBottom: "32px",
                   lineHeight: 1.15,
-                  letterSpacing: "-0.02em",
+                  letterSpacing: "-0.015em",
                   textRendering: "optimizeLegibility",
                   fontFeatureSettings: "'kern' 1, 'liga' 1",
+                  WebkitFontSmoothing: "antialiased",
+                  MozOsxFontSmoothing: "grayscale",
                 }}
               >
                 {post.title}
               </h1>
 
-              {/* Excerpt */}
+              {/* Excerpt — same reading serif as title/body for legibility */}
               <p
+                className="blog-post-excerpt"
                 style={{
                   fontFamily:
-                    "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                  fontSize: "clamp(18px, 2.2vw, 22px)",
-                  lineHeight: 1.75,
-                  color: "rgba(255,255,255,0.8)",
+                    "var(--font-reading), Georgia, 'Times New Roman', serif",
+                  fontSize: "clamp(18px, 2.2vw, 20px)",
+                  lineHeight: 1.65,
+                  color: "rgba(255,255,255,0.88)",
                   marginBottom: "32px",
                   fontWeight: 400,
-                  letterSpacing: "-0.012em",
+                  letterSpacing: "0.01em",
                   textRendering: "optimizeLegibility",
                   fontFeatureSettings: "'kern' 1, 'liga' 1",
+                  WebkitFontSmoothing: "antialiased",
+                  MozOsxFontSmoothing: "grayscale",
                 }}
               >
                 {post.excerpt}
@@ -1099,23 +1108,25 @@ export default function BlogPostPage() {
               }}
             >
               <div
+                className="blog-prose"
                 style={{
                   fontFamily:
-                    "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                  fontSize: "clamp(19px, 2.1vw, 22px)",
-                  lineHeight: 1.95,
-                  color: "rgba(255,255,255,0.95)",
+                    "var(--font-reading), Georgia, 'Times New Roman', serif",
+                  fontSize: "clamp(18px, 2vw, 20px)",
+                  lineHeight: 1.65,
+                  color: "rgba(255,255,255,0.92)",
                   textRendering: "optimizeLegibility",
                   fontFeatureSettings: "'kern' 1, 'liga' 1",
-                  letterSpacing: "-0.01em",
+                  letterSpacing: "0.01em",
                   WebkitFontSmoothing: "antialiased",
                   MozOsxFontSmoothing: "grayscale",
                   fontWeight: 400,
-                  maxWidth: "980px",
+                  maxWidth: "75ch",
                   marginLeft: "auto",
                   marginRight: "auto",
                   paddingLeft: "4px",
                   paddingRight: "4px",
+                  textAlign: "left",
                 }}
               >
                 {parsedContent.map((item, i) => {
@@ -1129,9 +1140,9 @@ export default function BlogPostPage() {
                           fontSize: "clamp(36px, 4vw, 46px)",
                           fontWeight: 700,
                           color: "#ffffff",
-                          marginTop: "64px",
-                          marginBottom: "28px",
-                          lineHeight: 1.25,
+                          marginTop: "2em",
+                          marginBottom: "0.35em",
+                          lineHeight: 1.2,
                           letterSpacing: "-0.02em",
                           position: "relative",
                           paddingLeft: "20px",
@@ -1168,9 +1179,9 @@ export default function BlogPostPage() {
                           fontSize: "clamp(28px, 3.5vw, 36px)",
                           fontWeight: 700,
                           color: "#ffffff",
-                          marginTop: "56px",
-                          marginBottom: "24px",
-                          lineHeight: 1.35,
+                          marginTop: "1.75em",
+                          marginBottom: "0.35em",
+                          lineHeight: 1.3,
                           letterSpacing: "-0.015em",
                           textRendering: "optimizeLegibility",
                           fontFeatureSettings: "'kern' 1, 'liga' 1",
@@ -1193,9 +1204,9 @@ export default function BlogPostPage() {
                           fontSize: "clamp(22px, 2.8vw, 26px)",
                           fontWeight: 600,
                           color: "#ffffff",
-                          marginTop: "40px",
-                          marginBottom: "18px",
-                          lineHeight: 1.4,
+                          marginTop: "1.25em",
+                          marginBottom: "0.35em",
+                          lineHeight: 1.35,
                           letterSpacing: "-0.01em",
                           textRendering: "optimizeLegibility",
                           fontFeatureSettings: "'kern' 1, 'liga' 1",
@@ -1212,15 +1223,15 @@ export default function BlogPostPage() {
                       <blockquote
                         key={i}
                         style={{
-                          margin: "32px 0",
-                          padding: "20px 24px",
+                          margin: "0.75em 0",
+                          padding: "0.75em 1em",
                           borderLeft: "3px solid rgba(139,0,0,0.5)",
                           background: "rgba(255,255,255,0.03)",
                           borderRadius: "12px",
-                          color: "rgba(255,255,255,0.85)",
+                          color: "rgba(255,255,255,0.88)",
                           fontStyle: "italic",
-                          lineHeight: 1.9,
-                          letterSpacing: "-0.01em",
+                          lineHeight: 1.65,
+                          letterSpacing: "0.01em",
                         }}
                       >
                         {item.content}
@@ -1233,16 +1244,16 @@ export default function BlogPostPage() {
                         key={i}
                         style={{
                           fontFamily:
-                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                            "var(--font-reading), Georgia, 'Times New Roman', serif",
                           marginLeft: "26px",
-                          marginBottom: "16px",
+                          marginBottom: "0.35em",
                           paddingLeft: "8px",
                           position: "relative",
-                          lineHeight: 1.95,
-                          letterSpacing: "-0.01em",
+                          lineHeight: 1.65,
+                          letterSpacing: "0.01em",
                           textRendering: "optimizeLegibility",
                           fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          color: "rgba(255,255,255,0.95)",
+                          color: "rgba(255,255,255,0.92)",
                           WebkitFontSmoothing: "antialiased",
                           MozOsxFontSmoothing: "grayscale",
                           fontWeight: 400,
@@ -1252,7 +1263,7 @@ export default function BlogPostPage() {
                           style={{
                             position: "absolute",
                             left: "-20px",
-                            top: "0.8em",
+                            top: "0.65em",
                             width: "5px",
                             height: "5px",
                             borderRadius: "50%",
@@ -1284,7 +1295,7 @@ export default function BlogPostPage() {
                     );
                   }
                   if (item.type === "spacer") {
-                    return <div key={i} style={{ height: "28px" }} />;
+                    return <div key={i} style={{ height: "1.25em" }} />;
                   }
                   if (item.type === "codeblock") {
                     return (
@@ -1292,7 +1303,7 @@ export default function BlogPostPage() {
                         key={i}
                         style={{
                           position: "relative",
-                          margin: "32px 0",
+                          margin: "1em 0",
                         }}
                       >
                         <button
@@ -1349,10 +1360,12 @@ export default function BlogPostPage() {
                               "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
                             border: "1px solid rgba(139,0,0,0.25)",
                             overflowX: "auto",
+                            whiteSpace: "pre-wrap",
+                            wordBreak: "break-word",
                             fontFamily:
                               'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                            fontSize: "0.95em",
-                            lineHeight: 1.75,
+                            fontSize: "0.9em",
+                            lineHeight: 1.6,
                             color: "#ffffff",
                             boxShadow:
                               "0 8px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
@@ -1375,7 +1388,7 @@ export default function BlogPostPage() {
                       <div
                         key={i}
                         style={{
-                          margin: "36px 0",
+                          margin: "1em 0",
                           display: "flex",
                           flexDirection: "column",
                           alignItems: "center",
@@ -1418,13 +1431,13 @@ export default function BlogPostPage() {
                         key={i}
                         style={{
                           fontFamily:
-                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                          marginBottom: "30px",
-                          lineHeight: 1.98,
-                          letterSpacing: "-0.01em",
+                            "var(--font-reading), Georgia, 'Times New Roman', serif",
+                          marginBottom: "0.75em",
+                          lineHeight: 1.65,
+                          letterSpacing: "0.01em",
                           textRendering: "optimizeLegibility",
                           fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          color: "rgba(255,255,255,0.95)",
+                          color: "rgba(255,255,255,0.92)",
                           WebkitFontSmoothing: "antialiased",
                           MozOsxFontSmoothing: "grayscale",
                           fontWeight: 400,
@@ -1436,14 +1449,10 @@ export default function BlogPostPage() {
                               <strong
                                 key={j}
                                 style={{
-                                  fontFamily:
-                                    "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                                  fontFamily: "inherit",
                                   color: "#ffffff",
                                   fontWeight: 600,
-                                  letterSpacing: "-0.005em",
-                                  WebkitFontSmoothing: "antialiased",
-                                  MozOsxFontSmoothing: "grayscale",
-                                  textRendering: "optimizeLegibility",
+                                  letterSpacing: "0.01em",
                                 }}
                               >
                                 {part.replace(/\*\*/g, "")}
@@ -1732,8 +1741,166 @@ export default function BlogPostPage() {
             transform: translateY(-20px) translateX(10px);
           }
         }
+        .blog-page-container {
+          padding: 0 clamp(14px, 4vw, 24px);
+        }
+        /* Mobile-first layout */
         .article-layout {
           display: block;
+        }
+        .toc-label-accent {
+          display: inline-block;
+          width: 3px;
+          height: 14px;
+          border-radius: 2px;
+          background: linear-gradient(180deg, #8B0000 0%, rgba(139,0,0,0.5) 100%);
+          margin-right: 10px;
+          vertical-align: middle;
+        }
+        .toc-mobile {
+          display: block;
+          margin-bottom: 28px;
+        }
+        .toc-mobile-inner {
+          padding: 20px 18px;
+          border-radius: 16px;
+          background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 50%, rgba(0,0,0,0.02) 100%);
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
+          position: relative;
+          overflow: hidden;
+        }
+        .toc-mobile-inner::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent 0%, rgba(139,0,0,0.4) 50%, transparent 100%);
+          opacity: 0.8;
+        }
+        .toc-mobile-label {
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          color: rgba(255,255,255,0.6);
+          margin-bottom: 14px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          display: flex;
+          align-items: center;
+        }
+        .toc-mobile-links {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .toc-mobile-link {
+          display: block;
+          padding: 12px 14px 12px 16px;
+          border-radius: 12px;
+          text-decoration: none;
+          transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: rgba(255,255,255,0.7);
+          background: transparent;
+          border-left: 3px solid transparent;
+        }
+        .toc-mobile-link:hover {
+          color: rgba(255,255,255,0.95);
+          background: rgba(255,255,255,0.04);
+        }
+        .toc-mobile-link.toc-link--active {
+          color: #ffffff;
+          background: linear-gradient(90deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%);
+          border-left-color: #8B0000;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .toc-mobile-link.toc-link--sub {
+          padding-left: 28px;
+          font-size: 13px;
+          font-weight: 400;
+          color: rgba(255,255,255,0.65);
+        }
+        .toc-mobile-link.toc-link--sub.toc-link--active {
+          color: rgba(255,255,255,0.95);
+        }
+        .toc {
+          display: none;
+        }
+        .toc-inner {
+          padding: 20px 16px;
+          border-radius: 18px;
+          background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 50%, rgba(0,0,0,0.02) 100%);
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
+          position: relative;
+          overflow: hidden;
+        }
+        .toc-inner::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent 0%, rgba(139,0,0,0.4) 50%, transparent 100%);
+          opacity: 0.8;
+        }
+        .toc-label {
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          color: rgba(255,255,255,0.6);
+          margin-bottom: 14px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          display: flex;
+          align-items: center;
+        }
+        .toc-links {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .toc-link {
+          display: block;
+          padding: 10px 12px 10px 14px;
+          border-radius: 12px;
+          text-decoration: none;
+          transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, padding-left 0.22s ease;
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: rgba(255,255,255,0.7);
+          background: transparent;
+          border-left: 3px solid transparent;
+        }
+        .toc-link:hover {
+          color: rgba(255,255,255,0.95);
+          background: rgba(255,255,255,0.04);
+          padding-left: 18px;
+        }
+        .toc-link.toc-link--active {
+          color: #ffffff;
+          background: linear-gradient(90deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%);
+          border-left-color: #8B0000;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .toc-link.toc-link--sub {
+          padding-left: 24px;
+          font-size: 13px;
+          font-weight: 400;
+          color: rgba(255,255,255,0.65);
+        }
+        .toc-link.toc-link--sub:hover {
+          padding-left: 28px;
+        }
+        .toc-link.toc-link--sub.toc-link--active {
+          color: rgba(255,255,255,0.95);
         }
         @media (min-width: 1024px) {
           .article-layout {
@@ -1741,7 +1908,11 @@ export default function BlogPostPage() {
             grid-template-columns: 300px 1fr;
             gap: 40px;
           }
+          .toc-mobile {
+            display: none;
+          }
           .toc {
+            display: block;
             position: sticky;
             align-self: start;
             top: clamp(88px, 10vw, 120px);
@@ -1750,12 +1921,87 @@ export default function BlogPostPage() {
             -webkit-overflow-scrolling: touch;
           }
         }
-        .toc {
-          display: none;
+        .blog-prose > *:first-child {
+          margin-top: 0;
         }
-        @media (min-width: 1024px) {
-          .toc {
-            display: block;
+        .blog-prose > *:last-child {
+          margin-bottom: 0;
+        }
+        .blog-prose {
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+        .blog-prose pre {
+          max-width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        .blog-prose img {
+          max-width: 100%;
+          height: auto;
+        }
+        @media (max-width: 767px) {
+          .blog-back-wrap {
+            margin-bottom: 32px !important;
+          }
+          .article-content {
+            padding: 0 16px;
+          }
+          .blog-article-header {
+            margin-bottom: 40px !important;
+            padding-bottom: 32px !important;
+          }
+          .blog-post-title {
+            font-size: clamp(26px, 7vw, 36px) !important;
+            line-height: 1.2 !important;
+            margin-bottom: 20px !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          }
+          .blog-post-excerpt {
+            font-size: 17px !important;
+            line-height: 1.6 !important;
+            margin-bottom: 24px !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          }
+          .blog-prose {
+            font-size: 17px;
+          }
+          .blog-prose h1 {
+            font-size: clamp(24px, 6vw, 32px) !important;
+          }
+          .blog-prose h2 {
+            font-size: clamp(22px, 5.5vw, 28px) !important;
+          }
+          .blog-prose h3 {
+            font-size: clamp(18px, 4.5vw, 22px) !important;
+          }
+          .blog-prose p,
+          .blog-prose li,
+          .blog-prose blockquote {
+            line-height: 1.65 !important;
+          }
+          .toc-mobile-link {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            padding: 12px 14px 12px 16px !important;
+            -webkit-tap-highlight-color: rgba(139,0,0,0.15);
+          }
+        }
+        @media (max-width: 480px) {
+          .article-content {
+            padding: 0 14px;
+          }
+          .toc-mobile-inner {
+            padding: 16px 14px;
+          }
+          .blog-post-title {
+            font-size: clamp(22px, 6vw, 28px) !important;
+          }
+          .blog-post-excerpt {
+            font-size: 16px !important;
           }
         }
       `}</style>
