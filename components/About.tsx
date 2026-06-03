@@ -21,13 +21,13 @@ export function About() {
       <style jsx>{`
         .about-section {
           position: relative;
-          min-height: 100vh;
-          padding: clamp(80px, 10vw, 120px) 0;
+          padding-top: calc(var(--header-height) + clamp(2rem, 5vw, 3.5rem));
+          padding-bottom: var(--section-y);
           background: linear-gradient(
             180deg,
-            #050505 0%,
-            #0a0a0a 50%,
-            #050505 100%
+            #020617 0%,
+            #0F172A 50%,
+            #020617 100%
           );
           overflow: hidden;
         }
@@ -47,7 +47,7 @@ export function About() {
           background: linear-gradient(
             90deg,
             transparent 0%,
-            #8b0000 50%,
+            #2563EB 50%,
             transparent 100%
           );
           opacity: 0.5;
@@ -62,7 +62,7 @@ export function About() {
           border-radius: 50%;
           background: radial-gradient(
             circle,
-            rgba(139, 0, 0, 0.05) 0%,
+            rgba(37, 99, 235, 0.05) 0%,
             transparent 70%
           );
           opacity: 0.6;
@@ -77,7 +77,7 @@ export function About() {
           border-radius: 50%;
           background: radial-gradient(
             circle,
-            rgba(139, 0, 0, 0.04) 0%,
+            rgba(37, 99, 235, 0.04) 0%,
             transparent 70%
           );
           opacity: 0.6;
@@ -88,8 +88,8 @@ export function About() {
           inset: 0;
           opacity: 0.02;
           background-image:
-            linear-gradient(rgba(139, 0, 0, 0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(139, 0, 0, 0.3) 1px, transparent 1px);
+            linear-gradient(rgba(37, 99, 235, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(37, 99, 235, 0.3) 1px, transparent 1px);
           background-size: 100px 100px;
         }
 
@@ -100,15 +100,15 @@ export function About() {
           padding: 8px 20px;
           border-radius: 9999px;
           margin-bottom: 24px;
-          background: rgba(139, 0, 0, 0.1);
-          border: 1px solid rgba(139, 0, 0, 0.2);
+          background: rgba(37, 99, 235, 0.1);
+          border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .about-badge-dot {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: #8b0000;
+          background: #2563EB;
         }
 
         .about-badge-text {
@@ -117,7 +117,7 @@ export function About() {
             system-ui,
             -apple-system,
             sans-serif;
-          color: #8b0000;
+          color: #2563EB;
           font-size: 12px;
           font-weight: 600;
           letter-spacing: 0.1em;
@@ -202,7 +202,7 @@ export function About() {
         }
 
         .about-text-highlight {
-          color: #8b0000;
+          color: #2563EB;
           font-weight: 500;
         }
 
@@ -229,10 +229,10 @@ export function About() {
         .about-tech-item:hover {
           background: linear-gradient(
             135deg,
-            rgba(139, 0, 0, 0.1) 0%,
-            rgba(139, 0, 0, 0.05) 100%
+            rgba(37, 99, 235, 0.1) 0%,
+            rgba(37, 99, 235, 0.05) 100%
           );
-          border-color: rgba(139, 0, 0, 0.3);
+          border-color: rgba(37, 99, 235, 0.3);
           transform: translateY(-2px);
         }
 
@@ -286,7 +286,7 @@ export function About() {
             sans-serif;
           font-size: 48px;
           font-weight: 700;
-          color: #8b0000;
+          color: #2563EB;
           margin-bottom: 8px;
           letter-spacing: -0.03em;
         }
@@ -307,10 +307,10 @@ export function About() {
           border-radius: 24px;
           background: linear-gradient(
             135deg,
-            rgba(139, 0, 0, 0.08) 0%,
-            rgba(139, 0, 0, 0.02) 100%
+            rgba(37, 99, 235, 0.08) 0%,
+            rgba(37, 99, 235, 0.02) 100%
           );
-          border: 1px solid rgba(139, 0, 0, 0.25);
+          border: 1px solid rgba(37, 99, 235, 0.25);
         }
 
         .about-highlights-title {
@@ -342,7 +342,7 @@ export function About() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #8b0000;
+          background: #2563EB;
           flex-shrink: 0;
         }
 
@@ -371,10 +371,10 @@ export function About() {
           border-radius: 24px;
           background: linear-gradient(
             135deg,
-            rgba(139, 0, 0, 0.08) 0%,
-            rgba(139, 0, 0, 0.02) 100%
+            rgba(37, 99, 235, 0.08) 0%,
+            rgba(37, 99, 235, 0.02) 100%
           );
-          border: 1px solid rgba(139, 0, 0, 0.25);
+          border: 1px solid rgba(37, 99, 235, 0.25);
         }
 
         .about-cta-title {
@@ -423,9 +423,9 @@ export function About() {
           font-size: 16px;
           text-decoration: none;
           transition: all 0.3s ease;
-          background: linear-gradient(135deg, #8b0000 0%, #6d0000 100%);
+          background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
           box-shadow:
-            0 4px 24px rgba(139, 0, 0, 0.3),
+            0 4px 24px rgba(37, 99, 235, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
           color: #ffffff;
           letter-spacing: 0.02em;
@@ -438,7 +438,7 @@ export function About() {
         .about-cta-button:hover {
           transform: translateY(-3px);
           box-shadow:
-            0 6px 30px rgba(139, 0, 0, 0.4),
+            0 6px 30px rgba(37, 99, 235, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
       `}</style>
@@ -455,16 +455,16 @@ export function About() {
         style={{
           position: "relative",
           zIndex: 10,
-          maxWidth: "1280px",
+          maxWidth: "var(--container-max)",
           margin: "0 auto",
-          padding: "0 24px",
+          padding: "0 var(--container-x)",
         }}
       >
         {/* Hero Section */}
         <div
           style={{
             textAlign: "center",
-            marginBottom: "80px",
+            marginBottom: "var(--section-header-gap)",
             opacity: isVisible ? 1 : 0,
             transition: "opacity 0.6s ease",
           }}
@@ -474,12 +474,12 @@ export function About() {
             <span className="about-badge-text">About Me</span>
           </div>
           <h1 className="about-heading">
-            Offensive Security <span style={{ color: "#8B0000" }}>Engineer</span>
+            <span style={{ color: "#2563EB" }}>Application Security</span>{' '}
+            <span style={{ color: "#F8FAFC" }}>Engineer</span>
           </h1>
           <p className="about-subtitle">
-            Specializing in web application penetration testing and Application
-            Security Engineering with a strong foundation in full stack
-            development.
+            Embedding security across the SDLC — from Threat Modeling and Product
+            Security to DevSecOps and Offensive Security testing.
           </p>
         </div>
 
@@ -651,7 +651,7 @@ export function About() {
         >
           <div className="about-cta-content">
             <h2 className="about-cta-title">
-              Ready to <span style={{ color: "#8B0000" }}>Secure</span> Your Web
+              Ready to <span style={{ color: "#2563EB" }}>Secure</span> Your Web
               Applications?
             </h2>
             <p className="about-cta-description">
@@ -673,9 +673,9 @@ export function About() {
                 fontSize: "16px",
                 textDecoration: "none",
                 transition: "all 0.3s ease",
-                background: "linear-gradient(135deg, #8B0000 0%, #6d0000 100%)",
+                background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
                 boxShadow:
-                  "0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
+                  "0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
                 color: "#ffffff",
                 letterSpacing: "0.02em",
                 border: "none",
@@ -684,12 +684,12 @@ export function About() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-3px)";
                 e.currentTarget.style.boxShadow =
-                  "0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)";
+                  "0 6px 30px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.1)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow =
-                  "0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)";
+                  "0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)";
               }}
             >
               Let&apos;s Talk

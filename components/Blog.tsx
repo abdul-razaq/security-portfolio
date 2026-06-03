@@ -48,13 +48,10 @@ export function Blog() {
   return (
     <section
       ref={sectionRef}
+      className="page-section"
       style={{
-        position: "relative",
-        minHeight: "100vh",
-        padding: "clamp(80px, 10vw, 120px) 0",
         background:
-          "linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)",
-        overflow: "hidden",
+          "linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)",
       }}
     >
       {/* Premium Background Effects */}
@@ -68,7 +65,7 @@ export function Blog() {
             width: "100%",
             height: "1px",
             background:
-              "linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)",
             opacity: 0.5,
           }}
         />
@@ -83,7 +80,7 @@ export function Blog() {
             height: "400px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(139,0,0,0.08) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)",
             opacity: 0.6,
           }}
         />
@@ -96,7 +93,7 @@ export function Blog() {
             height: "500px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(139,0,0,0.06) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)",
             opacity: 0.6,
           }}
         />
@@ -107,7 +104,7 @@ export function Blog() {
             position: "absolute",
             inset: 0,
             opacity: 0.02,
-            backgroundImage: `linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(37,99,235,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.3) 1px, transparent 1px)`,
             backgroundSize: "100px 100px",
           }}
         />
@@ -117,9 +114,9 @@ export function Blog() {
         style={{
           position: "relative",
           zIndex: 10,
-          maxWidth: "1280px",
+          maxWidth: "var(--container-max)",
           margin: "0 auto",
-          padding: "0 clamp(20px, 4vw, 24px)",
+          padding: "0 var(--container-x)",
         }}
       >
         {/* Hero Section */}
@@ -140,8 +137,8 @@ export function Blog() {
               padding: "8px 20px",
               borderRadius: "9999px",
               marginBottom: "24px",
-              background: "rgba(139,0,0,0.1)",
-              border: "1px solid rgba(139,0,0,0.2)",
+              background: "rgba(37,99,235,0.1)",
+              border: "1px solid rgba(37,99,235,0.2)",
             }}
           >
             <span
@@ -149,12 +146,12 @@ export function Blog() {
                 width: "8px",
                 height: "8px",
                 borderRadius: "50%",
-                background: "#8B0000",
+                background: "#2563EB",
               }}
             />
             <span
               style={{
-                color: "#8B0000",
+                color: "#2563EB",
                 fontSize: "12px",
                 fontWeight: 600,
                 letterSpacing: "0.1em",
@@ -178,7 +175,7 @@ export function Blog() {
             }}
           >
             APIs & Web Application{" "}
-            <span style={{ color: "#8B0000" }}>Security Insights</span>
+            <span style={{ color: "#2563EB" }}>Security Insights</span>
           </h1>
           <p
             style={{
@@ -203,21 +200,19 @@ export function Blog() {
 
         {/* Category Filter */}
         <div
+          className="flex gap-3 mb-16 overflow-x-auto pb-2 -mx-1 px-1 sm:flex-wrap sm:justify-center sm:overflow-visible"
           style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "12px",
-            marginBottom: "64px",
-            flexWrap: "wrap",
             transition: "all 1s ease 0.2s",
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? "translateY(0)" : "translateY(40px)",
+            scrollbarWidth: "none",
           }}
         >
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
+              className="shrink-0"
               style={{
                 padding: "10px 24px",
                 borderRadius: "9999px",
@@ -227,11 +222,11 @@ export function Blog() {
                 transition: "all 0.3s ease",
                 background:
                   selectedCategory === category
-                    ? "linear-gradient(135deg, #8B0000 0%, #6d0000 100%)"
+                    ? "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)"
                     : "rgba(255,255,255,0.03)",
                 border:
                   selectedCategory === category
-                    ? "1px solid rgba(139,0,0,0.4)"
+                    ? "1px solid rgba(37,99,235,0.4)"
                     : "1px solid rgba(255,255,255,0.05)",
                 color:
                   selectedCategory === category
@@ -239,13 +234,13 @@ export function Blog() {
                     : "rgba(255,255,255,0.6)",
                 boxShadow:
                   selectedCategory === category
-                    ? "0 4px 16px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)"
+                    ? "0 4px 16px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)"
                     : "none",
               }}
               onMouseEnter={(e) => {
                 if (selectedCategory !== category) {
                   e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                  e.currentTarget.style.borderColor = "rgba(139,0,0,0.3)";
+                  e.currentTarget.style.borderColor = "rgba(37,99,235,0.3)";
                   e.currentTarget.style.color = "#ffffff";
                 }
               }}
@@ -270,8 +265,8 @@ export function Blog() {
                 display: "inline-block",
                 width: "48px",
                 height: "48px",
-                border: "3px solid rgba(139,0,0,0.3)",
-                borderTopColor: "#8B0000",
+                border: "3px solid rgba(37,99,235,0.3)",
+                borderTopColor: "#2563EB",
                 borderRadius: "50%",
               }}
             />
@@ -329,10 +324,10 @@ export function Blog() {
                     opacity: isVisible ? 1 : 0,
                     transition: `opacity 0.6s ease ${index * 50}ms`,
                     background: post.featured
-                      ? "linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.02) 100%)"
+                      ? "linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.02) 100%)"
                       : "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
                     border: post.featured
-                      ? "1px solid rgba(139,0,0,0.25)"
+                      ? "1px solid rgba(37,99,235,0.25)"
                       : "1px solid rgba(255,255,255,0.05)",
                     boxShadow: post.featured
                       ? "inset 0 1px 0 rgba(255,255,255,0.03)"
@@ -365,7 +360,7 @@ export function Blog() {
                         borderRadius: "9999px",
                         fontSize: "11px",
                         fontWeight: 600,
-                        background: "#8B0000",
+                        background: "#2563EB",
                         color: "#ffffff",
                         textTransform: "uppercase",
                         letterSpacing: "0.05em",
@@ -400,9 +395,9 @@ export function Blog() {
                             borderRadius: "9999px",
                             fontSize: "12px",
                             fontWeight: 500,
-                            background: "rgba(139,0,0,0.15)",
-                            color: "#8B0000",
-                            border: "1px solid rgba(139,0,0,0.2)",
+                            background: "rgba(37,99,235,0.15)",
+                            color: "#2563EB",
+                            border: "1px solid rgba(37,99,235,0.2)",
                             maxWidth: "100%",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -524,7 +519,7 @@ export function Blog() {
                       gap: "10px",
                       fontSize: "14px",
                       fontWeight: 500,
-                      color: "#8B0000",
+                      color: "#2563EB",
                       textDecoration: "none",
                       transition: "all 0.3s ease",
                       position: "relative",
@@ -532,11 +527,11 @@ export function Blog() {
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.gap = "14px";
-                      e.currentTarget.style.color = "#a31515";
+                      e.currentTarget.style.color = "#3B82F6";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.gap = "10px";
-                      e.currentTarget.style.color = "#8B0000";
+                      e.currentTarget.style.color = "#2563EB";
                     }}
                   >
                     <span>Read Article</span>

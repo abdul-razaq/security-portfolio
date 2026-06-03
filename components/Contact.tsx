@@ -67,12 +67,9 @@ export function Contact() {
   return (
     <section 
       ref={sectionRef}
+      className="page-section"
       style={{
-        position: 'relative',
-        minHeight: '100vh',
-        padding: 'clamp(80px, 10vw, 120px) 0',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
-        overflow: 'hidden',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
     >
       {/* Premium Background Effects */}
@@ -84,7 +81,7 @@ export function Contact() {
           left: 0,
           width: '100%',
           height: '1px',
-          background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
           opacity: 0.5,
         }} />
         
@@ -96,7 +93,7 @@ export function Contact() {
           width: '600px',
           height: '600px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 60%)',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 60%)',
           opacity: 0.6,
         }} />
         <div style={{
@@ -106,7 +103,7 @@ export function Contact() {
           width: '600px',
           height: '600px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 60%)',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 60%)',
           opacity: 0.6,
         }} />
         
@@ -115,7 +112,7 @@ export function Contact() {
           position: 'absolute',
           inset: 0,
           opacity: 0.02,
-          backgroundImage: `radial-gradient(rgba(139,0,0,0.8) 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(rgba(37,99,235,0.8) 1px, transparent 1px)`,
           backgroundSize: '100px 100px',
         }} />
                 </div>
@@ -123,9 +120,9 @@ export function Contact() {
       <div style={{
         position: 'relative',
         zIndex: 10,
-        maxWidth: '1280px',
+        maxWidth: 'var(--container-max)',
         margin: '0 auto',
-        padding: '0 clamp(20px, 4vw, 24px)',
+        padding: '0 var(--container-x)',
       }}>
         {/* Hero Section */}
         <div style={{
@@ -141,17 +138,17 @@ export function Contact() {
             padding: '8px 20px',
             borderRadius: '9999px',
             marginBottom: '24px',
-            background: 'rgba(139,0,0,0.1)',
-            border: '1px solid rgba(139,0,0,0.2)',
+            background: 'rgba(37,99,235,0.1)',
+            border: '1px solid rgba(37,99,235,0.2)',
           }}>
             <span style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              background: '#8B0000',
+              background: '#2563EB',
             }} />
             <span style={{
-              color: '#8B0000',
+              color: '#2563EB',
               fontSize: '12px',
               fontWeight: 600,
               letterSpacing: '0.1em',
@@ -170,7 +167,7 @@ export function Contact() {
             letterSpacing: '-0.02em',
             textRendering: 'optimizeLegibility',
           }}>
-            Let&apos;s <span style={{ color: '#8B0000' }}>Talk</span>
+            Let&apos;s <span style={{ color: '#2563EB' }}>Talk</span>
           </h1>
           <p style={{
             fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
@@ -189,18 +186,13 @@ export function Contact() {
               </div>
 
         {/* Main Content */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: '80px',
-        }} className="lg:grid-cols-2 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Left Column - Contact Form */}
           <div style={{
             transition: 'opacity 0.6s ease 0.1s',
             opacity: isVisible ? 1 : 0,
           }}>
-            <div style={{
-              padding: '40px',
+            <div className="p-6 sm:p-8 lg:p-10" style={{
               borderRadius: '24px',
               background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
               border: '1px solid rgba(255,255,255,0.06)',
@@ -262,8 +254,8 @@ export function Contact() {
                       transition: 'all 0.3s ease',
                     }}
                     onFocus={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(255,255,255,0.02) 100%)';
-                      e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(255,255,255,0.02) 100%)';
+                      e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)';
@@ -303,8 +295,8 @@ export function Contact() {
                       transition: 'all 0.3s ease',
                     }}
                     onFocus={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(255,255,255,0.02) 100%)';
-                      e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(255,255,255,0.02) 100%)';
+                      e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)';
@@ -344,8 +336,8 @@ export function Contact() {
                       transition: 'all 0.3s ease',
                     }}
                     onFocus={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(255,255,255,0.02) 100%)';
-                      e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(255,255,255,0.02) 100%)';
+                      e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)';
@@ -387,8 +379,8 @@ export function Contact() {
                       lineHeight: 1.6,
                     }}
                     onFocus={(e) => {
-                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(255,255,255,0.02) 100%)';
-                      e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(255,255,255,0.02) 100%)';
+                      e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)';
@@ -410,9 +402,9 @@ export function Contact() {
                     cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     transition: 'all 0.3s ease',
                     background: isSubmitting
-                      ? 'rgba(139,0,0,0.3)'
-                      : 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)',
-                    border: '1px solid rgba(139,0,0,0.4)',
+                      ? 'rgba(37,99,235,0.3)'
+                      : 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+                    border: '1px solid rgba(37,99,235,0.4)',
                     color: '#ffffff',
                     letterSpacing: '0.02em',
                     opacity: isSubmitting ? 0.7 : 1,
@@ -420,13 +412,13 @@ export function Contact() {
                   onMouseEnter={(e) => {
                     if (!isSubmitting) {
                       e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #a31515 0%, #8B0000 100%)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isSubmitting) {
                       e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)';
                     }
                   }}
                 >
@@ -486,8 +478,8 @@ export function Contact() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(255,255,255,0.02) 100%)';
+                    e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(255,255,255,0.02) 100%)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -502,11 +494,11 @@ export function Contact() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'linear-gradient(135deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%)',
-                    border: '1px solid rgba(139,0,0,0.2)',
+                    background: 'linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%)',
+                    border: '1px solid rgba(37,99,235,0.2)',
                     flexShrink: 0,
                   }}>
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#8B0000' }}>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#2563EB' }}>
                       <path d={method.icon} />
                     </svg>
                   </div>
@@ -524,7 +516,7 @@ export function Contact() {
                     <p style={{
                       fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
                       fontSize: '15px',
-                      color: '#8B0000',
+                      color: '#2563EB',
                       marginBottom: '6px',
                       fontWeight: 500,
                       wordBreak: 'break-word',

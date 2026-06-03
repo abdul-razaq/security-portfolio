@@ -76,19 +76,22 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
   title: {
-    default: "AbdulRazaq Suleiman | Offensive Security Engineer",
+    default: "AbdulRazaq Suleiman (Ant1g3n) | Application Security Engineer",
     template: "%s | AbdulRazaq Suleiman",
   },
   description:
-    "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
+    "Application Security Engineer specializing in Secure SDLC, Threat Modeling, Product Security, DevSecOps, and Offensive Security testing.",
   keywords: [
-    "offensive security engineer",
     "application security engineer",
-    "web application security",
-    "penetration testing",
+    "secure sdlc",
+    "threat modeling",
+    "product security",
+    "devsecops",
     "offensive security",
-    "cybersecurity",
+    "penetration testing",
+    "web application security",
     "API security",
+    "cybersecurity",
   ],
   authors: [{ name: "AbdulRazaq Suleiman" }],
   icons: {
@@ -99,9 +102,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "AbdulRazaq Suleiman | Offensive Security Engineer - Web & APIs",
+    title: "AbdulRazaq Suleiman (Ant1g3n) | Application Security Engineer",
     description:
-      "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
+      "Application Security Engineer specializing in Secure SDLC, Threat Modeling, Product Security, DevSecOps, and Offensive Security testing.",
     images: [
       {
         url: "/og-image.jpg",
@@ -113,9 +116,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AbdulRazaq Suleiman | Offensive Security Engineer",
+    title: "AbdulRazaq Suleiman (Ant1g3n) | Application Security Engineer",
     description:
-      "Expert Offensive Security Engineer specializing in Web & APIs, Penetration Testing, and Application Security Engineering.",
+      "Application Security Engineer specializing in Secure SDLC, Threat Modeling, Product Security, DevSecOps, and Offensive Security testing.",
   },
   robots: {
     index: true,
@@ -135,7 +138,7 @@ export default function RootLayout({
       </head>
       <body className={satoshi.className} suppressHydrationWarning={true}>
         <Header />
-        <main>{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Footer />
       </body>
     </html>

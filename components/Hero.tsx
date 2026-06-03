@@ -7,7 +7,6 @@ import { getHomePageContent, type HomePageContent } from '@/lib/api';
 export function Hero() {
   const [mounted, setMounted] = useState(false);
   const [homeContent, setHomeContent] = useState<HomePageContent | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchContent() {
@@ -16,8 +15,6 @@ export function Hero() {
         setHomeContent(content);
       } catch (error) {
         console.error('Error loading home content:', error);
-      } finally {
-        setLoading(false);
       }
     }
     fetchContent();
@@ -28,8 +25,6 @@ export function Hero() {
   const greeting = heroData?.greeting || "Hello, I'm";
   const firstName = heroData?.firstName || 'AbdulRazaq';
   const lastName = heroData?.lastName || 'Suleiman';
-  const description = heroData?.description || 
-    'Specializing in web application penetration testing, I conduct deep reconnaissance, comprehensive enumeration, and thorough vulnerability analysis to identify and exploit security weaknesses. My expertise encompasses full-spectrum penetration testing of web applications, helping organizations strengthen their security posture before malicious actors can exploit vulnerabilities.';
 
   return (
     <section className="hero-section">
@@ -53,20 +48,41 @@ export function Hero() {
               <span className="hero-name-first">{firstName}</span>
               <span className="hero-name-last">{lastName}</span>
             </h1>
+            <div className="hero-insignia" aria-label="Handle: Ant1g3n">
+              <span className="hero-insignia-mark" aria-hidden="true">◈</span>
+              <span className="hero-insignia-bracket" aria-hidden="true">[</span>
+              <span className="hero-insignia-name">Ant1g3n</span>
+              <span className="hero-insignia-bracket" aria-hidden="true">]</span>
+            </div>
           </div>
 
-          {/* Role Display */}
-          <div className="hero-role-container">
-            <span className="hero-role">Offensive Security Engineer - Web & APIs</span>
+          {/* Role & Value Proposition */}
+          <div className="hero-role-block">
+            <p className="hero-role">
+              <span className="hero-role-primary">Application Security</span>
+              <span className="hero-role-secondary"> Engineer</span>
+            </p>
+            <p className="hero-lead">
+              I partner with engineering teams to embed security across the full software lifecycle — from architecture and design through deployment.
+            </p>
           </div>
 
-          {/* Description - Refined Typography */}
+          {/* AppSec Capability Pillars */}
+          <ul className="hero-capabilities" aria-label="Application security focus areas">
+            <li className="hero-capability hero-capability-defensive">Secure SDLC</li>
+            <li className="hero-capability hero-capability-defensive">Threat Modeling</li>
+            <li className="hero-capability hero-capability-defensive">Product Security</li>
+            <li className="hero-capability hero-capability-engineering">DevSecOps</li>
+            <li className="hero-capability hero-capability-offensive">Offensive Security</li>
+          </ul>
+
+          {/* Supporting statement */}
           <div className="hero-description">
             <p className="hero-description-paragraph">
-              As an <span className="hero-description-emphasis">Application Security Engineer</span>, I conduct <span className="hero-description-highlight">deep reconnaissance</span>, <span className="hero-description-highlight">comprehensive enumeration</span>, and <span className="hero-description-highlight">thorough vulnerability analysis</span> to identify and exploit security weaknesses.
-            </p>
-            <p className="hero-description-paragraph">
-              My expertise encompasses <span className="hero-description-emphasis">full-spectrum penetration testing</span> of web applications, identifying and exploiting vulnerabilities that automated tools miss. I focus on the critical flaws that pose real threats to application security.
+              I combine <span className="hero-description-emphasis">defensive engineering</span> with{' '}
+              <span className="hero-description-offensive">rigorous attack simulation</span> — penetration testing,
+              vulnerability research, and security architecture — to validate controls and surface critical flaws{' '}
+              <span className="hero-description-highlight">before adversaries do</span>.
             </p>
           </div>
 
@@ -150,11 +166,12 @@ export function Hero() {
       <style jsx>{`
         .hero-section {
           position: relative;
-          min-height: 100vh;
+          min-height: calc(100vh - var(--header-height));
+          min-height: calc(100dvh - var(--header-height));
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
+          background: linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%);
           overflow: hidden;
         }
 
@@ -170,7 +187,7 @@ export function Hero() {
         .hero-grid {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(139,0,0,0.8) 1px, transparent 1px);
+          background-image: radial-gradient(rgba(37,99,235,0.8) 1px, transparent 1px);
           background-size: 100px 100px;
           opacity: 0.02;
         }
@@ -182,21 +199,21 @@ export function Hero() {
           position: relative;
           z-index: 10;
           width: 100%;
-          max-width: 1120px;
+          max-width: var(--container-max);
           margin: 0 auto;
-          padding: 200px 24px 160px;
+          padding: calc(var(--header-height) + 3rem) var(--container-x) 5rem;
           text-align: center;
         }
 
         @media (min-width: 768px) {
           .hero-container {
-            padding: 240px 40px 180px;
+            padding: calc(var(--header-height) + 4rem) var(--container-x) 6rem;
           }
         }
 
         @media (min-width: 1024px) {
           .hero-container {
-            padding: 280px 60px 200px;
+            padding: calc(var(--header-height) + 5rem) var(--container-x) 7rem;
           }
         }
 
@@ -219,8 +236,8 @@ export function Hero() {
           padding: 12px 28px;
           margin-bottom: 48px;
           border-radius: 9999px;
-          background: rgba(139,0,0,0.1);
-          border: 1px solid rgba(139,0,0,0.2);
+          background: rgba(37,99,235,0.1);
+          border: 1px solid rgba(37,99,235,0.2);
         }
 
         .hero-badge-text {
@@ -236,14 +253,14 @@ export function Hero() {
            HEADING
            ============================================ */
         .hero-heading-wrapper {
-          margin-bottom: 40px;
+          margin-bottom: 32px;
         }
 
         .hero-name {
           font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
-          font-size: clamp(64px, 12vw, 140px);
+          font-size: clamp(2.5rem, 9vw, 7.5rem);
           font-weight: 700;
-          line-height: 1.1;
+          line-height: 1.05;
           letter-spacing: -0.04em;
           margin: 0;
         }
@@ -256,64 +273,144 @@ export function Hero() {
 
         .hero-name-last {
           display: block;
-          color: #8B0000;
+          color: #2563EB;
+        }
+
+        .hero-insignia {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 20px;
+          max-width: 100%;
+          padding: 10px 20px;
+          border-radius: 10px;
+          background: linear-gradient(135deg, rgba(37,99,235,0.14) 0%, rgba(37,99,235,0.05) 100%);
+          border: 1px solid rgba(37,99,235,0.4);
+          box-shadow: 0 0 32px rgba(37,99,235,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .hero-insignia-mark {
+          color: #2563EB;
+          font-size: 16px;
+          line-height: 1;
+          text-shadow: 0 0 12px rgba(37,99,235,0.8);
+        }
+
+        .hero-insignia-bracket {
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          color: rgba(37,99,235,0.55);
+          font-size: clamp(18px, 2.5vw, 26px);
+          font-weight: 600;
+          line-height: 1;
+        }
+
+        .hero-insignia-name {
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: clamp(22px, 3.2vw, 32px);
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          color: #F8FAFC;
+          line-height: 1;
         }
 
         /* ============================================
-           ROLE
+           ROLE & VALUE PROPOSITION
            ============================================ */
-        .hero-role-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 40px;
+        .hero-role-block {
+          margin-bottom: 32px;
         }
 
         .hero-role {
           font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
-          font-size: clamp(24px, 3.5vw, 36px);
-          font-weight: 500;
-          color: rgba(255,255,255,0.9);
-          letter-spacing: -0.02em;
-          line-height: 1.4;
-          position: relative;
+          font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+          font-weight: 600;
+          letter-spacing: -0.03em;
+          line-height: 1.2;
+          margin: 0 0 16px;
         }
 
-        .hero-role::after {
-          content: '';
-          position: absolute;
-          bottom: -8px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 60px;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, #8B0000, transparent);
-          opacity: 0.6;
+        .hero-role-primary {
+          color: #2563EB;
+        }
+
+        .hero-role-secondary {
+          color: #F8FAFC;
+        }
+
+        .hero-lead {
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-size: clamp(1.0625rem, 2vw, 1.25rem);
+          line-height: 1.75;
+          color: rgba(248, 250, 252, 0.72);
+          font-weight: 400;
+          letter-spacing: -0.01em;
+          max-width: 36rem;
+          margin: 0 auto;
+        }
+
+        /* ============================================
+           CAPABILITY PILLARS
+           ============================================ */
+        .hero-capabilities {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          max-width: 42rem;
+          margin: 0 auto 36px;
+          padding: 0;
+          list-style: none;
+        }
+
+        .hero-capability {
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          padding: 8px 14px;
+          border-radius: 9999px;
+          line-height: 1;
+          white-space: nowrap;
+        }
+
+        .hero-capability-defensive {
+          color: #93C5FD;
+          background: rgba(37, 99, 235, 0.12);
+          border: 1px solid rgba(37, 99, 235, 0.28);
+        }
+
+        .hero-capability-engineering {
+          color: #67E8F9;
+          background: rgba(6, 182, 212, 0.1);
+          border: 1px solid rgba(6, 182, 212, 0.28);
+        }
+
+        .hero-capability-offensive {
+          color: #FCA5A5;
+          background: rgba(220, 38, 38, 0.1);
+          border: 1px solid rgba(220, 38, 38, 0.28);
         }
 
         /* ============================================
            DESCRIPTION
            ============================================ */
         .hero-description {
-          max-width: 860px;
-          margin: 0 auto 56px;
+          max-width: 38rem;
+          margin: 0 auto 48px;
           text-align: center;
         }
 
         .hero-description-paragraph {
           font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
-          font-size: clamp(17px, 2.2vw, 22px);
-          line-height: 1.9;
-          color: rgba(255,255,255,0.65);
+          font-size: clamp(1rem, 1.8vw, 1.125rem);
+          line-height: 1.8;
+          color: rgba(255,255,255,0.58);
           font-weight: 400;
-          letter-spacing: -0.012em;
+          letter-spacing: -0.01em;
           font-feature-settings: 'kern' 1, 'liga' 1;
           text-rendering: optimizeLegibility;
-          margin: 0 0 20px 0;
-        }
-
-        .hero-description-paragraph:last-child {
-          margin-bottom: 0;
+          margin: 0;
         }
 
         .hero-description-emphasis {
@@ -325,6 +422,22 @@ export function Hero() {
         .hero-description-highlight {
           color: rgba(255,255,255,0.85);
           font-weight: 500;
+          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+        }
+
+        .hero-description-pillar {
+          color: #2563EB;
+          font-weight: 600;
+        }
+
+        .hero-description-engineering {
+          color: #06B6D4;
+          font-weight: 600;
+        }
+
+        .hero-description-offensive {
+          color: #DC2626;
+          font-weight: 600;
           font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
         }
 
@@ -378,7 +491,7 @@ export function Hero() {
           left: 0;
           width: 100%;
           height: 2px;
-          background: linear-gradient(90deg, #8B0000 0%, rgba(139,0,0,0.6) 100%);
+          background: linear-gradient(90deg, #2563EB 0%, rgba(37,99,235,0.6) 100%);
           transform-origin: left;
           transform: scaleX(0.8);
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -389,12 +502,12 @@ export function Hero() {
         }
 
         .hero-cta-primary:hover .hero-cta-text {
-          color: #8B0000;
+          color: #2563EB;
         }
 
         .hero-cta-primary:hover::after {
           transform: scaleX(1);
-          background: linear-gradient(90deg, #8B0000 0%, #a31515 100%);
+          background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
           height: 2.5px;
         }
 
@@ -424,16 +537,16 @@ export function Hero() {
         }
 
         .hero-cta-secondary:hover {
-          color: #8B0000;
+          color: #2563EB;
         }
 
         .hero-cta-secondary:hover .hero-cta-text {
-          color: #8B0000;
+          color: #2563EB;
         }
 
         .hero-cta-secondary:hover::after {
           transform: scaleX(1);
-          background: linear-gradient(90deg, #8B0000 0%, #a31515 100%);
+          background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
           height: 2.5px;
         }
 
@@ -441,12 +554,12 @@ export function Hero() {
            STATS
            ============================================ */
         .hero-stats {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 64px;
-          flex-wrap: wrap;
-          padding: 80px 0;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          align-items: start;
+          justify-items: center;
+          gap: 24px 32px;
+          padding: 48px 0;
           border-top: 1px solid rgba(255,255,255,0.06);
           border-bottom: 1px solid rgba(255,255,255,0.06);
         }
@@ -454,7 +567,10 @@ export function Hero() {
         .hero-stat {
           display: flex;
           flex-direction: column;
+          align-items: center;
           gap: 8px;
+          text-align: center;
+          max-width: 160px;
         }
 
         .hero-stat-number {
@@ -468,17 +584,16 @@ export function Hero() {
 
         .hero-stat-label {
           font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
-          font-size: 13px;
+          font-size: 12px;
           color: rgba(255,255,255,0.5);
           font-weight: 500;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
+          line-height: 1.4;
         }
 
         .hero-stat-divider {
-          width: 1px;
-          height: 60px;
-          background: rgba(255,255,255,0.06);
+          display: none;
         }
 
         /* ============================================
@@ -510,9 +625,9 @@ export function Hero() {
         }
 
         .hero-social-link:hover {
-          border-color: rgba(139,0,0,0.3);
-          color: #8B0000;
-          background: linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.04) 100%);
+          border-color: rgba(37,99,235,0.3);
+          color: #2563EB;
+          background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.04) 100%);
           transform: translateY(-2px);
         }
 
@@ -524,50 +639,65 @@ export function Hero() {
            RESPONSIVE DESIGN
            ============================================ */
         @media (max-width: 768px) {
-          .hero-container {
-            padding: 180px 24px 140px;
-          }
-
           .hero-stats {
-            gap: 48px;
-            padding: 64px 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 32px 24px;
+            padding: 40px 0;
           }
 
-          .hero-stat-divider {
-            display: none;
+          .hero-stats .hero-stat:last-child {
+            grid-column: 1 / -1;
+            max-width: 200px;
+            justify-self: center;
           }
 
           .hero-cta-wrapper {
             flex-direction: column;
             width: 100%;
-            gap: 20px;
-            margin-bottom: 96px;
+            max-width: 360px;
+            margin-left: auto;
+            margin-right: auto;
+            gap: 16px;
+            margin-bottom: 48px;
           }
 
           .hero-cta-primary,
           .hero-cta-secondary {
             width: 100%;
-            padding: 22px 44px;
-          }
-
-          .hero-role-container {
-            flex-direction: column;
-            align-items: center;
+            padding: 18px 32px;
           }
         }
 
         @media (max-width: 640px) {
-          .hero-container {
-            padding: 160px 20px 120px;
+          .hero-capabilities {
+            gap: 8px;
+            margin-bottom: 28px;
           }
 
+          .hero-capability {
+            font-size: 11px;
+            padding: 7px 12px;
+          }
+
+          .hero-lead {
+            font-size: 1rem;
+          }
           .hero-badge {
-            padding: 12px 28px;
-            margin-bottom: 48px;
+            padding: 10px 20px;
+            margin-bottom: 32px;
           }
 
-          .hero-name {
-            font-size: clamp(64px, 14vw, 120px);
+          .hero-insignia {
+            padding: 8px 16px;
+          }
+
+          .hero-insignia-name {
+            font-size: clamp(18px, 5vw, 24px);
+            letter-spacing: 0.08em;
+          }
+
+          .hero-social {
+            margin-top: 40px;
           }
         }
       `}</style>

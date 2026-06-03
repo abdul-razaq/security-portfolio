@@ -89,15 +89,22 @@ export function Skills() {
     return icons[category] || '💼';
   };
 
+  const getCategoryAccent = (category: string) => {
+    if (category === 'Offensive Security') {
+      return { primary: '#DC2626', light: '#EF4444', rgb: '220, 38, 38' };
+    }
+    if (category === 'Tool Development') {
+      return { primary: '#06B6D4', light: '#22D3EE', rgb: '6, 182, 212' };
+    }
+    return { primary: '#2563EB', light: '#1D4ED8', rgb: '37, 99, 235' };
+  };
+
   return (
     <section 
       ref={sectionRef}
+      className="page-section"
       style={{
-        position: 'relative',
-        minHeight: '100vh',
-        padding: 'clamp(80px, 10vw, 120px) 0',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
-        overflow: 'hidden',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
     >
       {/* Premium Background Effects */}
@@ -109,7 +116,7 @@ export function Skills() {
           left: 0,
           width: '100%',
           height: '1px',
-          background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
           opacity: 0.5,
         }} />
         
@@ -121,7 +128,7 @@ export function Skills() {
           width: '600px',
           height: '600px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
           opacity: 0.6,
         }} />
         <div style={{
@@ -131,7 +138,7 @@ export function Skills() {
           width: '700px',
           height: '700px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,0,0,0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 70%)',
           opacity: 0.6,
         }} />
         <div style={{
@@ -142,7 +149,7 @@ export function Skills() {
           width: '800px',
           height: '800px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
           opacity: 0.6,
         }} />
         
@@ -151,7 +158,7 @@ export function Skills() {
           position: 'absolute',
           inset: 0,
           opacity: 0.02,
-          backgroundImage: `linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(37,99,235,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.3) 1px, transparent 1px)`,
           backgroundSize: '100px 100px',
         }} />
         
@@ -159,7 +166,7 @@ export function Skills() {
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,0,0,0.02) 2px, rgba(139,0,0,0.02) 4px)',
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(37,99,235,0.02) 2px, rgba(37,99,235,0.02) 4px)',
           pointerEvents: 'none',
         }} />
       </div>
@@ -167,9 +174,9 @@ export function Skills() {
       <div style={{
         position: 'relative',
         zIndex: 10,
-        maxWidth: '1280px',
+        maxWidth: 'var(--container-max)',
         margin: '0 auto',
-        padding: '0 clamp(20px, 4vw, 24px)',
+        padding: '0 var(--container-x)',
       }}>
         {/* Hero Section */}
         <div style={{
@@ -185,19 +192,19 @@ export function Skills() {
             padding: '10px 24px',
             borderRadius: '9999px',
             marginBottom: '32px',
-            background: 'linear-gradient(135deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.08) 100%)',
-            border: '1px solid rgba(139,0,0,0.3)',
-            boxShadow: '0 4px 20px rgba(139,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)',
+            background: 'linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.08) 100%)',
+            border: '1px solid rgba(37,99,235,0.3)',
+            boxShadow: '0 4px 20px rgba(37,99,235,0.2), inset 0 1px 0 rgba(255,255,255,0.05)',
           }}>
             <span style={{
               width: '10px',
               height: '10px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #8B0000 0%, #a31515 100%)',
-              boxShadow: '0 0 12px rgba(139,0,0,0.8), 0 0 24px rgba(139,0,0,0.4)',
+              background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+              boxShadow: '0 0 12px rgba(37,99,235,0.8), 0 0 24px rgba(37,99,235,0.4)',
             }} />
             <span style={{
-              color: '#8B0000',
+              color: '#2563EB',
               fontSize: '13px',
               fontWeight: 700,
               letterSpacing: '0.15em',
@@ -216,9 +223,15 @@ export function Skills() {
             fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
             textRendering: 'optimizeLegibility',
           }}>
-            Offensive Security <span style={{ 
-              color: '#8B0000',
-              background: 'linear-gradient(135deg, #8B0000 0%, #a31515 50%, #8B0000 100%)',
+            <span style={{
+              background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #2563EB 100%)',
+              backgroundSize: '200% 200%',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Application Security</span>{' '}
+            <span style={{
+              background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #2563EB 100%)',
               backgroundSize: '200% 200%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -237,8 +250,7 @@ export function Skills() {
             textRendering: 'optimizeLegibility',
             fontFeatureSettings: "'kern' 1, 'liga' 1",
           }}>
-            Expertise in offensive security methodologies, vulnerability testing, and security tool creation. 
-            Mastery honed through years of conducting security assessments of web applications.
+            Expertise across the application security lifecycle — Secure SDLC, Threat Modeling, Product Security, DevSecOps, and Offensive Security testing.
           </p>
         </div>
 
@@ -249,8 +261,8 @@ export function Skills() {
               display: 'inline-block',
               width: '56px',
               height: '56px',
-              border: '4px solid rgba(139,0,0,0.2)',
-              borderTopColor: '#8B0000',
+              border: '4px solid rgba(37,99,235,0.2)',
+              borderTopColor: '#2563EB',
               borderRadius: '50%',
             }} />
           </div>
@@ -271,13 +283,15 @@ export function Skills() {
               }}>
                 <p style={{ fontSize: '20px', marginBottom: '16px' }}>No skills found.</p>
                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.3)' }}>
-                  <Link href="/admin" style={{ color: '#8B0000', textDecoration: 'underline' }}>
+                  <Link href="/admin" style={{ color: '#2563EB', textDecoration: 'underline' }}>
                     Add skills
                   </Link> in the admin panel.
                 </p>
               </div>
             )}
-          {skillCategories.map((category, categoryIndex) => (
+          {skillCategories.map((category, categoryIndex) => {
+            const accent = getCategoryAccent(category.category);
+            return (
               <div
               key={category.category}
                 style={{
@@ -289,13 +303,14 @@ export function Skills() {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
+                  flexWrap: 'wrap',
                   gap: '24px',
                   marginBottom: '56px',
                   padding: '32px',
                   borderRadius: '24px',
-                  background: 'linear-gradient(135deg, rgba(139,0,0,0.1) 0%, rgba(139,0,0,0.03) 100%)',
-                  border: '1px solid rgba(139,0,0,0.2)',
-                  boxShadow: '0 4px 16px rgba(139,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  background: `linear-gradient(135deg, rgba(${accent.rgb},0.1) 0%, rgba(${accent.rgb},0.03) 100%)`,
+                  border: `1px solid rgba(${accent.rgb},0.2)`,
+                  boxShadow: `0 4px 16px rgba(${accent.rgb},0.08), inset 0 1px 0 rgba(255,255,255,0.05)`,
                   position: 'relative',
                   overflow: 'hidden',
                 }}>
@@ -306,8 +321,8 @@ export function Skills() {
                     left: 0,
                     width: '4px',
                     height: '100%',
-                    background: 'linear-gradient(180deg, #8B0000 0%, rgba(139,0,0,0.5) 50%, transparent 100%)',
-                    boxShadow: '0 0 8px rgba(139,0,0,0.4)',
+                    background: `linear-gradient(180deg, ${accent.primary} 0%, rgba(${accent.rgb},0.5) 50%, transparent 100%)`,
+                    boxShadow: `0 0 8px rgba(${accent.rgb},0.4)`,
                   }} />
                   
                   <div style={{
@@ -318,16 +333,16 @@ export function Skills() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '36px',
-                    background: 'linear-gradient(135deg, rgba(139,0,0,0.2) 0%, rgba(139,0,0,0.1) 100%)',
-                    border: '2px solid rgba(139,0,0,0.3)',
-                    boxShadow: '0 4px 16px rgba(139,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+                    background: `linear-gradient(135deg, rgba(${accent.rgb},0.2) 0%, rgba(${accent.rgb},0.1) 100%)`,
+                    border: `2px solid rgba(${accent.rgb},0.3)`,
+                    boxShadow: `0 4px 16px rgba(${accent.rgb},0.15), inset 0 1px 0 rgba(255,255,255,0.1)`,
                     position: 'relative',
                   }}>
                     <div style={{
                       position: 'absolute',
                       inset: '-4px',
                       borderRadius: '24px',
-                      background: 'linear-gradient(135deg, rgba(139,0,0,0.2), transparent)',
+                      background: `linear-gradient(135deg, rgba(${accent.rgb},0.2), transparent)`,
                       opacity: 0.4,
                     }} />
                     <span style={{ position: 'relative', zIndex: 1 }}>{category.icon}</span>
@@ -351,8 +366,8 @@ export function Skills() {
                       <div style={{
                         width: '40px',
                         height: '2px',
-                        background: 'linear-gradient(90deg, #8B0000 0%, transparent 100%)',
-                        boxShadow: '0 0 4px rgba(139,0,0,0.3)',
+                        background: `linear-gradient(90deg, ${accent.primary} 0%, transparent 100%)`,
+                        boxShadow: `0 0 4px rgba(${accent.rgb},0.3)`,
                       }} />
                       <span style={{
                         fontSize: '14px',
@@ -383,9 +398,9 @@ export function Skills() {
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
-                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(139,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.05)';
-                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.06) 0%, rgba(255,255,255,0.02) 100%)';
+                        e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.08), inset 0 1px 0 rgba(255,255,255,0.05)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(255,255,255,0.02) 100%)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'translateY(0)';
@@ -402,7 +417,7 @@ export function Skills() {
                         transform: 'translate(-50%, -50%)',
                         width: '200%',
                         height: '200%',
-                        background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 70%)',
+                        background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)',
                         opacity: 0,
                         transition: 'opacity 0.4s ease',
                         pointerEvents: 'none',
@@ -415,7 +430,7 @@ export function Skills() {
                         left: 0,
                         right: 0,
                         height: '2px',
-                        background: `linear-gradient(90deg, transparent 0%, rgba(139,0,0,${skill.level / 100 * 0.6}) 50%, transparent 100%)`,
+                        background: `linear-gradient(90deg, transparent 0%, rgba(37,99,235,${skill.level / 100 * 0.6}) 50%, transparent 100%)`,
                         opacity: 0.5,
                       }} />
 
@@ -441,13 +456,13 @@ export function Skills() {
                           gap: '6px',
                           padding: '6px 12px',
                           borderRadius: '12px',
-                          background: 'rgba(139,0,0,0.15)',
-                          border: '1px solid rgba(139,0,0,0.3)',
+                          background: 'rgba(37,99,235,0.15)',
+                          border: '1px solid rgba(37,99,235,0.3)',
                         }}>
                           <span style={{
                             fontSize: '16px',
                             fontWeight: 700,
-                            color: '#8B0000',
+                            color: '#2563EB',
                           }}>
                         {skill.level}%
                       </span>
@@ -471,18 +486,18 @@ export function Skills() {
                             height: '100%',
                             width: `${skill.level}%`,
                             background: `linear-gradient(90deg, 
-                              #8B0000 0%, 
-                              #a31515 30%,
-                              #8B0000 60%,
-                              #dc2626 100%
+                              #2563EB 0%, 
+                              #06B6D4 35%,
+                              #1D4ED8 65%,
+                              #DC2626 100%
                             )`,
                             backgroundSize: '200% 100%',
                             borderRadius: '9999px',
                             transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
                             transitionDelay: `${(categoryIndex * 150) + (skillIndex * 100)}ms`,
                             boxShadow: `
-                              0 0 20px rgba(139,0,0,0.6),
-                              0 0 40px rgba(139,0,0,0.3),
+                              0 0 20px rgba(37,99,235,0.6),
+                              0 0 40px rgba(37,99,235,0.3),
                               inset 0 1px 0 rgba(255,255,255,0.2)
                             `,
                             position: 'relative',
@@ -527,10 +542,10 @@ export function Skills() {
                               height: '6px',
                               borderRadius: '50%',
                               background: i < Math.ceil(skill.level / 20) 
-                                ? '#8B0000' 
+                                ? '#2563EB' 
                                 : 'rgba(255,255,255,0.1)',
                               boxShadow: i < Math.ceil(skill.level / 20)
-                                ? '0 0 8px rgba(139,0,0,0.6)'
+                                ? '0 0 8px rgba(37,99,235,0.6)'
                                 : 'none',
                               transition: 'all 0.3s ease',
                             }}
@@ -541,7 +556,8 @@ export function Skills() {
                   ))}
                   </div>
               </div>
-            ))}
+            );
+          })}
           </div>
         )}
       </div>

@@ -38,10 +38,11 @@ export function AboutSection() {
 
   const aboutData = homeContent?.about;
   const defaultFeatures = [
-    { icon: '🌐', title: 'Web App Penetration Testing', description: 'Full-spectrum offensive security testing' },
-    { icon: '⚡', title: 'Manual Exploitation', description: 'Deep vulnerability analysis & exploitation' },
-    { icon: '🛠️', title: 'Custom Tool Development', description: 'Go-based security testing tools' },
-    { icon: '🔍', title: 'OWASP Top 10 Focus', description: 'Critical web app vulnerabilities' },
+    { icon: '🔒', title: 'Secure SDLC', description: 'Security embedded across design, build, and release' },
+    { icon: '🎯', title: 'Threat Modeling', description: 'Systematic risk identification before code ships' },
+    { icon: '🛡️', title: 'Product Security', description: 'Protecting applications, APIs, and user data at scale' },
+    { icon: '⚙️', title: 'DevSecOps', description: 'Automated security gates in CI/CD pipelines' },
+    { icon: '🔴', title: 'Offensive Security', description: 'Penetration testing and attack simulation' },
   ];
   const features = aboutData?.features && aboutData.features.length > 0 
     ? aboutData.features.map(f => ({ ...f, description: f.description || '' }))
@@ -52,11 +53,10 @@ export function AboutSection() {
       ref={sectionRef} 
       style={{
         position: 'relative',
-        padding: 'clamp(80px, 10vw, 120px) 0',
+        padding: 'var(--section-y) 0',
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
-      className="lg:py-40"
     >
       <div style={{ position: 'relative' }}>
         {/* Premium Background Effects */}
@@ -68,7 +68,7 @@ export function AboutSection() {
             left: 0,
             width: '100%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
             opacity: 0.5,
           }} />
           
@@ -80,7 +80,7 @@ export function AboutSection() {
             width: '288px',
             height: '288px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(139,0,0,0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)',
             opacity: 0.6,
           }} />
           <div style={{
@@ -90,7 +90,7 @@ export function AboutSection() {
             width: '384px',
             height: '384px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(139,0,0,0.06) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)',
             opacity: 0.6,
           }} />
           
@@ -99,7 +99,7 @@ export function AboutSection() {
             position: 'absolute',
             inset: 0,
             opacity: 0.02,
-            backgroundImage: `linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(37,99,235,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.3) 1px, transparent 1px)`,
             backgroundSize: '100px 100px',
           }} />
         </div>
@@ -107,14 +107,14 @@ export function AboutSection() {
         <div style={{
           position: 'relative',
           zIndex: 10,
-          maxWidth: '1280px',
+          maxWidth: 'var(--container-max)',
           margin: '0 auto',
-          padding: '0 clamp(20px, 4vw, 24px)',
+          padding: '0 var(--container-x)',
         }}>
           {/* Section Header */}
           <div style={{
             textAlign: 'center',
-            marginBottom: '80px',
+            marginBottom: 'var(--section-header-gap)',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 0.6s ease',
           }}>
@@ -125,23 +125,23 @@ export function AboutSection() {
               padding: '8px 20px',
               borderRadius: '9999px',
               marginBottom: '24px',
-              background: 'rgba(139,0,0,0.1)',
-              border: '1px solid rgba(139,0,0,0.2)',
+              background: 'rgba(37,99,235,0.1)',
+              border: '1px solid rgba(37,99,235,0.2)',
             }}>
               <span style={{
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                background: '#8B0000',
+                background: '#2563EB',
               }} />
               <span style={{
-                color: '#8B0000',
+                color: '#2563EB',
                 fontSize: '12px',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
               }}>
-                Offensive Security Engineer - Web & APIs
+                Application Security Engineer
               </span>
             </div>
             <h2 style={{
@@ -153,9 +153,9 @@ export function AboutSection() {
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
             }}>
-              Offensive Security Engineer <br />
+              Application Security <br />
               <span style={{ position: 'relative', display: 'inline-block' }}>
-                <span style={{ color: '#8B0000' }}>Web & APIs</span>
+                <span style={{ color: '#2563EB' }}>Engineer</span>
                 <svg style={{
                   position: 'absolute',
                   bottom: '-8px',
@@ -163,14 +163,14 @@ export function AboutSection() {
                   width: '100%',
                   height: '8px',
                 }} viewBox="0 0 200 8" fill="none">
-                  <path d="M0 4C50 4 50 7 100 7C150 7 150 1 200 1" stroke="#8B0000" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M0 4C50 4 50 7 100 7C150 7 150 1 200 1" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </span>
             </h2>
           </div>
 
           <div style={{
-            maxWidth: '1280px',
+            maxWidth: '100%',
             margin: '0 auto',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 0.6s ease 0.1s',
@@ -207,7 +207,7 @@ export function AboutSection() {
                     textRendering: 'optimizeLegibility',
                     fontFeatureSettings: "'kern' 1, 'liga' 1",
                   }}>
-                    As an <span style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>Application Security Engineer</span>, I conduct deep reconnaissance, comprehensive enumeration, and thorough vulnerability analysis to identify and exploit security weaknesses in web applications and APIs.
+                    As an <span style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>Application Security Engineer</span>, I embed security across the full software lifecycle — from <span style={{ color: '#2563EB', fontWeight: 600 }}>Secure SDLC</span> and <span style={{ color: '#2563EB', fontWeight: 600 }}>Threat Modeling</span> to <span style={{ color: '#2563EB', fontWeight: 600 }}>Product Security</span>, <span style={{ color: '#06B6D4', fontWeight: 600 }}>DevSecOps</span>, and hands-on <span style={{ color: '#DC2626', fontWeight: 600 }}>Offensive Security</span>.
                   </p>
 
                   <p style={{
@@ -221,14 +221,14 @@ export function AboutSection() {
                     textRendering: 'optimizeLegibility',
                     fontFeatureSettings: "'kern' 1, 'liga' 1",
                   }}>
-                    My expertise encompasses full-spectrum penetration testing of web applications and APIs—from manual exploitation techniques and custom tool development in <span style={{ color: '#8B0000', fontWeight: 500 }}>Go</span> to deep understanding of web architectures, authentication mechanisms, and OWASP Top 10 vulnerabilities. I focus on finding critical flaws that automated scanners miss.
+                    I bridge defensive engineering with rigorous attack simulation — penetration testing, vulnerability research, and security architecture — to validate controls, accelerate secure delivery, and find what automated tools miss before adversaries do.
                   </p>
                 </>
               )}
             </div>
 
             {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ marginBottom: '48px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6" style={{ marginBottom: '48px' }}>
               {features.map((item, i) => (
                 <div
                   key={i}
@@ -243,8 +243,8 @@ export function AboutSection() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.04) 100%)';
-                    e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.04) 100%)';
+                    e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -261,8 +261,8 @@ export function AboutSection() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 20px',
-                    background: 'linear-gradient(135deg, rgba(139,0,0,0.12) 0%, rgba(139,0,0,0.06) 100%)',
-                    border: '1px solid rgba(139,0,0,0.2)',
+                    background: 'linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.06) 100%)',
+                    border: '1px solid rgba(37,99,235,0.2)',
                   }}>
                     <span style={{ fontSize: '28px', display: 'block' }}>{item.icon || '💼'}</span>
                   </div>
@@ -304,8 +304,8 @@ export function AboutSection() {
                   fontSize: '16px',
                   textDecoration: 'none',
                   transition: 'all 0.3s ease',
-                  background: 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)',
-                  boxShadow: '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+                  boxShadow: '0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
                   color: '#ffffff',
                   letterSpacing: '0.02em',
                   border: 'none',
@@ -313,11 +313,11 @@ export function AboutSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-3px)';
-                  e.currentTarget.style.boxShadow = '0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
+                  e.currentTarget.style.boxShadow = '0 6px 30px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
+                  e.currentTarget.style.boxShadow = '0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
                 }}
               >
                 Learn More
@@ -370,11 +370,10 @@ export function ExperienceSection() {
       ref={sectionRef} 
       style={{
         position: 'relative',
-        padding: 'clamp(80px, 10vw, 120px) 0',
+        padding: 'var(--section-y) 0',
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
-      className="lg:py-40"
     >
       <div style={{ position: 'relative' }}>
         {/* Premium Background */}
@@ -385,7 +384,7 @@ export function ExperienceSection() {
             left: 0,
             width: '100%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
             opacity: 0.5,
           }} />
           <div style={{
@@ -395,7 +394,7 @@ export function ExperienceSection() {
             width: '600px',
             height: '600px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 60%)',
             opacity: 0.6,
           }} />
           <div style={{
@@ -405,7 +404,7 @@ export function ExperienceSection() {
             width: '600px',
             height: '600px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(139,0,0,0.05) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 60%)',
             opacity: 0.6,
           }} />
         </div>
@@ -413,14 +412,14 @@ export function ExperienceSection() {
         <div style={{
           position: 'relative',
           zIndex: 10,
-          maxWidth: '1280px',
+          maxWidth: 'var(--container-max)',
           margin: '0 auto',
-          padding: '0 clamp(20px, 4vw, 24px)',
+          padding: '0 var(--container-x)',
         }}>
           {/* Section Header */}
           <div style={{
             textAlign: 'center',
-            marginBottom: '80px',
+            marginBottom: 'var(--section-header-gap)',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 0.6s ease',
           }}>
@@ -431,17 +430,17 @@ export function ExperienceSection() {
               padding: '8px 20px',
               borderRadius: '9999px',
               marginBottom: '24px',
-              background: 'rgba(139,0,0,0.1)',
-              border: '1px solid rgba(139,0,0,0.2)',
+              background: 'rgba(37,99,235,0.1)',
+              border: '1px solid rgba(37,99,235,0.2)',
             }}>
               <span style={{
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                background: '#8B0000',
+                background: '#2563EB',
               }} />
               <span style={{
-                color: '#8B0000',
+                color: '#2563EB',
                 fontSize: '12px',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
@@ -459,7 +458,7 @@ export function ExperienceSection() {
               letterSpacing: '-0.02em',
               textRendering: 'optimizeLegibility',
             }}>
-              Professional <span style={{ color: '#8B0000' }}>Experience</span>
+              Professional <span style={{ color: '#2563EB' }}>Experience</span>
             </h2>
           </div>
 
@@ -474,17 +473,17 @@ export function ExperienceSection() {
               width: '1px',
               transform: 'translateX(-50%)',
               display: 'none',
-              background: 'linear-gradient(to bottom, transparent, #8B0000 10%, #8B0000 90%, transparent)',
+              background: 'linear-gradient(to bottom, transparent, #2563EB 10%, #2563EB 90%, transparent)',
             }} className="hidden lg:block" />
 
             {/* Mobile line */}
             <div style={{
               position: 'absolute',
-              left: '24px',
+              left: '32px',
               top: 0,
               bottom: 0,
               width: '1px',
-              background: 'linear-gradient(to bottom, transparent, #8B0000 10%, #8B0000 90%, transparent)',
+              background: 'linear-gradient(to bottom, transparent, #2563EB 10%, #2563EB 90%, transparent)',
             }} className="lg:hidden" />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
@@ -505,7 +504,7 @@ export function ExperienceSection() {
                 }}>
                   <p style={{ fontSize: '18px', marginBottom: '16px' }}>No experience entries found.</p>
                   <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.3)' }}>
-                    <Link href="/admin" style={{ color: '#8B0000', textDecoration: 'underline' }}>
+                    <Link href="/admin" style={{ color: '#2563EB', textDecoration: 'underline' }}>
                       Add experience
                     </Link> in the admin panel.
                   </p>
@@ -523,21 +522,21 @@ export function ExperienceSection() {
                   {/* Timeline node */}
                   <div style={{
                     position: 'absolute',
-                    left: '24px',
+                    left: '32px',
                     width: '16px',
                     height: '16px',
                     borderRadius: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 10,
-                    background: exp.highlight ? '#8B0000' : '#1a1a1a',
-                    border: '3px solid #8B0000',
-                  }} className="md:left-8 lg:left-1/2">
+                    background: exp.highlight ? '#2563EB' : '#0F172A',
+                    border: '3px solid #2563EB',
+                  }} className="lg:left-1/2">
                     {exp.highlight && (
                       <div style={{
                         position: 'absolute',
                         inset: 0,
                         borderRadius: '50%',
-                        background: '#8B0000',
+                        background: '#2563EB',
                         opacity: 0.3,
                       }} />
                     )}
@@ -547,16 +546,16 @@ export function ExperienceSection() {
                   <div style={{
                     marginLeft: '64px',
                     width: 'calc(100% - 64px)',
-                  }} className="lg:ml-0 lg:w-[calc(50%-40px)] lg:mr-auto lg:pr-8">
+                  }} className={`lg:ml-0 lg:w-[calc(50%-40px)] ${index % 2 === 0 ? 'lg:mr-auto lg:pr-8' : 'lg:ml-auto lg:pl-8'}`}>
                     <div
                       style={{
                         padding: '32px',
                         borderRadius: '24px',
                         transition: 'all 0.3s ease',
                         background: exp.highlight 
-                          ? 'linear-gradient(135deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%)'
+                          ? 'linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%)'
                           : 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
-                        border: exp.highlight ? '1px solid rgba(139,0,0,0.3)' : '1px solid rgba(255,255,255,0.05)',
+                        border: exp.highlight ? '1px solid rgba(37,99,235,0.3)' : '1px solid rgba(255,255,255,0.05)',
                     boxShadow: exp.highlight 
                       ? 'inset 0 1px 0 rgba(255,255,255,0.03)'
                       : 'inset 0 1px 0 rgba(255,255,255,0.02)',
@@ -575,8 +574,8 @@ export function ExperienceSection() {
                           borderRadius: '9999px',
                           fontSize: '14px',
                           fontWeight: 600,
-                          background: 'rgba(139,0,0,0.15)',
-                          color: '#8B0000',
+                          background: 'rgba(37,99,235,0.15)',
+                          color: '#2563EB',
                         }}>
                           {exp.period}
                         </span>
@@ -586,7 +585,7 @@ export function ExperienceSection() {
                             borderRadius: '9999px',
                             fontSize: '12px',
                             fontWeight: 500,
-                            background: '#8B0000',
+                            background: '#2563EB',
                             color: '#ffffff',
                           }}>
                             Current
@@ -606,7 +605,7 @@ export function ExperienceSection() {
                       </h3>
                       <p style={{
                         fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
-                        color: '#8B0000',
+                        color: '#2563EB',
                         fontWeight: 500,
                         marginBottom: '16px',
                         display: 'flex',
@@ -685,7 +684,7 @@ const education = [
 ];
 
 const certifications = [
-  { name: 'OSCP', fullName: 'Offensive Security Certified Professional', year: '2024', color: '#8B0000' },
+  { name: 'OSCP', fullName: 'Offensive Security Certified Professional', year: '2024', color: '#DC2626' },
 ];
 
 export function EducationSection() {
@@ -724,11 +723,10 @@ export function EducationSection() {
       ref={sectionRef} 
       style={{
         position: 'relative',
-        padding: 'clamp(80px, 10vw, 120px) 0',
+        padding: 'var(--section-y) 0',
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
-      className="lg:py-40"
     >
       <div style={{ position: 'relative' }}>
         {/* Premium Background */}
@@ -739,14 +737,14 @@ export function EducationSection() {
             left: 0,
             width: '100%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
             opacity: 0.5,
           }} />
           <div style={{
             position: 'absolute',
             inset: 0,
             opacity: 0.015,
-            backgroundImage: `radial-gradient(rgba(139,0,0,0.8) 1px, transparent 1px)`,
+            backgroundImage: `radial-gradient(rgba(37,99,235,0.8) 1px, transparent 1px)`,
             backgroundSize: '40px 40px',
           }} />
         </div>
@@ -754,13 +752,13 @@ export function EducationSection() {
         <div style={{
           position: 'relative',
           zIndex: 10,
-          maxWidth: '1280px',
+          maxWidth: 'var(--container-max)',
           margin: '0 auto',
-          padding: '0 clamp(20px, 4vw, 24px)',
+          padding: '0 var(--container-x)',
         }}>
           {/* Certifications */}
           <div style={{
-            maxWidth: '800px',
+            maxWidth: 'var(--container-max)',
             margin: '0 auto',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 0.6s ease',
@@ -773,12 +771,12 @@ export function EducationSection() {
                   padding: '8px 20px',
                   borderRadius: '9999px',
                   marginBottom: '24px',
-                  background: 'rgba(139,0,0,0.1)',
-                  border: '1px solid rgba(139,0,0,0.2)',
+                  background: 'rgba(37,99,235,0.1)',
+                  border: '1px solid rgba(37,99,235,0.2)',
                 }}>
                   <span style={{ fontSize: '20px' }}>🏆</span>
                   <span style={{
-                    color: '#8B0000',
+                    color: '#2563EB',
                     fontSize: '12px',
                     fontWeight: 600,
                     letterSpacing: '0.1em',
@@ -793,24 +791,28 @@ export function EducationSection() {
                   color: '#ffffff',
                   lineHeight: 1.1,
                 }}>
-                  Professional <span style={{ color: '#8B0000' }}>Credentials</span>
+                  Professional <span style={{ color: '#2563EB' }}>Credentials</span>
                 </h2>
               </div>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr',
-                gap: '20px',
-              }} className="sm:grid-cols-2">
-                {certifications.map((cert, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {certifications.map((cert, index) => {
+                  const isOffensiveCert =
+                    cert.fullName.toLowerCase().includes('offensive') ||
+                    cert.name === 'OSCP';
+                  const certPrimary = isOffensiveCert ? '#DC2626' : '#2563EB';
+                  const certLight = isOffensiveCert ? '#EF4444' : '#1D4ED8';
+                  const certRgb = isOffensiveCert ? '220, 38, 38' : '37, 99, 235';
+
+                  return (
                   <div
                     key={index}
                     style={{
                       padding: '24px',
                       borderRadius: '24px',
                       transition: 'all 0.3s ease',
-                      background: 'linear-gradient(135deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%)',
-                      border: '1px solid rgba(139,0,0,0.3)',
+                      background: `linear-gradient(135deg, rgba(${certRgb},0.15) 0%, rgba(${certRgb},0.05) 100%)`,
+                      border: `1px solid rgba(${certRgb},0.3)`,
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = 'translateY(-2px)';
@@ -827,7 +829,7 @@ export function EducationSection() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginBottom: '16px',
-                      background: 'linear-gradient(135deg, #8B0000 0%, #a31515 100%)',
+                      background: `linear-gradient(135deg, ${certPrimary} 0%, ${certLight} 100%)`,
                     }}>
                       <span style={{
                         fontFamily: 'var(--font-satoshi), system-ui, -apple-system, sans-serif',
@@ -860,7 +862,8 @@ export function EducationSection() {
                       {cert.year === 'in view' ? 'In View' : cert.year}
                     </p>
                   </div>
-                ))}
+                );
+                })}
               </div>
             </div>
           </div>
@@ -917,11 +920,10 @@ export function ServicesSection() {
       ref={sectionRef} 
       style={{
         position: 'relative',
-        padding: 'clamp(80px, 10vw, 120px) 0',
+        padding: 'var(--section-y) 0',
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
-      className="lg:py-40"
     >
       <div style={{ position: 'relative' }}>
         {/* Premium Background */}
@@ -932,27 +934,27 @@ export function ServicesSection() {
             left: 0,
             width: '100%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
             opacity: 0.5,
           }} />
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(ellipse at center, rgba(139,0,0,0.05) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse at center, rgba(37,99,235,0.05) 0%, transparent 60%)',
           }} />
         </div>
 
         <div style={{
           position: 'relative',
           zIndex: 10,
-          maxWidth: '1280px',
+          maxWidth: 'var(--container-max)',
           margin: '0 auto',
-          padding: '0 clamp(20px, 4vw, 24px)',
+          padding: '0 var(--container-x)',
         }}>
           {/* Section Header */}
           <div style={{
             textAlign: 'center',
-            marginBottom: '80px',
+            marginBottom: 'var(--section-header-gap)',
             opacity: isVisible ? 1 : 0,
             transition: 'opacity 0.6s ease',
           }}>
@@ -963,12 +965,12 @@ export function ServicesSection() {
               padding: '8px 20px',
               borderRadius: '9999px',
               marginBottom: '24px',
-              background: 'rgba(139,0,0,0.1)',
-              border: '1px solid rgba(139,0,0,0.2)',
+              background: 'rgba(37,99,235,0.1)',
+              border: '1px solid rgba(37,99,235,0.2)',
             }}>
               <span style={{ fontSize: '20px' }}>⚡</span>
               <span style={{
-                color: '#8B0000',
+                color: '#2563EB',
                 fontSize: '12px',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
@@ -987,7 +989,7 @@ export function ServicesSection() {
               letterSpacing: '-0.02em',
               textRendering: 'optimizeLegibility',
             }}>
-              Security Assessment <span style={{ color: '#8B0000' }}>Services</span>
+              Security Assessment <span style={{ color: '#2563EB' }}>Services</span>
             </h2>
             <p style={{
               color: 'rgba(255,255,255,0.65)',
@@ -1006,10 +1008,11 @@ export function ServicesSection() {
           </div>
 
           {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {services.map((service, index) => (
               <div
                 key={index}
+                className="group"
                 style={{
                   position: 'relative',
                   padding: '48px 40px',
@@ -1021,8 +1024,8 @@ export function ServicesSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.04) 100%)';
-                  e.currentTarget.style.borderColor = 'rgba(139,0,0,0.3)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.04) 100%)';
+                  e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
@@ -1037,7 +1040,7 @@ export function ServicesSection() {
                   borderRadius: '24px',
                   opacity: 0,
                   transition: 'opacity 0.5s ease',
-                  background: 'linear-gradient(135deg, rgba(139,0,0,0.1) 0%, transparent 100%)',
+                  background: 'linear-gradient(135deg, rgba(37,99,235,0.1) 0%, transparent 100%)',
                   pointerEvents: 'none',
                 }} className="group-hover:opacity-100" />
 
@@ -1051,8 +1054,8 @@ export function ServicesSection() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: '28px',
-                    background: 'linear-gradient(135deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.08) 100%)',
-                    border: '1px solid rgba(139,0,0,0.25)',
+                    background: 'linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.08) 100%)',
+                    border: '1px solid rgba(37,99,235,0.25)',
                   }}>
                     <span style={{ fontSize: '36px' }}>{service.icon}</span>
                   </div>
@@ -1089,9 +1092,9 @@ export function ServicesSection() {
                         borderRadius: '8px',
                         fontSize: '12px',
                         fontWeight: 500,
-                        background: 'rgba(139,0,0,0.1)',
-                        color: '#8B0000',
-                        border: '1px solid rgba(139,0,0,0.2)',
+                        background: 'rgba(37,99,235,0.1)',
+                        color: '#2563EB',
+                        border: '1px solid rgba(37,99,235,0.2)',
                       }}>
                         {feature}
                       </span>
@@ -1112,10 +1115,10 @@ export function ServicesSection() {
                   justifyContent: 'center',
                   opacity: 0,
                   transition: 'all 0.3s ease',
-                  background: 'rgba(139,0,0,0.15)',
-                  border: '1px solid rgba(139,0,0,0.2)',
+                  background: 'rgba(37,99,235,0.15)',
+                  border: '1px solid rgba(37,99,235,0.2)',
                 }} className="group-hover:opacity-100 group-hover:translate-x-1">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B0000" strokeWidth="2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -1149,11 +1152,10 @@ export function CTASection() {
       ref={sectionRef} 
       style={{
         position: 'relative',
-        padding: 'clamp(80px, 10vw, 120px) 0',
+        padding: 'var(--section-y) 0',
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)',
+        background: 'linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)',
       }}
-      className="lg:py-40"
     >
       <div style={{ position: 'relative' }}>
         {/* Premium Background */}
@@ -1164,7 +1166,7 @@ export function CTASection() {
             left: 0,
             width: '100%',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)',
             opacity: 0.5,
           }} />
           <div style={{
@@ -1175,7 +1177,7 @@ export function CTASection() {
             width: '800px',
             height: '400px',
             borderRadius: '50%',
-            background: 'radial-gradient(ellipse, rgba(139,0,0,0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(37,99,235,0.15) 0%, transparent 70%)',
             opacity: 0.6,
           }} />
         </div>
@@ -1183,7 +1185,7 @@ export function CTASection() {
         <div style={{
           position: 'relative',
           zIndex: 10,
-          maxWidth: '896px',
+          maxWidth: 'var(--container-narrow)',
           margin: '0 auto',
           padding: '0 clamp(20px, 4vw, 24px)',
           textAlign: 'center',
@@ -1200,12 +1202,12 @@ export function CTASection() {
               padding: '8px 20px',
               borderRadius: '9999px',
               marginBottom: '32px',
-              background: 'rgba(139,0,0,0.1)',
-              border: '1px solid rgba(139,0,0,0.2)',
+              background: 'rgba(37,99,235,0.1)',
+              border: '1px solid rgba(37,99,235,0.2)',
             }}>
               <span style={{ fontSize: '20px' }}>🚀</span>
               <span style={{
-                color: '#8B0000',
+                color: '#2563EB',
                 fontSize: '12px',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
@@ -1225,7 +1227,7 @@ export function CTASection() {
               letterSpacing: '-0.02em',
               textRendering: 'optimizeLegibility',
             }}>
-              Let&apos;s <span style={{ color: '#8B0000' }}>Discuss</span><br />Your Security Needs
+              Let&apos;s <span style={{ color: '#2563EB' }}>Discuss</span><br />Your Security Needs
             </h2>
             <p style={{
               color: 'rgba(255,255,255,0.65)',
@@ -1241,7 +1243,7 @@ export function CTASection() {
               textRendering: 'optimizeLegibility',
               fontFeatureSettings: "'kern' 1, 'liga' 1",
             }}>
-              I provide expert offensive security testing services for web applications. Through comprehensive penetration testing, deep vulnerability analysis, and custom exploitation techniques, I identify critical security flaws that automated tools miss. My findings enable organizations to address vulnerabilities before they can be exploited.
+              I help teams strengthen their application security program — from <span style={{ color: '#2563EB', fontWeight: 600 }}>Secure SDLC</span> and <span style={{ color: '#2563EB', fontWeight: 600 }}>Threat Modeling</span> to <span style={{ color: '#2563EB', fontWeight: 600 }}>Product Security</span>, <span style={{ color: '#06B6D4', fontWeight: 600 }}>DevSecOps</span>, and <span style={{ color: '#DC2626', fontWeight: 600 }}>Offensive Security</span> testing.
             </p>
 
             <div style={{
@@ -1264,8 +1266,8 @@ export function CTASection() {
                   fontSize: '16px',
                   textDecoration: 'none',
                   transition: 'all 0.3s ease',
-                  background: 'linear-gradient(135deg, #8B0000 0%, #6d0000 100%)',
-                  boxShadow: '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+                  boxShadow: '0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
                   color: '#ffffff',
                   letterSpacing: '0.02em',
                   border: 'none',
@@ -1273,11 +1275,11 @@ export function CTASection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-3px)';
-                  e.currentTarget.style.boxShadow = '0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
+                  e.currentTarget.style.boxShadow = '0 6px 30px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
+                  e.currentTarget.style.boxShadow = '0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
                 }}
               >
                 Let&apos;s Talk

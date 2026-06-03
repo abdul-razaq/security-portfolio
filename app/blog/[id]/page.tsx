@@ -88,7 +88,7 @@ export default function BlogPostPage() {
           minHeight: "100vh",
           paddingTop: "clamp(100px, 12vw, 140px)",
           paddingBottom: "clamp(80px, 10vw, 120px)",
-          background: "#0a0a0a",
+          background: "#020617",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -100,8 +100,8 @@ export default function BlogPostPage() {
               display: "inline-block",
               width: "48px",
               height: "48px",
-              border: "3px solid rgba(139,0,0,0.3)",
-              borderTopColor: "#8B0000",
+              border: "3px solid rgba(37,99,235,0.3)",
+              borderTopColor: "#2563EB",
               borderRadius: "50%",
               animation: "spin 1s linear infinite",
             }}
@@ -125,7 +125,7 @@ export default function BlogPostPage() {
           minHeight: "100vh",
           paddingTop: "clamp(100px, 12vw, 140px)",
           paddingBottom: "clamp(80px, 10vw, 120px)",
-          background: "#0a0a0a",
+          background: "#020617",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -140,7 +140,7 @@ export default function BlogPostPage() {
               marginBottom: "16px",
             }}
           >
-            Post Not <span style={{ color: "#8B0000" }}>Found</span>
+            Post Not <span style={{ color: "#2563EB" }}>Found</span>
           </h1>
           <p style={{ fontSize: "18px", color: "#666", marginBottom: "32px" }}>
             The blog post you're looking for doesn't exist.
@@ -156,7 +156,7 @@ export default function BlogPostPage() {
               fontSize: "16px",
               fontWeight: 500,
               textDecoration: "none",
-              background: "linear-gradient(135deg, #8B0000 0%, #6d0000 100%)",
+              background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
               color: "#ffffff",
             }}
           >
@@ -421,7 +421,7 @@ export default function BlogPostPage() {
         ) {
           colored = wrap("#a8e6a2", text);
         } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
-          colored = wrap("#8B0000", text);
+          colored = wrap("#2563EB", text);
         } else if (/^(true|false|null|undefined)$/.test(text)) {
           colored = wrap("#bda0ff", text);
         } else if (/^\d+(?:\.\d+)?$/.test(text)) {
@@ -449,7 +449,7 @@ export default function BlogPostPage() {
         } else if (text.startsWith('"') || text.startsWith("'")) {
           colored = wrap("#a8e6a2", text);
         } else {
-          colored = wrap("#8B0000", text);
+          colored = wrap("#2563EB", text);
         }
         parts.push(colored);
         last = start + text.length;
@@ -473,7 +473,7 @@ export default function BlogPostPage() {
         } else if (/^[{]}$/.test(text)) {
           colored = wrap("#ffffff", text);
         } else if (/^[.#]/.test(text)) {
-          colored = wrap("#8B0000", text);
+          colored = wrap("#2563EB", text);
         } else if (/^\s*[a-zA-Z-]+\s*(?=\:)/.test(text)) {
           colored = wrap("#f7c873", text);
         } else if (/^:\s*[^;{}]+;/.test(text)) {
@@ -500,7 +500,7 @@ export default function BlogPostPage() {
         } else if (text.startsWith('"') || text.startsWith("'")) {
           colored = wrap("#a8e6a2", text);
         } else if (/^\s-\w+/.test(text)) {
-          colored = wrap("#8B0000", text);
+          colored = wrap("#2563EB", text);
         }
         parts.push(colored);
         last = start + text.length;
@@ -526,7 +526,7 @@ export default function BlogPostPage() {
         } else if (text.startsWith('"') || text.startsWith("'")) {
           colored = wrap("#a8e6a2", text);
         } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
-          colored = wrap("#8B0000", text);
+          colored = wrap("#2563EB", text);
         } else if (/^\d+(?:\.\d+)?$/.test(text)) {
           colored = wrap("#f7c873", text);
         }
@@ -558,7 +558,7 @@ export default function BlogPostPage() {
         } else if (text.startsWith('"') || text.startsWith("'")) {
           colored = wrap("#a8e6a2", text);
         } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
-          colored = wrap("#8B0000", text);
+          colored = wrap("#2563EB", text);
         } else if (/^\$[a-zA-Z_][a-zA-Z0-9_]*$/.test(text)) {
           colored = wrap("#bda0ff", text);
         } else if (/^\d+(?:\.\d+)?$/.test(text)) {
@@ -610,7 +610,7 @@ export default function BlogPostPage() {
         paddingTop: "clamp(100px, 12vw, 140px)",
         paddingBottom: "clamp(80px, 10vw, 120px)",
         background:
-          "linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)",
+          "linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)",
         overflow: "visible",
       }}
     >
@@ -622,7 +622,7 @@ export default function BlogPostPage() {
           left: 0,
           right: 0,
           height: "3px",
-          background: "rgba(139,0,0,0.2)",
+          background: "rgba(37,99,235,0.2)",
           zIndex: 100,
         }}
       >
@@ -630,9 +630,9 @@ export default function BlogPostPage() {
           style={{
             height: "100%",
             width: `${scrollProgress}%`,
-            background: "linear-gradient(90deg, #8B0000 0%, #a31515 100%)",
+            background: "linear-gradient(90deg, #2563EB 0%, #3B82F6 100%)",
             transition: "width 0.1s ease",
-            boxShadow: "0 0 10px rgba(139,0,0,0.5)",
+            boxShadow: "0 0 10px rgba(37,99,235,0.5)",
           }}
         />
       </div>
@@ -648,7 +648,7 @@ export default function BlogPostPage() {
             width: "100%",
             height: "1px",
             background:
-              "linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%)",
             opacity: 0.5,
           }}
         />
@@ -663,7 +663,7 @@ export default function BlogPostPage() {
             height: "500px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(139,0,0,0.1) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)",
             filter: "blur(100px)",
             animation: "float 20s ease-in-out infinite",
           }}
@@ -677,7 +677,7 @@ export default function BlogPostPage() {
             height: "600px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(139,0,0,0.08) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)",
             filter: "blur(120px)",
             animation: "float 25s ease-in-out infinite reverse",
           }}
@@ -689,7 +689,7 @@ export default function BlogPostPage() {
             position: "absolute",
             inset: 0,
             opacity: 0.02,
-            backgroundImage: `linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(37,99,235,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.3) 1px, transparent 1px)`,
             backgroundSize: "100px 100px",
           }}
         />
@@ -734,10 +734,10 @@ export default function BlogPostPage() {
               letterSpacing: "-0.01em",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#8B0000";
+              e.currentTarget.style.color = "#2563EB";
               e.currentTarget.style.gap = "14px";
-              e.currentTarget.style.background = "rgba(139,0,0,0.1)";
-              e.currentTarget.style.borderColor = "rgba(139,0,0,0.3)";
+              e.currentTarget.style.background = "rgba(37,99,235,0.1)";
+              e.currentTarget.style.borderColor = "rgba(37,99,235,0.3)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = "rgba(255,255,255,0.7)";
@@ -814,7 +814,7 @@ export default function BlogPostPage() {
               style={{
                 marginBottom: "64px",
                 paddingBottom: "48px",
-                borderBottom: "1px solid rgba(139,0,0,0.2)",
+                borderBottom: "1px solid rgba(37,99,235,0.2)",
                 transition: "all 1s ease 0.2s",
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateY(0)" : "translateY(40px)",
@@ -849,9 +849,9 @@ export default function BlogPostPage() {
                           "var(--font-satoshi), system-ui, -apple-system, sans-serif",
                         fontSize: "13px",
                         fontWeight: 600,
-                        background: "rgba(139,0,0,0.15)",
-                        color: "#8B0000",
-                        border: "1px solid rgba(139,0,0,0.25)",
+                        background: "rgba(37,99,235,0.15)",
+                        color: "#2563EB",
+                        border: "1px solid rgba(37,99,235,0.25)",
                         textTransform: "uppercase",
                         letterSpacing: "0.05em",
                       }}
@@ -861,8 +861,8 @@ export default function BlogPostPage() {
                           width: "6px",
                           height: "6px",
                           borderRadius: "50%",
-                          background: "#8B0000",
-                          boxShadow: "0 0 8px rgba(139,0,0,0.6)",
+                          background: "#2563EB",
+                          boxShadow: "0 0 8px rgba(37,99,235,0.6)",
                         }}
                       />
                       {cat}
@@ -940,14 +940,14 @@ export default function BlogPostPage() {
                       height: "44px",
                       borderRadius: "50%",
                       background:
-                        "linear-gradient(135deg, #8B0000 0%, #a31515 100%)",
+                        "linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       fontSize: "18px",
                       fontWeight: 700,
                       color: "#ffffff",
-                      boxShadow: "0 4px 16px rgba(139,0,0,0.3)",
+                      boxShadow: "0 4px 16px rgba(37,99,235,0.3)",
                     }}
                   >
                     AS
@@ -1080,9 +1080,9 @@ export default function BlogPostPage() {
                         letterSpacing: "-0.005em",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(139,0,0,0.15)";
-                        e.currentTarget.style.borderColor = "rgba(139,0,0,0.3)";
-                        e.currentTarget.style.color = "#8B0000";
+                        e.currentTarget.style.background = "rgba(37,99,235,0.15)";
+                        e.currentTarget.style.borderColor = "rgba(37,99,235,0.3)";
+                        e.currentTarget.style.color = "#2563EB";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background =
@@ -1160,7 +1160,7 @@ export default function BlogPostPage() {
                             width: "4px",
                             height: "0.8em",
                             background:
-                              "linear-gradient(180deg, #8B0000 0%, rgba(139,0,0,0.3) 100%)",
+                              "linear-gradient(180deg, #2563EB 0%, rgba(37,99,235,0.3) 100%)",
                             borderRadius: "2px",
                           }}
                         />
@@ -1225,7 +1225,7 @@ export default function BlogPostPage() {
                         style={{
                           margin: "0.75em 0",
                           padding: "0.75em 1em",
-                          borderLeft: "3px solid rgba(139,0,0,0.5)",
+                          borderLeft: "3px solid rgba(37,99,235,0.5)",
                           background: "rgba(255,255,255,0.03)",
                           borderRadius: "12px",
                           color: "rgba(255,255,255,0.88)",
@@ -1267,8 +1267,8 @@ export default function BlogPostPage() {
                             width: "5px",
                             height: "5px",
                             borderRadius: "50%",
-                            background: "#8B0000",
-                            boxShadow: "0 0 8px rgba(139,0,0,0.5)",
+                            background: "#2563EB",
+                            boxShadow: "0 0 8px rgba(37,99,235,0.5)",
                           }}
                         />
                         {item.content}
@@ -1344,7 +1344,7 @@ export default function BlogPostPage() {
                             fontWeight: 700,
                             letterSpacing: "0.06em",
                             textTransform: "uppercase",
-                            color: "#800020",
+                            color: "#2563EB",
                             background: "rgba(128,0,32,0.10)",
                             border: "1px solid rgba(128,0,32,0.25)",
                           }}
@@ -1358,7 +1358,7 @@ export default function BlogPostPage() {
                             borderRadius: "14px",
                             background:
                               "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
-                            border: "1px solid rgba(139,0,0,0.25)",
+                            border: "1px solid rgba(37,99,235,0.25)",
                             overflowX: "auto",
                             whiteSpace: "pre-wrap",
                             wordBreak: "break-word",
@@ -1521,7 +1521,7 @@ export default function BlogPostPage() {
               style={{
                 marginTop: "80px",
                 paddingTop: "48px",
-                borderTop: "1px solid rgba(139,0,0,0.2)",
+                borderTop: "1px solid rgba(37,99,235,0.2)",
                 transition: "all 1s ease 0.6s",
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateY(0)" : "translateY(40px)",
@@ -1588,10 +1588,10 @@ export default function BlogPostPage() {
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background =
-                            "rgba(139,0,0,0.15)";
+                            "rgba(37,99,235,0.15)";
                           e.currentTarget.style.borderColor =
-                            "rgba(139,0,0,0.3)";
-                          e.currentTarget.style.color = "#8B0000";
+                            "rgba(37,99,235,0.3)";
+                          e.currentTarget.style.color = "#2563EB";
                           e.currentTarget.style.transform = "translateY(-3px)";
                         }}
                         onMouseLeave={(e) => {
@@ -1623,8 +1623,8 @@ export default function BlogPostPage() {
                     padding: "32px",
                     borderRadius: "20px",
                     background:
-                      "linear-gradient(135deg, rgba(139,0,0,0.08) 0%, rgba(139,0,0,0.02) 100%)",
-                    border: "1px solid rgba(139,0,0,0.2)",
+                      "linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.02) 100%)",
+                    border: "1px solid rgba(37,99,235,0.2)",
                     textAlign: "center",
                   }}
                 >
@@ -1667,20 +1667,20 @@ export default function BlogPostPage() {
                       textDecoration: "none",
                       transition: "all 0.3s ease",
                       background:
-                        "linear-gradient(135deg, #8B0000 0%, #6d0000 100%)",
+                        "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
                       boxShadow:
-                        "0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
+                        "0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
                       color: "#ffffff",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "translateY(-2px)";
                       e.currentTarget.style.boxShadow =
-                        "0 6px 30px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)";
+                        "0 6px 30px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.1)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = "translateY(0)";
                       e.currentTarget.style.boxShadow =
-                        "0 4px 24px rgba(139,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)";
+                        "0 4px 24px rgba(37,99,235,0.3), inset 0 1px 0 rgba(255,255,255,0.1)";
                     }}
                   >
                     <span>View All Articles</span>
@@ -1753,7 +1753,7 @@ export default function BlogPostPage() {
           width: 3px;
           height: 14px;
           border-radius: 2px;
-          background: linear-gradient(180deg, #8B0000 0%, rgba(139,0,0,0.5) 100%);
+          background: linear-gradient(180deg, #2563EB 0%, rgba(37,99,235,0.5) 100%);
           margin-right: 10px;
           vertical-align: middle;
         }
@@ -1777,7 +1777,7 @@ export default function BlogPostPage() {
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, transparent 0%, rgba(139,0,0,0.4) 50%, transparent 100%);
+          background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.4) 50%, transparent 100%);
           opacity: 0.8;
         }
         .toc-mobile-label {
@@ -1815,8 +1815,8 @@ export default function BlogPostPage() {
         }
         .toc-mobile-link.toc-link--active {
           color: #ffffff;
-          background: linear-gradient(90deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%);
-          border-left-color: #8B0000;
+          background: linear-gradient(90deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%);
+          border-left-color: #2563EB;
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
         }
         .toc-mobile-link.toc-link--sub {
@@ -1847,7 +1847,7 @@ export default function BlogPostPage() {
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, transparent 0%, rgba(139,0,0,0.4) 50%, transparent 100%);
+          background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.4) 50%, transparent 100%);
           opacity: 0.8;
         }
         .toc-label {
@@ -1886,8 +1886,8 @@ export default function BlogPostPage() {
         }
         .toc-link.toc-link--active {
           color: #ffffff;
-          background: linear-gradient(90deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.05) 100%);
-          border-left-color: #8B0000;
+          background: linear-gradient(90deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%);
+          border-left-color: #2563EB;
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
         }
         .toc-link.toc-link--sub {
@@ -1987,7 +1987,7 @@ export default function BlogPostPage() {
             display: flex;
             align-items: center;
             padding: 12px 14px 12px 16px !important;
-            -webkit-tap-highlight-color: rgba(139,0,0,0.15);
+            -webkit-tap-highlight-color: rgba(37,99,235,0.15);
           }
         }
         @media (max-width: 480px) {

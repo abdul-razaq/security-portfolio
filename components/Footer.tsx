@@ -10,6 +10,7 @@ const socialLinks = [
 ];
 
 const navLinks = [
+  { name: 'Home', href: '/' },
   { name: 'Blog', href: '/blog' },
   { name: 'Skills', href: '/skills' },
   { name: 'About', href: '/about' },
@@ -24,8 +25,8 @@ export function Footer() {
       <style jsx>{`
         .footer {
           position: relative;
-          background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%);
-          border-top: 1px solid rgba(139,0,0,0.2);
+          background: linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%);
+          border-top: 1px solid rgba(37,99,235,0.2);
           overflow: hidden;
         }
 
@@ -36,7 +37,7 @@ export function Footer() {
           left: 0;
           right: 0;
           height: 1px;
-          background: linear-gradient(90deg, transparent 0%, #8B0000 50%, transparent 100%);
+          background: linear-gradient(90deg, transparent 0%, #2563EB 50%, transparent 100%);
           opacity: 0.5;
         }
 
@@ -54,28 +55,29 @@ export function Footer() {
           transform: translateX(-50%);
           width: 800px;
           height: 400px;
-          background: radial-gradient(ellipse, rgba(139,0,0,0.05) 0%, transparent 70%);
+          background: radial-gradient(ellipse, rgba(37,99,235,0.05) 0%, transparent 70%);
           opacity: 0.6;
         }
 
         .footer-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 56px;
+          gap: 40px;
         }
 
         @media (min-width: 768px) {
           .footer-grid {
             grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 64px;
+            gap: 48px;
           }
         }
 
         .footer-brand {
           display: inline-flex;
-          align-items: baseline;
+          align-items: center;
+          flex-wrap: wrap;
           text-decoration: none;
-          gap: 2px;
+          gap: 10px;
           margin-bottom: 24px;
           transition: all 0.3s ease;
         }
@@ -93,8 +95,20 @@ export function Footer() {
           font-family: var(--font-signature), cursive;
           font-size: 36px;
           font-weight: 400;
-          color: #8B0000;
+          color: #2563EB;
           line-height: 1;
+        }
+
+        .footer-brand-insignia {
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          color: #F8FAFC;
+          padding: 4px 10px;
+          border-radius: 6px;
+          border: 1px solid rgba(37,99,235,0.4);
+          background: linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.06) 100%);
         }
 
         .footer-brand:hover {
@@ -131,7 +145,7 @@ export function Footer() {
           left: 0;
           width: 32px;
           height: 2px;
-          background: linear-gradient(90deg, #8B0000, transparent);
+          background: linear-gradient(90deg, #2563EB, transparent);
         }
 
         .footer-nav-list {
@@ -163,12 +177,12 @@ export function Footer() {
           transform: translateY(-50%);
           width: 0;
           height: 2px;
-          background: #8B0000;
+          background: #2563EB;
           transition: width 0.3s ease;
         }
 
         .footer-nav-link:hover {
-          color: #8B0000;
+          color: #2563EB;
           transform: translateX(6px);
         }
 
@@ -202,7 +216,7 @@ export function Footer() {
           content: '';
           position: absolute;
           inset: 0;
-          background: rgba(139,0,0,0.2);
+          background: rgba(37,99,235,0.2);
           opacity: 0;
           transition: opacity 0.3s ease;
         }
@@ -216,9 +230,9 @@ export function Footer() {
         }
 
         .footer-social-link:hover {
-          background: rgba(139,0,0,0.15);
-          border-color: rgba(139,0,0,0.4);
-          color: #8B0000;
+          background: rgba(37,99,235,0.15);
+          border-color: rgba(37,99,235,0.4);
+          color: #2563EB;
           transform: translateY(-2px);
         }
 
@@ -254,17 +268,14 @@ export function Footer() {
           position: 'absolute',
           inset: 0,
           opacity: 0.02,
-          backgroundImage: `linear-gradient(rgba(139,0,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139,0,0,0.3) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(37,99,235,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.3) 1px, transparent 1px)`,
           backgroundSize: '100px 100px',
         }} />
       </div>
 
-      <div style={{
-        position: 'relative',
-        zIndex: 10,
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: '96px 24px 48px',
+      <div className="container-main" style={{
+        paddingTop: 'var(--section-y)',
+        paddingBottom: '3rem',
       }}>
         <div className="footer-grid">
           {/* Brand Section */}
@@ -272,9 +283,10 @@ export function Footer() {
             <Link href="/" className="footer-brand">
               <span className="footer-brand-name">AbdulRazaq</span>
               <span className="footer-brand-dot">.</span>
+              <span className="footer-brand-insignia">Ant1g3n</span>
             </Link>
             <p className="footer-description">
-              Specialized in offensive security testing of web applications. I conduct comprehensive penetration testing to identify critical vulnerabilities through manual exploitation, deep vulnerability analysis, and custom tool development.
+              Application Security Engineer specializing in Secure SDLC, Threat Modeling, Product Security, DevSecOps, and Offensive Security testing.
             </p>
           </div>
 

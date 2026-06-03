@@ -48,30 +48,19 @@ export function Header() {
           HEADER 
           ===================================================== */}
       <header className="fixed top-0 left-0 right-0 z-50">
-        <div
-          className="mx-4 sm:mx-6 lg:mx-8 mt-4 sm:mt-5 transition-all duration-500"
-          style={{
-            maxWidth: "1280px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-          }}
-        >
+        <div className="container-main mt-4 sm:mt-5 transition-all duration-500">
           <nav
+            className="flex items-center justify-between gap-3 sm:gap-4"
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: isScrolled ? "16px 28px" : "20px 32px",
+              padding: isScrolled ? "14px 20px" : "16px 24px",
               borderRadius: "16px",
               background: isScrolled
-                ? "rgba(8, 8, 8, 0.95)"
-                : "rgba(12, 12, 12, 0.85)",
-              border: `1px solid ${isScrolled ? "rgba(255,255,255,0.08)" : "rgba(139,0,0,0.25)"}`,
+                ? "rgba(2, 6, 23, 0.95)"
+                : "rgba(15, 23, 42, 0.85)",
+              border: `1px solid ${isScrolled ? "rgba(255,255,255,0.08)" : "rgba(37,99,235,0.25)"}`,
               boxShadow: isScrolled
                 ? "0 8px 32px rgba(0,0,0,0.5)"
-                : "0 8px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(139,0,0,0.1) inset",
+                : "0 8px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(37,99,235,0.1) inset",
               transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
               position: "relative",
             }}
@@ -86,7 +75,7 @@ export function Header() {
                 width: isScrolled ? "30%" : "50%",
                 height: "1px",
                 background:
-                  "linear-gradient(90deg, transparent, #8B0000, transparent)",
+                  "linear-gradient(90deg, transparent, #2563EB, transparent)",
                 opacity: 0.6,
                 transition: "width 0.4s ease",
               }}
@@ -95,59 +84,62 @@ export function Header() {
             {/* ==================== LOGO ==================== */}
             <Link
               href="/"
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                textDecoration: "none",
-                gap: "2px",
-              }}
+              className="flex items-center gap-2 sm:gap-3 min-w-0 shrink no-underline"
             >
+              <div className="flex items-baseline gap-0.5 min-w-0">
+                <span
+                  className="truncate text-2xl sm:text-[32px] text-white leading-none"
+                  style={{
+                    fontFamily: "var(--font-signature), cursive",
+                    fontWeight: 400,
+                    letterSpacing: "0.01em",
+                  }}
+                >
+                  AbdulRazaq
+                </span>
+                <span
+                  className="text-[28px] sm:text-4xl leading-none text-[#2563EB]"
+                  style={{
+                    fontFamily: "var(--font-signature), cursive",
+                    fontWeight: 400,
+                  }}
+                >
+                  .
+                </span>
+              </div>
               <span
+                className="hidden sm:inline-flex items-center shrink-0"
                 style={{
-                  fontFamily: "var(--font-signature), cursive",
-                  fontSize: "32px",
-                  fontWeight: 400,
-                  color: "#ffffff",
-                  letterSpacing: "0.01em",
-                  lineHeight: 1,
+                  fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  color: "#F8FAFC",
+                  padding: "4px 8px",
+                  borderRadius: "6px",
+                  border: "1px solid rgba(37,99,235,0.45)",
+                  background:
+                    "linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.06) 100%)",
+                  boxShadow: "0 0 16px rgba(37,99,235,0.15)",
+                  whiteSpace: "nowrap",
                 }}
               >
-                AbdulRazaq
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-signature), cursive",
-                  fontSize: "36px",
-                  fontWeight: 400,
-                  color: "#8B0000",
-                  lineHeight: 1,
-                }}
-              >
-                .
+                Ant1g3n
               </span>
             </Link>
 
-            <motion.span
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-              className="hidden xl:block px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-[#800020] bg-[#800020]/10 rounded-full border border-[#800020]/20"
-            >
-              Offensive Security Engineer
-            </motion.span>
-
-            {/* ==================== DESKTOP NAV ==================== */}
-            <div
-              className="hidden lg:flex"
-              style={{
-                alignItems: "center",
-                gap: "8px",
-                padding: "6px",
-                background: "rgba(255,255,255,0.02)",
-                borderRadius: "12px",
-                border: "1px solid rgba(255,255,255,0.04)",
-              }}
-            >
+            <div className="hidden lg:flex items-center gap-3 flex-1 justify-end">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "6px",
+                  background: "rgba(255,255,255,0.02)",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(255,255,255,0.04)",
+                }}
+              >
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -163,13 +155,13 @@ export function Header() {
                       textDecoration: "none",
                       borderRadius: "8px",
                       background: isActive
-                        ? "linear-gradient(135deg, rgba(139,0,0,0.2) 0%, rgba(139,0,0,0.1) 100%)"
+                        ? "linear-gradient(135deg, rgba(37,99,235,0.2) 0%, rgba(37,99,235,0.1) 100%)"
                         : "transparent",
                       border: isActive
-                        ? "1px solid rgba(139,0,0,0.35)"
+                        ? "1px solid rgba(37,99,235,0.35)"
                         : "1px solid transparent",
                       boxShadow: isActive
-                        ? "0 2px 8px rgba(139,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)"
+                        ? "0 2px 8px rgba(37,99,235,0.15), inset 0 1px 0 rgba(255,255,255,0.03)"
                         : "none",
                       transition: "all 0.25s ease",
                     }}
@@ -198,21 +190,30 @@ export function Header() {
                           transform: "translateX(-50%)",
                           width: "4px",
                           height: "4px",
-                          background: "#8B0000",
+                          background: "#2563EB",
                           borderRadius: "50%",
-                          boxShadow: "0 0 8px #8B0000",
+                          boxShadow: "0 0 8px #2563EB",
                         }}
                       />
                     )}
                   </Link>
                 );
               })}
+              </div>
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+                className="hidden xl:inline-flex px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-[#2563EB] bg-[#2563EB]/10 rounded-full border border-[#2563EB]/20 whitespace-nowrap"
+              >
+                Application Security Engineer
+              </motion.span>
             </div>
 
             {/* ==================== MOBILE TOGGLE ==================== */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="flex lg:hidden items-center justify-center w-12 h-12 rounded-xl cursor-pointer transition-all duration-300"
+              className="flex lg:hidden shrink-0 items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl cursor-pointer transition-all duration-300"
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.08)",
@@ -297,8 +298,8 @@ export function Header() {
           width: "100%",
           maxWidth: "380px",
           zIndex: 50,
-          background: "linear-gradient(180deg, #0a0a0a 0%, #080808 100%)",
-          borderLeft: "1px solid rgba(139,0,0,0.2)",
+          background: "linear-gradient(180deg, #020617 0%, #080808 100%)",
+          borderLeft: "1px solid rgba(37,99,235,0.2)",
           boxShadow: isMobileMenuOpen ? "-20px 0 60px rgba(0,0,0,0.5)" : "none",
           transform: isMobileMenuOpen ? "translateX(0)" : "translateX(100%)",
           transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -359,10 +360,10 @@ export function Header() {
                   textDecoration: "none",
                   borderRadius: "12px",
                   background: isActive
-                    ? "linear-gradient(135deg, rgba(139,0,0,0.15) 0%, rgba(139,0,0,0.08) 100%)"
+                    ? "linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.08) 100%)"
                     : "transparent",
                   border: isActive
-                    ? "1px solid rgba(139,0,0,0.25)"
+                    ? "1px solid rgba(37,99,235,0.25)"
                     : "1px solid transparent",
                   transition: "all 0.3s ease",
                   transitionDelay: isMobileMenuOpen ? `${index * 50}ms` : "0ms",
