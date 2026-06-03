@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { getHomePageContent, type HomePageContent } from '@/lib/api';
+import { getHomePageContent, type HomePageContent } from "@/lib/api";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
@@ -14,7 +14,7 @@ export function Hero() {
         const content = await getHomePageContent();
         setHomeContent(content);
       } catch (error) {
-        console.error('Error loading home content:', error);
+        console.error("Error loading home content:", error);
       }
     }
     fetchContent();
@@ -23,8 +23,8 @@ export function Hero() {
 
   const heroData = homeContent?.hero;
   const greeting = heroData?.greeting || "Hello, I'm";
-  const firstName = heroData?.firstName || 'AbdulRazaq';
-  const lastName = heroData?.lastName || 'Suleiman';
+  const firstName = heroData?.firstName || "AbdulRazaq";
+  const lastName = heroData?.lastName || "Suleiman";
 
   return (
     <section className="hero-section">
@@ -35,8 +35,9 @@ export function Hero() {
 
       {/* Main Content Container */}
       <div className="hero-container">
-        <div className={`hero-content ${mounted ? 'hero-content-visible' : ''}`}>
-          
+        <div
+          className={`hero-content ${mounted ? "hero-content-visible" : ""}`}
+        >
           {/* Greeting Badge */}
           <div className="hero-badge">
             <span className="hero-badge-text">{greeting}</span>
@@ -49,10 +50,16 @@ export function Hero() {
               <span className="hero-name-last">{lastName}</span>
             </h1>
             <div className="hero-insignia" aria-label="Handle: Ant1g3n">
-              <span className="hero-insignia-mark" aria-hidden="true">◈</span>
-              <span className="hero-insignia-bracket" aria-hidden="true">[</span>
+              <span className="hero-insignia-mark" aria-hidden="true">
+                ◈
+              </span>
+              <span className="hero-insignia-bracket" aria-hidden="true">
+                [
+              </span>
               <span className="hero-insignia-name">Ant1g3n</span>
-              <span className="hero-insignia-bracket" aria-hidden="true">]</span>
+              <span className="hero-insignia-bracket" aria-hidden="true">
+                ]
+              </span>
             </div>
           </div>
 
@@ -63,41 +70,66 @@ export function Hero() {
               <span className="hero-role-secondary"> Engineer</span>
             </p>
             <p className="hero-lead">
-              I partner with engineering teams to embed security across the full software lifecycle — from architecture and design through deployment.
+              I’m an Application Security Engineer with a strong software
+              engineering background, helping organizations secure web and API-driven applications by integrating security into
+              architecture, development, and deployment from day one.
             </p>
           </div>
-
-          {/* AppSec Capability Pillars */}
-          <ul className="hero-capabilities" aria-label="Application security focus areas">
-            <li className="hero-capability hero-capability-defensive">Secure SDLC</li>
-            <li className="hero-capability hero-capability-defensive">Threat Modeling</li>
-            <li className="hero-capability hero-capability-defensive">Product Security</li>
-            <li className="hero-capability hero-capability-engineering">DevSecOps</li>
-            <li className="hero-capability hero-capability-offensive">Offensive Security</li>
-          </ul>
 
           {/* Supporting statement */}
           <div className="hero-description">
             <p className="hero-description-paragraph">
-              I combine <span className="hero-description-emphasis">defensive engineering</span> with{' '}
-              <span className="hero-description-offensive">rigorous attack simulation</span> — penetration testing,
-              vulnerability research, and security architecture — to validate controls and surface critical flaws{' '}
-              <span className="hero-description-highlight">before adversaries do</span>.
+              I combine{" "}
+              <span className="hero-description-emphasis">
+                secure engineering practices
+              </span>
+              ,{" "}
+              <span className="hero-description-offensive">
+                offensive security testing
+              </span>
+              , and{" "}
+              <span className="hero-description-pillar">
+                practical security architecture
+              </span>{" "}
+              to identify and mitigate risk early. My work includes penetration
+              testing, threat modeling, secure code reviews, vulnerability
+              research, and security assessments, helping teams discover
+              critical weaknesses before attackers do and build systems that are
+              secure by design.
             </p>
           </div>
 
+          {/* AppSec Capability Pillars */}
+          <ul
+            className="hero-capabilities"
+            aria-label="Application security focus areas"
+          >
+            <li className="hero-capability hero-capability-defensive">
+              Secure SDLC
+            </li>
+            <li className="hero-capability hero-capability-defensive">
+              Threat Modeling
+            </li>
+            <li className="hero-capability hero-capability-defensive">
+              Product Security
+            </li>
+            <li className="hero-capability hero-capability-defensive">
+              API Security
+            </li>
+            <li className="hero-capability hero-capability-engineering">
+              DevSecOps
+            </li>
+            <li className="hero-capability hero-capability-offensive">
+              Offensive Security
+            </li>
+          </ul>
+
           {/* CTA Buttons */}
           <div className="hero-cta-wrapper">
-            <Link
-              href="/contact"
-              className="hero-cta-primary"
-            >
+            <Link href="/contact" className="hero-cta-primary">
               <span className="hero-cta-text">Let&apos;s Talk</span>
             </Link>
-            <Link
-              href="/about"
-              className="hero-cta-secondary"
-            >
+            <Link href="/about" className="hero-cta-secondary">
               <span className="hero-cta-text">Learn More</span>
             </Link>
           </div>
@@ -130,7 +162,12 @@ export function Hero() {
               aria-label="X (Twitter)"
             >
               <div className="hero-social-link-bg" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </a>
@@ -142,7 +179,12 @@ export function Hero() {
               aria-label="LinkedIn"
             >
               <div className="hero-social-link-bg" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
             </a>
@@ -154,13 +196,17 @@ export function Hero() {
               aria-label="GitHub"
             >
               <div className="hero-social-link-bg" />
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
               </svg>
             </a>
           </div>
         </div>
-
       </div>
 
       <style jsx>{`
@@ -171,7 +217,12 @@ export function Hero() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%);
+          background: linear-gradient(
+            180deg,
+            #020617 0%,
+            #0f172a 50%,
+            #020617 100%
+          );
           overflow: hidden;
         }
 
@@ -187,7 +238,10 @@ export function Hero() {
         .hero-grid {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(37,99,235,0.8) 1px, transparent 1px);
+          background-image: radial-gradient(
+            rgba(37, 99, 235, 0.8) 1px,
+            transparent 1px
+          );
           background-size: 100px 100px;
           opacity: 0.02;
         }
@@ -236,15 +290,19 @@ export function Hero() {
           padding: 12px 28px;
           margin-bottom: 48px;
           border-radius: 9999px;
-          background: rgba(37,99,235,0.1);
-          border: 1px solid rgba(37,99,235,0.2);
+          background: rgba(37, 99, 235, 0.1);
+          border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .hero-badge-text {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 12px;
           font-weight: 600;
-          color: rgba(255,255,255,0.85);
+          color: rgba(255, 255, 255, 0.85);
           letter-spacing: 0.12em;
           text-transform: uppercase;
         }
@@ -257,7 +315,11 @@ export function Hero() {
         }
 
         .hero-name {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(2.5rem, 9vw, 7.5rem);
           font-weight: 700;
           line-height: 1.05;
@@ -273,7 +335,7 @@ export function Hero() {
 
         .hero-name-last {
           display: block;
-          color: #2563EB;
+          color: #2563eb;
         }
 
         .hero-insignia {
@@ -284,21 +346,27 @@ export function Hero() {
           max-width: 100%;
           padding: 10px 20px;
           border-radius: 10px;
-          background: linear-gradient(135deg, rgba(37,99,235,0.14) 0%, rgba(37,99,235,0.05) 100%);
-          border: 1px solid rgba(37,99,235,0.4);
-          box-shadow: 0 0 32px rgba(37,99,235,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+          background: linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.14) 0%,
+            rgba(37, 99, 235, 0.05) 100%
+          );
+          border: 1px solid rgba(37, 99, 235, 0.4);
+          box-shadow:
+            0 0 32px rgba(37, 99, 235, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .hero-insignia-mark {
-          color: #2563EB;
+          color: #2563eb;
           font-size: 16px;
           line-height: 1;
-          text-shadow: 0 0 12px rgba(37,99,235,0.8);
+          text-shadow: 0 0 12px rgba(37, 99, 235, 0.8);
         }
 
         .hero-insignia-bracket {
           font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-          color: rgba(37,99,235,0.55);
+          color: rgba(37, 99, 235, 0.55);
           font-size: clamp(18px, 2.5vw, 26px);
           font-weight: 600;
           line-height: 1;
@@ -309,7 +377,7 @@ export function Hero() {
           font-size: clamp(22px, 3.2vw, 32px);
           font-weight: 700;
           letter-spacing: 0.1em;
-          color: #F8FAFC;
+          color: #f8fafc;
           line-height: 1;
         }
 
@@ -321,7 +389,11 @@ export function Hero() {
         }
 
         .hero-role {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(1.5rem, 3.2vw, 2.25rem);
           font-weight: 600;
           letter-spacing: -0.03em;
@@ -330,21 +402,25 @@ export function Hero() {
         }
 
         .hero-role-primary {
-          color: #2563EB;
+          color: #2563eb;
         }
 
         .hero-role-secondary {
-          color: #F8FAFC;
+          color: #f8fafc;
         }
 
         .hero-lead {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(1.0625rem, 2vw, 1.25rem);
           line-height: 1.75;
           color: rgba(248, 250, 252, 0.72);
           font-weight: 400;
           letter-spacing: -0.01em;
-          max-width: 36rem;
+          max-width: 48rem;
           margin: 0 auto;
         }
 
@@ -357,14 +433,18 @@ export function Hero() {
           align-items: center;
           justify-content: center;
           gap: 10px;
-          max-width: 42rem;
+          max-width: 56rem;
           margin: 0 auto 36px;
           padding: 0;
           list-style: none;
         }
 
         .hero-capability {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 12px;
           font-weight: 600;
           letter-spacing: 0.04em;
@@ -375,19 +455,19 @@ export function Hero() {
         }
 
         .hero-capability-defensive {
-          color: #93C5FD;
+          color: #93c5fd;
           background: rgba(37, 99, 235, 0.12);
           border: 1px solid rgba(37, 99, 235, 0.28);
         }
 
         .hero-capability-engineering {
-          color: #67E8F9;
+          color: #67e8f9;
           background: rgba(6, 182, 212, 0.1);
           border: 1px solid rgba(6, 182, 212, 0.28);
         }
 
         .hero-capability-offensive {
-          color: #FCA5A5;
+          color: #fca5a5;
           background: rgba(220, 38, 38, 0.1);
           border: 1px solid rgba(220, 38, 38, 0.28);
         }
@@ -396,49 +476,67 @@ export function Hero() {
            DESCRIPTION
            ============================================ */
         .hero-description {
-          max-width: 38rem;
+          max-width: 52rem;
           margin: 0 auto 48px;
           text-align: center;
         }
 
         .hero-description-paragraph {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(1rem, 1.8vw, 1.125rem);
           line-height: 1.8;
-          color: rgba(255,255,255,0.58);
+          color: rgba(255, 255, 255, 0.58);
           font-weight: 400;
           letter-spacing: -0.01em;
-          font-feature-settings: 'kern' 1, 'liga' 1;
+          font-feature-settings:
+            "kern" 1,
+            "liga" 1;
           text-rendering: optimizeLegibility;
           margin: 0;
         }
 
         .hero-description-emphasis {
-          color: rgba(255,255,255,0.9);
+          color: rgba(255, 255, 255, 0.9);
           font-weight: 600;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
         }
 
         .hero-description-highlight {
-          color: rgba(255,255,255,0.85);
+          color: rgba(255, 255, 255, 0.85);
           font-weight: 500;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
         }
 
         .hero-description-pillar {
-          color: #2563EB;
+          color: #2563eb;
           font-weight: 600;
         }
 
         .hero-description-engineering {
-          color: #06B6D4;
+          color: #06b6d4;
           font-weight: 600;
         }
 
         .hero-description-offensive {
-          color: #DC2626;
+          color: #dc2626;
           font-weight: 600;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
         }
 
         /* ============================================
@@ -455,7 +553,11 @@ export function Hero() {
 
         .hero-cta-primary,
         .hero-cta-secondary {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           display: inline-block;
           font-size: 17px;
           font-weight: 600;
@@ -478,20 +580,28 @@ export function Hero() {
 
         .hero-cta-primary .hero-cta-text {
           color: #ffffff;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-weight: 600;
           letter-spacing: 0.01em;
           transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hero-cta-primary::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -4px;
           left: 0;
           width: 100%;
           height: 2px;
-          background: linear-gradient(90deg, #2563EB 0%, rgba(37,99,235,0.6) 100%);
+          background: linear-gradient(
+            90deg,
+            #2563eb 0%,
+            rgba(37, 99, 235, 0.6) 100%
+          );
           transform-origin: left;
           transform: scaleX(0.8);
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -502,51 +612,59 @@ export function Hero() {
         }
 
         .hero-cta-primary:hover .hero-cta-text {
-          color: #2563EB;
+          color: #2563eb;
         }
 
         .hero-cta-primary:hover::after {
           transform: scaleX(1);
-          background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
+          background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
           height: 2.5px;
         }
 
         .hero-cta-secondary {
-          color: rgba(255,255,255,0.7);
+          color: rgba(255, 255, 255, 0.7);
         }
 
         .hero-cta-secondary .hero-cta-text {
-          color: rgba(255,255,255,0.7);
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          color: rgba(255, 255, 255, 0.7);
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-weight: 600;
           letter-spacing: 0.01em;
           transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hero-cta-secondary::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -4px;
           left: 0;
           width: 100%;
           height: 2px;
-          background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.15) 100%);
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0.15) 100%
+          );
           transform-origin: left;
           transform: scaleX(0.6);
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hero-cta-secondary:hover {
-          color: #2563EB;
+          color: #2563eb;
         }
 
         .hero-cta-secondary:hover .hero-cta-text {
-          color: #2563EB;
+          color: #2563eb;
         }
 
         .hero-cta-secondary:hover::after {
           transform: scaleX(1);
-          background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
+          background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
           height: 2.5px;
         }
 
@@ -560,8 +678,8 @@ export function Hero() {
           justify-items: center;
           gap: 24px 32px;
           padding: 48px 0;
-          border-top: 1px solid rgba(255,255,255,0.06);
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .hero-stat {
@@ -574,7 +692,11 @@ export function Hero() {
         }
 
         .hero-stat-number {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: clamp(40px, 6vw, 64px);
           font-weight: 700;
           color: #ffffff;
@@ -583,9 +705,13 @@ export function Hero() {
         }
 
         .hero-stat-label {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 12px;
-          color: rgba(255,255,255,0.5);
+          color: rgba(255, 255, 255, 0.5);
           font-weight: 500;
           letter-spacing: 0.05em;
           text-transform: uppercase;
@@ -613,10 +739,14 @@ export function Hero() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-          border: 1px solid rgba(255,255,255,0.08);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.01) 100%
+          );
+          border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 12px;
-          color: rgba(255,255,255,0.6);
+          color: rgba(255, 255, 255, 0.6);
           transition: all 0.3s ease;
         }
 
@@ -625,9 +755,13 @@ export function Hero() {
         }
 
         .hero-social-link:hover {
-          border-color: rgba(37,99,235,0.3);
-          color: #2563EB;
-          background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.04) 100%);
+          border-color: rgba(37, 99, 235, 0.3);
+          color: #2563eb;
+          background: linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.08) 0%,
+            rgba(37, 99, 235, 0.04) 100%
+          );
           transform: translateY(-2px);
         }
 

@@ -32,7 +32,7 @@ export async function GET() {
         firstName: "AbdulRazaq",
         lastName: "Suleiman",
         description:
-          "As an Application Security Engineer, I embed security across the full software lifecycle — from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security. I bridge defensive engineering with rigorous attack simulation to validate controls and find what automated tools miss before adversaries do.",
+          "As an Application Security Engineer, I embed security across the full software lifecycle, from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security. I bridge defensive engineering with rigorous attack simulation to validate controls and find what automated tools miss before adversaries do.",
         roles: [
           "Application Security Engineer",
           "Product Security Engineer",
@@ -45,7 +45,7 @@ export async function GET() {
       about: {
         title: "Application Security Engineer",
         description:
-          "As an Application Security Engineer, I embed security across the full software lifecycle — from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.\n\nI bridge defensive engineering with rigorous attack simulation — penetration testing, vulnerability research, and security architecture — to validate controls, accelerate secure delivery, and find what automated tools miss before adversaries do.",
+          "As an Application Security Engineer, I embed security across the full software lifecycle, from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.\n\nI bridge defensive engineering with rigorous attack simulation, including penetration testing, vulnerability research, and security architecture, to validate controls, accelerate secure delivery, and find what automated tools miss before adversaries do.",
         features: [
           {
             icon: "🔒",
@@ -60,7 +60,8 @@ export async function GET() {
           {
             icon: "🛡️",
             title: "Product Security",
-            description: "Protecting applications, APIs, and user data at scale",
+            description:
+              "Protecting applications, APIs, and user data at scale",
           },
           {
             icon: "⚙️",
@@ -153,7 +154,7 @@ export async function GET() {
           firstName: "AbdulRazaq",
           lastName: "Suleiman",
           description:
-            "As an Application Security Engineer, I embed security across the full software lifecycle — from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.",
+            "As an Application Security Engineer, I embed security across the full software lifecycle, from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.",
           roles: [
             "Application Security Engineer",
             "Product Security Engineer",
@@ -166,13 +167,35 @@ export async function GET() {
         about: {
           title: "Application Security Engineer",
           description:
-            "As an Application Security Engineer, I embed security across the full software lifecycle — from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.\n\nI bridge defensive engineering with rigorous attack simulation to validate controls and find what automated tools miss before adversaries do.",
+            "As an Application Security Engineer, I embed security across the full software lifecycle, from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.\n\nI bridge defensive engineering with rigorous attack simulation to validate controls and find what automated tools miss before adversaries do.",
           features: [
-            { icon: "🔒", title: "Secure SDLC", description: "Security embedded across design, build, and release" },
-            { icon: "🎯", title: "Threat Modeling", description: "Systematic risk identification before code ships" },
-            { icon: "🛡️", title: "Product Security", description: "Protecting applications, APIs, and user data at scale" },
-            { icon: "⚙️", title: "DevSecOps", description: "Automated security gates in CI/CD pipelines" },
-            { icon: "🔴", title: "Offensive Security", description: "Penetration testing and attack simulation" },
+            {
+              icon: "🔒",
+              title: "Secure SDLC",
+              description:
+                "Security embedded across design, build, and release",
+            },
+            {
+              icon: "🎯",
+              title: "Threat Modeling",
+              description: "Systematic risk identification before code ships",
+            },
+            {
+              icon: "🛡️",
+              title: "Product Security",
+              description:
+                "Protecting applications, APIs, and user data at scale",
+            },
+            {
+              icon: "⚙️",
+              title: "DevSecOps",
+              description: "Automated security gates in CI/CD pipelines",
+            },
+            {
+              icon: "🔴",
+              title: "Offensive Security",
+              description: "Penetration testing and attack simulation",
+            },
           ],
         },
         services: {

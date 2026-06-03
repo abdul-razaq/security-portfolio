@@ -1,35 +1,35 @@
 import { NextResponse } from 'next/server';
 import { client } from '@/sanity/lib/client';
 
-// Default fallback skills for web app penetration testing
+// Default App Sec core skills
 const DEFAULT_SKILLS = [
-  // Offensive Security Tools & Techniques
-  { _id: 'default-1', name: 'Burp Suite', level: 90, description: 'Advanced web application security testing and vulnerability scanning', category: 'Offensive Security', icon: '🔍', order: 1 },
-  { _id: 'default-2', name: 'OWASP ZAP', level: 85, description: 'Open-source web application security scanner', category: 'Offensive Security', icon: '🛡️', order: 2 },
-  { _id: 'default-3', name: 'Manual Exploitation', level: 88, description: 'Hands-on vulnerability exploitation and proof-of-concept development', category: 'Offensive Security', icon: '⚡', order: 3 },
-  { _id: 'default-4', name: 'SQL Injection', level: 90, description: 'Advanced SQL injection techniques and database exploitation', category: 'Offensive Security', icon: '💉', order: 4 },
-  { _id: 'default-5', name: 'XSS (Cross-Site Scripting)', level: 87, description: 'Reflected, stored, and DOM-based XSS exploitation', category: 'Offensive Security', icon: '🎯', order: 5 },
-  { _id: 'default-6', name: 'Authentication Bypass', level: 85, description: 'Session management flaws and authentication bypass techniques', category: 'Offensive Security', icon: '🔓', order: 6 },
-  { _id: 'default-7', name: 'Authorization Flaws', level: 86, description: 'IDOR, privilege escalation, and access control vulnerabilities', category: 'Offensive Security', icon: '🚪', order: 7 },
-  { _id: 'default-8', name: 'File Upload Vulnerabilities', level: 82, description: 'Unrestricted file upload and remote code execution', category: 'Offensive Security', icon: '📁', order: 8 },
+  // Defensive Security
+  { _id: 'def-1', name: 'Secure SDLC', level: 95, description: 'Integrate security into every phase of software development from requirements to deployment.', category: 'Defensive Security', icon: '🔒', order: 1 },
+  { _id: 'def-2', name: 'Threat Modeling', level: 90, description: 'Systematic risk identification using STRIDE, DREAD, and LINDDUN frameworks.', category: 'Defensive Security', icon: '🎯', order: 2 },
+  { _id: 'def-3', name: 'Product Security', level: 88, description: 'Design and implement secure products with robust architectures and controls.', category: 'Defensive Security', icon: '📦', order: 3 },
+  { _id: 'def-4', name: 'DevSecOps', level: 85, description: 'Embed security into CI/CD pipelines for automated vulnerability scanning.', category: 'Defensive Security', icon: '⚙️', order: 4 },
+  { _id: 'def-5', name: 'Secure Code Review', level: 92, description: 'Manual and automated code audits to identify and remediate security vulnerabilities.', category: 'Defensive Security', icon: '🔍', order: 5 },
+  { _id: 'def-6', name: 'Security Architecture', level: 87, description: 'Design and assess secure architectures for applications and APIs.', category: 'Defensive Security', icon: '🏗️', order: 6 },
   
-  // API Security
-  { _id: 'default-9', name: 'REST API Testing', level: 88, description: 'Comprehensive REST API security assessment and testing', category: 'API Security', icon: '🔌', order: 9 },
-  { _id: 'default-10', name: 'GraphQL Security', level: 80, description: 'GraphQL endpoint testing and vulnerability assessment', category: 'API Security', icon: '📊', order: 10 },
-  { _id: 'default-11', name: 'JWT Token Manipulation', level: 85, description: 'JSON Web Token vulnerabilities and exploitation', category: 'API Security', icon: '🎫', order: 11 },
-  { _id: 'default-12', name: 'API Authentication Bypass', level: 83, description: 'API key vulnerabilities and authentication mechanism flaws', category: 'API Security', icon: '🔑', order: 12 },
+  // Offensive Security
+  { _id: 'off-1', name: 'Web Application Penetration Testing', level: 94, description: 'Comprehensive testing for injection, authentication bypass, and authorization flaws.', category: 'Offensive Security', icon: '🌐', order: 7 },
+  { _id: 'off-2', name: 'API Security Testing', level: 91, description: 'Specialized testing for REST and GraphQL API vulnerabilities.', category: 'Offensive Security', icon: '🔌', order: 8 },
+  { _id: 'off-3', name: 'Vulnerability Research', level: 86, description: 'Deep analysis to discover complex security flaws in applications and services.', category: 'Offensive Security', icon: '🔬', order: 9 },
+  { _id: 'off-4', name: 'Exploit Development', level: 80, description: 'Creating proof-of-concept exploits to demonstrate real-world security risks.', category: 'Offensive Security', icon: '💣', order: 10 },
   
-  // Tool Development
-  { _id: 'default-13', name: 'Go (Golang)', level: 85, description: 'Custom security tool development in Go', category: 'Tool Development', icon: '🦫', order: 13 },
-  { _id: 'default-15', name: 'JavaScript', level: 85, description: 'Web application security testing and client-side exploitation', category: 'Tool Development', icon: '📜', order: 14 },
-  { _id: 'default-14', name: 'Python', level: 82, description: 'Security automation and penetration testing scripts', category: 'Tool Development', icon: '🐍', order: 15 },
-  { _id: 'default-16', name: 'Custom Payload Development', level: 87, description: 'Creating custom exploits and proof-of-concept tools', category: 'Tool Development', icon: '🛠️', order: 16 },
+  // App Sec Tools
+  { _id: 'tool-1', name: 'Burp Suite', level: 95, description: 'Comprehensive web vulnerability scanner and proxy for penetration testing.', category: 'App Sec Tools', icon: '🔧', order: 11 },
+  { _id: 'tool-2', name: 'SAST / DAST / SCA', level: 90, description: 'Static, Dynamic, and Software Composition Analysis for automated security testing.', category: 'App Sec Tools', icon: '📊', order: 12 },
+  { _id: 'tool-3', name: 'OWASP ZAP', level: 85, description: 'Open-source web application security scanner.', category: 'App Sec Tools', icon: '🛡️', order: 13 },
+  { _id: 'tool-4', name: 'Go Programming', level: 88, description: 'Develop high-performance security tools in Go.', category: 'App Sec Tools', icon: '🐹', order: 14 },
+  { _id: 'tool-5', name: 'Python for Security', level: 92, description: 'Build custom security tools and automation scripts.', category: 'App Sec Tools', icon: '🐍', order: 15 },
+  { _id: 'tool-6', name: 'GitLab CI/CD', level: 87, description: 'Implement security gates in CI/CD pipelines.', category: 'App Sec Tools', icon: '🔲', order: 16 },
   
-  // Methodologies
-  { _id: 'default-17', name: 'OWASP Top 10', level: 90, description: 'Deep understanding of OWASP Top 10 vulnerabilities', category: 'Methodologies', icon: '📋', order: 17 },
-  { _id: 'default-18', name: 'Penetration Testing Methodology', level: 88, description: 'Structured approach to web app security assessment', category: 'Methodologies', icon: '🎯', order: 18 },
-  { _id: 'default-19', name: 'Vulnerability Assessment', level: 87, description: 'Systematic identification and classification of security flaws', category: 'Methodologies', icon: '🔍', order: 19 },
-  { _id: 'default-20', name: 'Security Testing Lifecycle', level: 85, description: 'End-to-end security testing process and reporting', category: 'Methodologies', icon: '🔄', order: 20 },
+  // Methodologies & Frameworks
+  { _id: 'meth-1', name: 'OWASP Top 10', level: 96, description: 'In-depth knowledge of critical web application security risks.', category: 'Methodologies & Frameworks', icon: '📜', order: 17 },
+  { _id: 'meth-2', name: 'OWASP API Top 10', level: 93, description: 'Specialized security testing for API-specific vulnerabilities.', category: 'Methodologies & Frameworks', icon: '🔌', order: 18 },
+  { _id: 'meth-3', name: 'NIST Cybersecurity Framework', level: 85, description: 'Industry-standard framework for managing cybersecurity risks.', category: 'Methodologies & Frameworks', icon: '🏛️', order: 19 },
+  { _id: 'meth-4', name: 'MITRE ATT&CK', level: 82, description: 'Framework for adversary tactics, techniques, and procedures.', category: 'Methodologies & Frameworks', icon: '🎯', order: 20 },
 ];
 
 export async function GET() {

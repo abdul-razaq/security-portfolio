@@ -26,7 +26,7 @@ export function About() {
           background: linear-gradient(
             180deg,
             #020617 0%,
-            #0F172A 50%,
+            #0f172a 50%,
             #020617 100%
           );
           overflow: hidden;
@@ -47,7 +47,7 @@ export function About() {
           background: linear-gradient(
             90deg,
             transparent 0%,
-            #2563EB 50%,
+            #2563eb 50%,
             transparent 100%
           );
           opacity: 0.5;
@@ -108,7 +108,7 @@ export function About() {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: #2563EB;
+          background: #2563eb;
         }
 
         .about-badge-text {
@@ -117,7 +117,7 @@ export function About() {
             system-ui,
             -apple-system,
             sans-serif;
-          color: #2563EB;
+          color: #2563eb;
           font-size: 12px;
           font-weight: 600;
           letter-spacing: 0.1em;
@@ -202,7 +202,7 @@ export function About() {
         }
 
         .about-text-highlight {
-          color: #2563EB;
+          color: #2563eb;
           font-weight: 500;
         }
 
@@ -286,7 +286,7 @@ export function About() {
             sans-serif;
           font-size: 48px;
           font-weight: 700;
-          color: #2563EB;
+          color: #2563eb;
           margin-bottom: 8px;
           letter-spacing: -0.03em;
         }
@@ -342,7 +342,7 @@ export function About() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #2563EB;
+          background: #2563eb;
           flex-shrink: 0;
         }
 
@@ -423,7 +423,7 @@ export function About() {
           font-size: 16px;
           text-decoration: none;
           transition: all 0.3s ease;
-          background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
           box-shadow:
             0 4px 24px rgba(37, 99, 235, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -474,11 +474,11 @@ export function About() {
             <span className="about-badge-text">About Me</span>
           </div>
           <h1 className="about-heading">
-            <span style={{ color: "#2563EB" }}>Application Security</span>{' '}
+            <span style={{ color: "#2563EB" }}>Application Security</span>{" "}
             <span style={{ color: "#F8FAFC" }}>Engineer</span>
           </h1>
           <p className="about-subtitle">
-            Embedding security across the SDLC — from Threat Modeling and Product
+            Embedding security across the SDLC, from Threat Modeling and Product
             Security to DevSecOps and Offensive Security testing.
           </p>
         </div>
@@ -502,11 +502,11 @@ export function About() {
                   full stack web development
                 </span>
                 , where I built robust applications using the{" "}
-                <span className="about-text-highlight">JavaScript stack</span>
-                —React, Node.js, Express, and modern frontend frameworks. This
-                foundation gave me deep insight into how web applications are
-                built, how they function, and where their vulnerabilities might
-                lie.
+                <span className="about-text-highlight">JavaScript stack</span>,
+                including React, Node.js, Express, and modern frontend
+                frameworks. This foundation gave me deep insight into how web
+                applications are built, how they function, and where their
+                vulnerabilities might lie.
               </p>
               <p className="about-text">
                 I have a{" "}
@@ -538,8 +538,8 @@ export function About() {
                 </span>
                 , conducting comprehensive security assessments through manual
                 testing, custom tool development, and deep understanding of web
-                applications, architectures and APIs. My development background gives me a
-                unique perspective—I understand both{" "}
+                applications, architectures and APIs. My development background
+                gives me a unique perspective. I understand both{" "}
                 <span className="about-text-highlight">
                   how applications are built
                 </span>{" "}
@@ -571,31 +571,31 @@ export function About() {
               </p>
             </div>
 
-            {/* Security Tools */}
+            {/* Application Security Skills */}
             <div className="about-tech-grid">
               <div className="about-tech-item">
-                <div className="about-tech-icon">🔧</div>
-                <div className="about-tech-name">Burp Suite</div>
+                <div className="about-tech-icon">🔒</div>
+                <div className="about-tech-name">Secure SDLC</div>
               </div>
               <div className="about-tech-item">
-                <div className="about-tech-icon">🛡️</div>
-                <div className="about-tech-name">OWASP ZAP</div>
+                <div className="about-tech-icon">🎯</div>
+                <div className="about-tech-name">Threat Modeling</div>
               </div>
               <div className="about-tech-item">
-                <div className="about-tech-icon">🐹</div>
-                <div className="about-tech-name">Go</div>
+                <div className="about-tech-icon">🔌</div>
+                <div className="about-tech-name">API Security</div>
               </div>
               <div className="about-tech-item">
-                <div className="about-tech-icon">🐍</div>
-                <div className="about-tech-name">Python</div>
+                <div className="about-tech-icon">⚙️</div>
+                <div className="about-tech-name">DevSecOps</div>
               </div>
               <div className="about-tech-item">
-                <div className="about-tech-icon">📜</div>
-                <div className="about-tech-name">JavaScript</div>
+                <div className="about-tech-icon">🔍</div>
+                <div className="about-tech-name">Secure Code Review</div>
               </div>
               <div className="about-tech-item">
-                <div className="about-tech-icon">📋</div>
-                <div className="about-tech-name">OWASP Top 10</div>
+                <div className="about-tech-icon">🔴</div>
+                <div className="about-tech-name">Offensive Security</div>
               </div>
             </div>
           </div>
@@ -624,12 +624,12 @@ export function About() {
               <h3 className="about-highlights-title">What I Do</h3>
               <div className="about-highlights-list">
                 {[
-                  "Conduct penetration testing of web applications to identify vulnerabilities",
-                  "Develop custom security tools in Go and Python",
-                  "Create proof-of-concept exploits for identified vulnerabilities",
-                  "Conduct manual security assessments",
-                  "Leverage full stack development knowledge for security testing",
-                  "Share knowledge through blogging and technical writing",
+                  "Embed security into software development lifecycle (Secure SDLC)",
+                  "Conduct threat modeling using frameworks like STRIDE and DREAD",
+                  "Perform penetration testing of web applications and APIs",
+                  "Carry out manual secure code reviews for vulnerabilities",
+                  "Implement DevSecOps practices with SAST/SCA/DAST tools",
+                  "Design and assess product security architectures",
                 ].map((item, i) => (
                   <div key={i} className="about-highlight-item">
                     <div className="about-highlight-dot" />

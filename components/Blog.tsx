@@ -1,16 +1,82 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { getBlogPosts, type BlogPost } from '@/lib/api';
-import { portableTextToPlainText } from '@/lib/portableText';
+import { getBlogPosts, type BlogPost } from "@/lib/api";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-const categories = ['All', 'Case Study', 'Tool Development', 'Exploitation', 'API Security', 'Methodology', 'Enumeration', 'Reconnaissance & Intelligence Gathering'];
+const categories = [
+  "All",
+  "AppSec Projects",
+  "Case Study",
+  "Methodology",
+  "Threat Modeling",
+  "Product Security",
+  "API Security",
+  "Secure SDLC",
+  "DevSecOps",
+  "Secure Code Review",
+  "Tool Development",
+  "Vulnerability Research",
+  "Exploitation",
+];
+
+const formatKeywords = (text: string) => {
+  const keywords = [
+    {
+      pattern:
+        /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi,
+      style: { color: "#2563EB", fontWeight: 600 },
+    },
+    {
+      pattern: /(critical|high|medium|low)/gi,
+      style: { color: "#DC2626", fontWeight: 600 },
+    },
+  ];
+
+  let parts: Array<
+    string | { text: string; style: React.CSSProperties; key: number }
+  > = [text];
+  let keyCounter = 0;
+
+  keywords.forEach(({ pattern, style }) => {
+    const newParts: typeof parts = [];
+    parts.forEach((part) => {
+      if (typeof part === "string") {
+        let lastIndex = 0;
+        let match: RegExpExecArray | null;
+        const regex = new RegExp(pattern.source, pattern.flags);
+        while ((match = regex.exec(part)) !== null) {
+          if (match.index > lastIndex) {
+            newParts.push(part.slice(lastIndex, match.index));
+          }
+          newParts.push({ text: match[0], style, key: keyCounter++ });
+          lastIndex = match.index + match[0].length;
+        }
+        if (lastIndex < part.length) {
+          newParts.push(part.slice(lastIndex));
+        }
+      } else {
+        newParts.push(part);
+      }
+    });
+    parts = newParts;
+  });
+
+  return parts.map((part, i) =>
+    typeof part === "string" ? (
+      part
+    ) : (
+      <span key={part.key} style={part.style}>
+        {part.text}
+      </span>
+    ),
+  );
+};
 
 export function Blog() {
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [isVisible, setIsVisible] = useState(false);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +85,7 @@ export function Blog() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -32,7 +98,7 @@ export function Blog() {
         const fetchedPosts = await getBlogPosts(selectedCategory);
         setPosts(fetchedPosts);
       } catch (error) {
-        console.error('Error loading blog posts:', error);
+        console.error("Error loading blog posts:", error);
       } finally {
         setLoading(false);
       }
@@ -42,7 +108,11 @@ export function Blog() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   return (
@@ -123,7 +193,7 @@ export function Blog() {
         <div
           style={{
             textAlign: "center",
-            marginBottom: "80px",
+            marginBottom: "60px",
             transition: "all 1s ease",
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? "translateY(0)" : "translateY(40px)",
@@ -174,7 +244,7 @@ export function Blog() {
               textRendering: "optimizeLegibility",
             }}
           >
-            APIs & Web Application{" "}
+            Application & API{" "}
             <span style={{ color: "#2563EB" }}>Security Insights</span>
           </h1>
           <p
@@ -192,20 +262,40 @@ export function Blog() {
               fontFeatureSettings: "'kern' 1, 'liga' 1",
             }}
           >
-            Insights, techniques, and case studies on web application offensive
-            security, penetration testing methodologies, and vulnerability
-            analysis of web applications and APIs.
+            Insights, techniques, and case studies on{" "}
+            <span style={{ color: "rgba(255,255,255,0.9)", fontWeight: 600 }}>
+              application security
+            </span>
+            ,{" "}
+            <span style={{ color: "#2563EB", fontWeight: 600 }}>
+              threat modeling
+            </span>
+            ,{" "}
+            <span style={{ color: "#2563EB", fontWeight: 600 }}>
+              secure SDLC
+            </span>
+            ,{" "}
+            <span style={{ color: "#2563EB", fontWeight: 600 }}>
+              penetration testing
+            </span>
+            , and{" "}
+            <span style={{ color: "#2563EB", fontWeight: 600 }}>
+              API security
+            </span>
+            .
           </p>
         </div>
 
         {/* Category Filter */}
         <div
-          className="flex gap-3 mb-16 overflow-x-auto pb-2 -mx-1 px-1 sm:flex-wrap sm:justify-center sm:overflow-visible"
+          className="flex gap-3 overflow-x-auto pb-4 -mx-1 px-1 sm:flex-wrap sm:justify-center sm:overflow-visible"
           style={{
+            marginBottom: "80px",
             transition: "all 1s ease 0.2s",
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? "translateY(0)" : "translateY(40px)",
             scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
           {categories.map((category) => (
@@ -214,7 +304,7 @@ export function Blog() {
               onClick={() => setSelectedCategory(category)}
               className="shrink-0"
               style={{
-                padding: "10px 24px",
+                padding: "10px 20px",
                 borderRadius: "9999px",
                 fontSize: "14px",
                 fontWeight: 500,
@@ -268,6 +358,7 @@ export function Blog() {
                 border: "3px solid rgba(37,99,235,0.3)",
                 borderTopColor: "#2563EB",
                 borderRadius: "50%",
+                animation: "spin 1s linear infinite",
               }}
             />
           </div>
@@ -280,9 +371,9 @@ export function Blog() {
               .blog-grid {
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 28px;
+                gap: 24px;
               }
-              @media (min-width: 768px) {
+              @media (min-width: 640px) {
                 .blog-grid {
                   grid-template-columns: repeat(2, 1fr);
                 }
@@ -290,6 +381,15 @@ export function Blog() {
               @media (min-width: 1024px) {
                 .blog-grid {
                   grid-template-columns: repeat(3, 1fr);
+                  gap: 28px;
+                }
+              }
+              @keyframes spin {
+                from {
+                  transform: rotate(0deg);
+                }
+                to {
+                  transform: rotate(360deg);
                 }
               }
             `}</style>
@@ -319,10 +419,10 @@ export function Blog() {
                   onClick={() => router.push(`/blog/${post.slug}`)}
                   style={{
                     position: "relative",
-                    padding: "36px",
+                    padding: "32px",
                     borderRadius: "24px",
                     opacity: isVisible ? 1 : 0,
-                    transition: `opacity 0.6s ease ${index * 50}ms`,
+                    transition: `all 0.4s cubic-bezier(0.4, 0, 0.2, 1) ${index * 50}ms`,
                     background: post.featured
                       ? "linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.02) 100%)"
                       : "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
@@ -338,15 +438,22 @@ export function Blog() {
                     wordBreak: "break-word",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow =
-                      "inset 0 1px 0 rgba(255,255,255,0.05)";
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = post.featured
+                      ? "0 20px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)"
+                      : "0 20px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)";
+                    e.currentTarget.style.borderColor = post.featured
+                      ? "rgba(37,99,235,0.4)"
+                      : "rgba(255,255,255,0.1)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = post.featured
                       ? "inset 0 1px 0 rgba(255,255,255,0.03)"
                       : "inset 0 1px 0 rgba(255,255,255,0.02)";
+                    e.currentTarget.style.borderColor = post.featured
+                      ? "1px solid rgba(37,99,235,0.25)"
+                      : "1px solid rgba(255,255,255,0.05)";
                   }}
                 >
                   {/* Featured Badge */}
@@ -354,8 +461,8 @@ export function Blog() {
                     <div
                       style={{
                         position: "absolute",
-                        top: "24px",
-                        right: "24px",
+                        top: "20px",
+                        right: "20px",
                         padding: "4px 12px",
                         borderRadius: "9999px",
                         fontSize: "11px",
@@ -364,6 +471,7 @@ export function Blog() {
                         color: "#ffffff",
                         textTransform: "uppercase",
                         letterSpacing: "0.05em",
+                        zIndex: 10,
                       }}
                     >
                       Featured
@@ -376,7 +484,7 @@ export function Blog() {
                       display: "flex",
                       flexWrap: "wrap",
                       gap: "8px",
-                      marginBottom: "24px",
+                      marginBottom: "20px",
                     }}
                   >
                     {(Array.isArray(post.category)
@@ -416,7 +524,7 @@ export function Blog() {
                       display: "flex",
                       alignItems: "center",
                       gap: "12px",
-                      marginBottom: "18px",
+                      marginBottom: "16px",
                       fontSize: "13px",
                       color: "rgba(255,255,255,0.4)",
                       flexWrap: "wrap",
@@ -442,10 +550,10 @@ export function Blog() {
                   {/* Title */}
                   <h3
                     style={{
-                      fontSize: "24px",
+                      fontSize: "22px",
                       fontWeight: 700,
                       color: "#ffffff",
-                      marginBottom: "14px",
+                      marginBottom: "12px",
                       lineHeight: 1.35,
                       overflow: "hidden",
                       display: "-webkit-box",
@@ -460,52 +568,19 @@ export function Blog() {
                   {/* Excerpt */}
                   <p
                     style={{
-                      fontSize: "16px",
-                      color: "rgba(255,255,255,0.5)",
-                      lineHeight: 1.85,
-                      marginBottom: "28px",
+                      fontSize: "15px",
+                      color: "rgba(255,255,255,0.55)",
+                      lineHeight: 1.8,
+                      marginBottom: "24px",
                       overflow: "hidden",
                       display: "-webkit-box",
-                      WebkitLineClamp: 4,
+                      WebkitLineClamp: 3,
                       WebkitBoxOrient: "vertical",
                       wordBreak: "break-word",
                     }}
                   >
-                    {post.excerpt}
+                    {formatKeywords(post.excerpt)}
                   </p>
-
-                  {/* Tags */}
-                  {post.tags && post.tags.length > 0 && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: "8px",
-                        marginBottom: "24px",
-                      }}
-                    >
-                      {post.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          style={{
-                            padding: "4px 10px",
-                            borderRadius: "6px",
-                            fontSize: "12px",
-                            color: "rgba(255,255,255,0.6)",
-                            background: "rgba(255,255,255,0.05)",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            maxWidth: "100%",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                          title={tag}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
 
                   {/* Read More Link */}
                   <Link

@@ -15,6 +15,48 @@ const lora = Lora({
   display: "swap",
 });
 
+const formatKeywords = (text: string) => {
+  const keywords = [
+    { pattern: /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi, style: { color: '#2563EB', fontWeight: 600 } },
+    { pattern: /(critical|high|medium|low)/gi, style: { color: '#DC2626', fontWeight: 600 } },
+  ];
+
+  let parts: Array<string | { text: string; style: React.CSSProperties; key: number }> = [text];
+  let keyCounter = 0;
+
+  keywords.forEach(({ pattern, style }) => {
+    const newParts: typeof parts = [];
+    parts.forEach((part) => {
+      if (typeof part === 'string') {
+        let lastIndex = 0;
+        let match: RegExpExecArray | null;
+        const regex = new RegExp(pattern.source, pattern.flags);
+        while ((match = regex.exec(part)) !== null) {
+          if (match.index > lastIndex) {
+            newParts.push(part.slice(lastIndex, match.index));
+          }
+          newParts.push({ text: match[0], style, key: keyCounter++ });
+          lastIndex = match.index + match[0].length;
+        }
+        if (lastIndex < part.length) {
+          newParts.push(part.slice(lastIndex));
+        }
+      } else {
+        newParts.push(part);
+      }
+    });
+    parts = newParts;
+  });
+
+  return parts.map((part, i) =>
+    typeof part === 'string' ? (
+      part
+    ) : (
+      <span key={part.key} style={part.style}>{part.text}</span>
+    )
+  );
+};
+
 export default function BlogPostPage() {
   const params = useParams();
   const [isVisible, setIsVisible] = useState(false);
@@ -1455,7 +1497,7 @@ export default function BlogPostPage() {
                                   letterSpacing: "0.01em",
                                 }}
                               >
-                                {part.replace(/\*\*/g, "")}
+                                {formatKeywords(part.replace(/\*\*/g, ""))}
                               </strong>
                             );
                           }
@@ -1490,7 +1532,7 @@ export default function BlogPostPage() {
                                     MozOsxFontSmoothing: "grayscale",
                                   }}
                                 >
-                                  {seg}
+                                  {formatKeywords(seg)}
                                 </span>
                               );
                             });
@@ -1504,7 +1546,7 @@ export default function BlogPostPage() {
                                 MozOsxFontSmoothing: "grayscale",
                               }}
                             >
-                              {part}
+                              {formatKeywords(part)}
                             </span>
                           );
                         })}

@@ -27,9 +27,9 @@ export const postType = defineType({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
-      rows: 3,
+      rows: 5,
       description: 'Short description of the blog post',
-      validation: (Rule) => Rule.required().max(800),
+      validation: (Rule) => Rule.required().max(1000),
     }),
     defineField({
       name: 'category',
