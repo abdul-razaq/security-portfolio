@@ -32,7 +32,7 @@ export async function GET() {
         firstName: "AbdulRazaq",
         lastName: "Suleiman",
         description:
-          "As an Application Security Engineer, I embed security across the full software lifecycle, from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security. I bridge defensive engineering with rigorous attack simulation to validate controls and find what automated tools miss before adversaries do.",
+          "I help teams ship secure software with confidence through threat modeling, secure design, DevSecOps, and hands-on application security testing.",
         roles: [
           "Application Security Engineer",
           "Product Security Engineer",
@@ -45,7 +45,7 @@ export async function GET() {
       about: {
         title: "Application Security Engineer",
         description:
-          "As an Application Security Engineer, I embed security across the full software lifecycle, from Secure SDLC and Threat Modeling to Product Security, DevSecOps, and hands-on Offensive Security.\n\nI bridge defensive engineering with rigorous attack simulation, including penetration testing, vulnerability research, and security architecture, to validate controls, accelerate secure delivery, and find what automated tools miss before adversaries do.",
+          "As an Application Security Engineer, I help teams ship secure software with confidence through threat modeling, secure design, DevSecOps, and hands-on application security testing.",
         features: [
           {
             icon: "🔒",

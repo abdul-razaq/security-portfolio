@@ -70,32 +70,15 @@ export function Hero() {
               <span className="hero-role-secondary"> Engineer</span>
             </p>
             <p className="hero-lead">
-              I’m an Application Security Engineer with a strong software
-              engineering background, helping organizations secure web and API-driven applications by integrating security into
-              architecture, development, and deployment from day one.
-            </p>
-          </div>
-
-          {/* Supporting statement */}
-          <div className="hero-description">
-            <p className="hero-description-paragraph">
-              I combine{" "}
-              <span className="hero-description-emphasis">
-                secure engineering practices
-              </span>
-              ,{" "}
-              <span className="hero-description-offensive">
-                offensive security testing
-              </span>
-              , and{" "}
-              <span className="hero-description-pillar">
-                practical security architecture
-              </span>{" "}
-              to identify and mitigate risk early. My work includes penetration
-              testing, threat modeling, secure code reviews, vulnerability
-              research, and security assessments, helping teams discover
-              critical weaknesses before attackers do and build systems that are
-              secure by design.
+              I help teams ship{" "}
+              <span className="hero-lead-highlight">secure software</span> with
+              confidence through{" "}
+              <span className="hero-lead-threat">threat modeling</span>,{" "}
+              <span className="hero-lead-design">secure design</span>,{" "}
+              <span className="hero-lead-review">secure code review</span>,{" "}
+              <span className="hero-lead-devsecops">DevSecOps</span>, and{" "}
+              <span className="hero-lead-hands">hands-on</span> application
+              security testing.
             </p>
           </div>
 
@@ -385,7 +368,7 @@ export function Hero() {
            ROLE & VALUE PROPOSITION
            ============================================ */
         .hero-role-block {
-          margin-bottom: 32px;
+          margin-bottom: 28px;
         }
 
         .hero-role {
@@ -395,14 +378,14 @@ export function Hero() {
             -apple-system,
             sans-serif;
           font-size: clamp(1.5rem, 3.2vw, 2.25rem);
-          font-weight: 600;
-          letter-spacing: -0.03em;
-          line-height: 1.2;
+          font-weight: 700;
+          letter-spacing: -0.04em;
+          line-height: 1.15;
           margin: 0 0 16px;
         }
 
         .hero-role-primary {
-          color: #2563eb;
+          color: #60a5fa;
         }
 
         .hero-role-secondary {
@@ -415,13 +398,46 @@ export function Hero() {
             system-ui,
             -apple-system,
             sans-serif;
-          font-size: clamp(1.0625rem, 2vw, 1.25rem);
+          font-size: clamp(1.05rem, 1.8vw, 1.18rem);
           line-height: 1.75;
-          color: rgba(248, 250, 252, 0.72);
-          font-weight: 400;
-          letter-spacing: -0.01em;
-          max-width: 48rem;
+          color: rgba(241, 245, 249, 0.88);
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          max-width: 52rem;
           margin: 0 auto;
+          text-wrap: pretty;
+          text-shadow: 0 1px 0 rgba(15, 23, 42, 0.2);
+        }
+
+        .hero-lead-highlight {
+          color: #f8fafc;
+          font-weight: 700;
+          letter-spacing: -0.03em;
+        }
+
+        .hero-lead-threat {
+          color: #93c5fd;
+          font-weight: 600;
+        }
+
+        .hero-lead-design {
+          color: #c4b5fd;
+          font-weight: 600;
+        }
+
+        .hero-lead-review {
+          color: #86efac;
+          font-weight: 600;
+        }
+
+        .hero-lead-devsecops {
+          color: #fde68a;
+          font-weight: 600;
+        }
+
+        .hero-lead-hands {
+          color: #fca5a5;
+          font-weight: 600;
         }
 
         /* ============================================
@@ -546,126 +562,104 @@ export function Hero() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 20px;
+          gap: 16px;
           flex-wrap: wrap;
           margin-bottom: 64px;
         }
 
         .hero-cta-primary,
         .hero-cta-secondary {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 150px;
+          padding: 13px 22px;
           font-family:
             var(--font-satoshi),
             system-ui,
             -apple-system,
             sans-serif;
-          display: inline-block;
-          font-size: 17px;
+          font-size: 0.98rem;
           font-weight: 600;
+          letter-spacing: 0.02em;
           text-decoration: none;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          letter-spacing: 0.01em;
-          position: relative;
+          border-radius: 999px;
+          transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease,
+            background 0.25s ease,
+            color 0.25s ease;
           cursor: pointer;
-          line-height: 1.5;
+          line-height: 1;
         }
 
         .hero-cta-text {
-          display: inline-block;
           position: relative;
+          z-index: 1;
+          display: inline-block;
         }
 
         .hero-cta-primary {
-          color: #ffffff;
-        }
-
-        .hero-cta-primary .hero-cta-text {
-          color: #ffffff;
-          font-family:
-            var(--font-satoshi),
-            system-ui,
-            -apple-system,
-            sans-serif;
-          font-weight: 600;
-          letter-spacing: 0.01em;
-          transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .hero-cta-primary::after {
-          content: "";
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 100%;
-          height: 2px;
+          color: #f8fafc !important;
           background: linear-gradient(
             90deg,
-            #2563eb 0%,
-            rgba(37, 99, 235, 0.6) 100%
+            #1d4ed8 0%,
+            #3b82f6 100%
+          ) !important;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 10px 24px rgba(37, 99, 235, 0.3) !important;
+          border: 1px solid rgba(147, 197, 253, 0.3) !important;
+          text-transform: none !important;
+        }
+
+        .hero-cta-primary::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(
+            90deg,
+            rgba(37, 99, 235, 0.98) 0%,
+            rgba(14, 165, 233, 0.82) 100%
           );
-          transform-origin: left;
-          transform: scaleX(0.8);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          opacity: 0;
+          transition: opacity 0.25s ease;
         }
 
         .hero-cta-primary:hover {
-          color: #ffffff;
+          transform: translateY(-1px);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.14),
+            0 14px 30px rgba(37, 99, 235, 0.34);
+        }
+
+        .hero-cta-primary:hover::before {
+          opacity: 1;
         }
 
         .hero-cta-primary:hover .hero-cta-text {
-          color: #2563eb;
-        }
-
-        .hero-cta-primary:hover::after {
-          transform: scaleX(1);
-          background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
-          height: 2.5px;
+          color: #f8fafc;
         }
 
         .hero-cta-secondary {
-          color: rgba(255, 255, 255, 0.7);
-        }
-
-        .hero-cta-secondary .hero-cta-text {
-          color: rgba(255, 255, 255, 0.7);
-          font-family:
-            var(--font-satoshi),
-            system-ui,
-            -apple-system,
-            sans-serif;
-          font-weight: 600;
-          letter-spacing: 0.01em;
-          transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .hero-cta-secondary::after {
-          content: "";
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.3) 0%,
-            rgba(255, 255, 255, 0.15) 100%
-          );
-          transform-origin: left;
-          transform: scaleX(0.6);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          color: rgba(248, 250, 252, 0.9) !important;
+          background: rgba(255, 255, 255, 0.06) !important;
+          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          backdrop-filter: blur(10px) !important;
+          -webkit-backdrop-filter: blur(10px) !important;
         }
 
         .hero-cta-secondary:hover {
-          color: #2563eb;
-        }
-
-        .hero-cta-secondary:hover .hero-cta-text {
-          color: #2563eb;
-        }
-
-        .hero-cta-secondary:hover::after {
-          transform: scaleX(1);
-          background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
-          height: 2.5px;
+          color: #f8fafc !important;
+          background: rgba(255, 255, 255, 0.1) !important;
+          border-color: rgba(96, 165, 250, 0.4) !important;
+          transform: translateY(-1px);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 10px 24px rgba(15, 23, 42, 0.22) !important;
         }
 
         /* ============================================
