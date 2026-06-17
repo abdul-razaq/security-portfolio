@@ -1,25 +1,27 @@
-import { type SchemaTypeDefinition } from 'sanity'
+import { type SchemaTypeDefinition } from "sanity";
 
-import {blockContentType} from './blockContentType'
-import {categoryType} from './categoryType'
-import {postType} from './postType'
-import {authorType} from './authorType'
-import {homePageType} from './homePageType'
-import {skillType} from './skillType'
-import {experienceType} from './experienceType'
-import {educationType} from './educationType'
-import {certificationType} from './certificationType'
+import { authorType } from "./authorType";
+import { blockContentType } from "./blockContentType";
+import { categoryType } from "./categoryType";
+import { certificationType } from "./certificationType";
+import { educationType } from "./educationType";
+import { experienceType } from "./experienceType";
+import { homePageType } from "./homePageType";
+import { infographicType } from "./infographicType";
+import { postType } from "./postType";
+import { skillType } from "./skillType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
-    blockContentType, 
-    categoryType, 
-    postType, 
-    authorType, 
+    blockContentType,
+    categoryType,
+    postType,
+    authorType,
     homePageType,
     skillType,
     experienceType,
     educationType,
     certificationType,
+    infographicType,
   ],
-}
+};

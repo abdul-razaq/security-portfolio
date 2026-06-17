@@ -18,6 +18,17 @@ export interface BlogPost {
   mainImageAlt?: string;
 }
 
+export interface Infographic {
+  _id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  tags: string[];
+  publishedAt: string;
+  image?: string;
+  imageAlt?: string;
+}
+
 export interface HomePageContent {
   hero?: {
     greeting?: string;
@@ -52,22 +63,23 @@ export interface HomePageContent {
  */
 export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
   try {
-    const url = category && category !== 'All' 
-      ? `/api/blog?category=${encodeURIComponent(category)}`
-      : '/api/blog';
-    
+    const url =
+      category && category !== "All"
+        ? `/api/blog?category=${encodeURIComponent(category)}`
+        : "/api/blog";
+
     const response = await fetch(url, {
       next: { revalidate: 60 }, // Revalidate every 60 seconds
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch blog posts');
+      throw new Error("Failed to fetch blog posts");
     }
 
     const data = await response.json();
     return data.posts || [];
   } catch (error) {
-    console.error('Error fetching blog posts:', error);
+    console.error("Error fetching blog posts:", error);
     return [];
   }
 }
@@ -85,14 +97,35 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       if (response.status === 404) {
         return null;
       }
-      throw new Error('Failed to fetch blog post');
+      throw new Error("Failed to fetch blog post");
     }
 
     const data = await response.json();
     return data.post || null;
   } catch (error) {
-    console.error('Error fetching blog post:', error);
+    console.error("Error fetching blog post:", error);
     return null;
+  }
+}
+
+/**
+ * Fetch all infographics
+ */
+export async function getInfographics(): Promise<Infographic[]> {
+  try {
+    const response = await fetch("/api/infographics", {
+      next: { revalidate: 60 },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch infographics");
+    }
+
+    const data = await response.json();
+    return data.infographics || [];
+  } catch (error) {
+    console.error("Error fetching infographics:", error);
+    return [];
   }
 }
 
@@ -101,18 +134,18 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
  */
 export async function getHomePageContent(): Promise<HomePageContent> {
   try {
-    const response = await fetch('/api/homepage', {
+    const response = await fetch("/api/homepage", {
       next: { revalidate: 300 }, // Revalidate every 5 minutes
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch home page content');
+      throw new Error("Failed to fetch home page content");
     }
 
     const data = await response.json();
     return data || {};
   } catch (error) {
-    console.error('Error fetching home page content:', error);
+    console.error("Error fetching home page content:", error);
     return {};
   }
 }
@@ -132,19 +165,19 @@ export interface Skill {
  */
 export async function getSkills(): Promise<Skill[]> {
   try {
-    const response = await fetch('/api/skills', {
-      cache: 'no-store', // Always fetch fresh data on client side
+    const response = await fetch("/api/skills", {
+      cache: "no-store", // Always fetch fresh data on client side
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch skills');
+      throw new Error("Failed to fetch skills");
     }
 
     const data = await response.json();
-    console.log('API response data:', data);
+    console.log("API response data:", data);
     return data.skills || [];
   } catch (error) {
-    console.error('Error fetching skills:', error);
+    console.error("Error fetching skills:", error);
     return [];
   }
 }
@@ -165,18 +198,18 @@ export interface Experience {
  */
 export async function getExperiences(): Promise<Experience[]> {
   try {
-    const response = await fetch('/api/experience', {
+    const response = await fetch("/api/experience", {
       next: { revalidate: 300 },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch experiences');
+      throw new Error("Failed to fetch experiences");
     }
 
     const data = await response.json();
     return data.experiences || [];
   } catch (error) {
-    console.error('Error fetching experiences:', error);
+    console.error("Error fetching experiences:", error);
     return [];
   }
 }
@@ -203,14 +236,17 @@ export interface Certification {
 /**
  * Fetch education and certifications
  */
-export async function getEducation(): Promise<{ education: Education[]; certifications: Certification[] }> {
+export async function getEducation(): Promise<{
+  education: Education[];
+  certifications: Certification[];
+}> {
   try {
-    const response = await fetch('/api/education', {
+    const response = await fetch("/api/education", {
       next: { revalidate: 300 },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch education');
+      throw new Error("Failed to fetch education");
     }
 
     const data = await response.json();
@@ -219,7 +255,7 @@ export async function getEducation(): Promise<{ education: Education[]; certific
       certifications: data.certifications || [],
     };
   } catch (error) {
-    console.error('Error fetching education:', error);
+    console.error("Error fetching education:", error);
     return { education: [], certifications: [] };
   }
 }

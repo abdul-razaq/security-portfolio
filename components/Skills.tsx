@@ -194,21 +194,30 @@ const defaultSkills: SkillCategory[] = [
       },
       {
         _id: "meth-3",
-        name: "NIST Cybersecurity Framework",
+        name: "STRIDE",
         description:
-          "Industry-standard framework for managing cybersecurity risks.",
-        level: 85,
+          "Threat modeling methodology for identifying spoofing, tampering, repudiation, information disclosure, denial of service, and elevation of privilege risks.",
+        level: 90,
         category: "Methodologies & Frameworks",
-        icon: "🏛️",
+        icon: "🧭",
       },
       {
         _id: "meth-4",
-        name: "MITRE ATT&CK",
+        name: "LINDDUN",
         description:
-          "Framework for adversary tactics, techniques, and procedures.",
+          "Privacy-focused threat modeling framework for linkability, identifiability, non-repudiation, detectability, disclosure of information, unawareness, and non-compliance.",
+        level: 84,
+        category: "Methodologies & Frameworks",
+        icon: "🔐",
+      },
+      {
+        _id: "meth-5",
+        name: "DREAD",
+        description:
+          "Risk rating model for assessing damage potential, reproducibility, exploitability, affected users, and discoverability.",
         level: 82,
         category: "Methodologies & Frameworks",
-        icon: "🎯",
+        icon: "⚖️",
       },
     ],
   },

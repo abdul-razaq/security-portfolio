@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Blog", href: "/blog" },
+  { label: "Infographics", href: "/infographics" },
   { label: "Skills", href: "/skills" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -48,7 +49,7 @@ export function Header() {
           HEADER 
           ===================================================== */}
       <header className="fixed top-0 left-0 right-0 z-50">
-        <div className="container-main mt-4 sm:mt-5 transition-all duration-500">
+        <div className="container-main mt-5 sm:mt-6 transition-all duration-500">
           <nav
             className="flex items-center justify-between gap-3 sm:gap-4"
             style={{
@@ -140,65 +141,65 @@ export function Header() {
                   border: "1px solid rgba(255,255,255,0.04)",
                 }}
               >
-              {navItems.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    style={{
-                      position: "relative",
-                      padding: "12px 22px",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      color: isActive ? "#ffffff" : "#777777",
-                      textDecoration: "none",
-                      borderRadius: "8px",
-                      background: isActive
-                        ? "linear-gradient(135deg, rgba(37,99,235,0.2) 0%, rgba(37,99,235,0.1) 100%)"
-                        : "transparent",
-                      border: isActive
-                        ? "1px solid rgba(37,99,235,0.35)"
-                        : "1px solid transparent",
-                      boxShadow: isActive
-                        ? "0 2px 8px rgba(37,99,235,0.15), inset 0 1px 0 rgba(255,255,255,0.03)"
-                        : "none",
-                      transition: "all 0.25s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.color = "#ffffff";
-                        e.currentTarget.style.background =
-                          "rgba(255,255,255,0.04)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.color = "#777777";
-                        e.currentTarget.style.background = "transparent";
-                      }
-                    }}
-                  >
-                    {item.label}
-                    {/* Active Indicator */}
-                    {isActive && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          bottom: "8px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "4px",
-                          height: "4px",
-                          background: "#2563EB",
-                          borderRadius: "50%",
-                          boxShadow: "0 0 8px #2563EB",
-                        }}
-                      />
-                    )}
-                  </Link>
-                );
-              })}
+                {navItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      style={{
+                        position: "relative",
+                        padding: "12px 22px",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: isActive ? "#ffffff" : "#777777",
+                        textDecoration: "none",
+                        borderRadius: "8px",
+                        background: isActive
+                          ? "linear-gradient(135deg, rgba(37,99,235,0.2) 0%, rgba(37,99,235,0.1) 100%)"
+                          : "transparent",
+                        border: isActive
+                          ? "1px solid rgba(37,99,235,0.35)"
+                          : "1px solid transparent",
+                        boxShadow: isActive
+                          ? "0 2px 8px rgba(37,99,235,0.15), inset 0 1px 0 rgba(255,255,255,0.03)"
+                          : "none",
+                        transition: "all 0.25s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isActive) {
+                          e.currentTarget.style.color = "#ffffff";
+                          e.currentTarget.style.background =
+                            "rgba(255,255,255,0.04)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isActive) {
+                          e.currentTarget.style.color = "#777777";
+                          e.currentTarget.style.background = "transparent";
+                        }
+                      }}
+                    >
+                      {item.label}
+                      {/* Active Indicator */}
+                      {isActive && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            bottom: "8px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "4px",
+                            height: "4px",
+                            background: "#2563EB",
+                            borderRadius: "50%",
+                            boxShadow: "0 0 8px #2563EB",
+                          }}
+                        />
+                      )}
+                    </Link>
+                  );
+                })}
               </div>
               <motion.span
                 initial={{ opacity: 0, x: -10 }}
