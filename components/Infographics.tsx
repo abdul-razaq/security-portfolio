@@ -10,6 +10,17 @@ const comicFont =
 const INITIAL_VISIBLE = 6;
 const LOAD_STEP = 6;
 
+const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
+  if (!publishedAt || !updatedAt) return false;
+
+  const published = new Date(publishedAt).getTime();
+  const updated = new Date(updatedAt).getTime();
+
+  return (
+    !Number.isNaN(published) && !Number.isNaN(updated) && updated > published
+  );
+};
+
 export function Infographics() {
   const [infographics, setInfographics] = useState<Infographic[]>([]);
   const [query, setQuery] = useState("");
@@ -533,24 +544,66 @@ export function Infographics() {
                           {item.title}
                         </h3>
                         {item.publishedAt && (
-                          <time
+                          <div
                             style={{
-                              color: "rgba(255,255,255,0.55)",
-                              fontSize: "13px",
-                              fontFamily: comicFont,
-                              whiteSpace: "nowrap",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "6px",
+                              flexWrap: "wrap",
                               alignSelf: "flex-start",
                             }}
                           >
-                            {new Date(item.publishedAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              },
+                            <time
+                              style={{
+                                color: "rgba(255,255,255,0.55)",
+                                fontSize: "13px",
+                                fontFamily: comicFont,
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {new Date(item.publishedAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                },
+                              )}
+                            </time>
+                            {hasBeenUpdated(
+                              item.publishedAt,
+                              item.updatedAt,
+                            ) && (
+                              <>
+                                <span
+                                  style={{
+                                    color: "rgba(255,255,255,0.32)",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  •
+                                </span>
+                                <time
+                                  style={{
+                                    color: "rgba(96, 165, 250, 0.9)",
+                                    fontSize: "12px",
+                                    fontFamily: comicFont,
+                                    whiteSpace: "nowrap",
+                                  }}
+                                >
+                                  Updated{" "}
+                                  {new Date(item.updatedAt!).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "short",
+                                      day: "numeric",
+                                    },
+                                  )}
+                                </time>
+                              </>
                             )}
-                          </time>
+                          </div>
                         )}
                       </div>
                     </div>

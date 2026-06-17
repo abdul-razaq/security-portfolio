@@ -17,17 +17,26 @@ const lora = Lora({
 
 const formatKeywords = (text: string) => {
   const keywords = [
-    { pattern: /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi, style: { color: '#2563EB', fontWeight: 600 } },
-    { pattern: /(critical|high|medium|low)/gi, style: { color: '#DC2626', fontWeight: 600 } },
+    {
+      pattern:
+        /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi,
+      style: { color: "#2563EB", fontWeight: 600 },
+    },
+    {
+      pattern: /(critical|high|medium|low)/gi,
+      style: { color: "#DC2626", fontWeight: 600 },
+    },
   ];
 
-  let parts: Array<string | { text: string; style: React.CSSProperties; key: number }> = [text];
+  let parts: Array<
+    string | { text: string; style: React.CSSProperties; key: number }
+  > = [text];
   let keyCounter = 0;
 
   keywords.forEach(({ pattern, style }) => {
     const newParts: typeof parts = [];
     parts.forEach((part) => {
-      if (typeof part === 'string') {
+      if (typeof part === "string") {
         let lastIndex = 0;
         let match: RegExpExecArray | null;
         const regex = new RegExp(pattern.source, pattern.flags);
@@ -49,11 +58,13 @@ const formatKeywords = (text: string) => {
   });
 
   return parts.map((part, i) =>
-    typeof part === 'string' ? (
+    typeof part === "string" ? (
       part
     ) : (
-      <span key={part.key} style={part.style}>{part.text}</span>
-    )
+      <span key={part.key} style={part.style}>
+        {part.text}
+      </span>
+    ),
   );
 };
 
@@ -216,6 +227,17 @@ export default function BlogPostPage() {
       month: "long",
       day: "numeric",
     });
+  };
+
+  const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
+    if (!publishedAt || !updatedAt) return false;
+
+    const published = new Date(publishedAt).getTime();
+    const updated = new Date(updatedAt).getTime();
+
+    return (
+      !Number.isNaN(published) && !Number.isNaN(updated) && updated > published
+    );
   };
 
   const slugify = (text: string) =>
@@ -563,7 +585,11 @@ export default function BlogPostPage() {
         const text = m[0];
         if (start > last) parts.push(src.slice(last, start));
         let colored = text;
-        if (text.startsWith("#") || text.startsWith('"""') || text.startsWith("'''")) {
+        if (
+          text.startsWith("#") ||
+          text.startsWith('"""') ||
+          text.startsWith("'''")
+        ) {
           colored = wrap("rgba(255,255,255,0.5)", text);
         } else if (text.startsWith('"') || text.startsWith("'")) {
           colored = wrap("#a8e6a2", text);
@@ -813,7 +839,10 @@ export default function BlogPostPage() {
                   <span className="toc-label-accent" />
                   On this page
                 </div>
-                <nav className="toc-mobile-links" aria-label="Table of contents">
+                <nav
+                  className="toc-mobile-links"
+                  aria-label="Table of contents"
+                >
                   {tocItems.map((t) => (
                     <a
                       key={t.id}
@@ -1058,6 +1087,45 @@ export default function BlogPostPage() {
                   </div>
                 </div>
 
+                {hasBeenUpdated(post.publishedAt, post.updatedAt) && (
+                  <>
+                    <div
+                      style={{
+                        width: "1px",
+                        height: "32px",
+                        background: "rgba(255,255,255,0.1)",
+                      }}
+                    />
+
+                    <div>
+                      <div
+                        style={{
+                          fontFamily:
+                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                          fontSize: "14px",
+                          color: "rgba(255,255,255,0.4)",
+                          marginBottom: "2px",
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        Updated
+                      </div>
+                      <div
+                        style={{
+                          fontFamily:
+                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                          fontSize: "16px",
+                          fontWeight: 500,
+                          color: "rgba(255,255,255,0.8)",
+                          letterSpacing: "-0.01em",
+                        }}
+                      >
+                        {formatDate(post.updatedAt!)}
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 <div
                   style={{
                     width: "1px",
@@ -1122,8 +1190,10 @@ export default function BlogPostPage() {
                         letterSpacing: "-0.005em",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(37,99,235,0.15)";
-                        e.currentTarget.style.borderColor = "rgba(37,99,235,0.3)";
+                        e.currentTarget.style.background =
+                          "rgba(37,99,235,0.15)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(37,99,235,0.3)";
                         e.currentTarget.style.color = "#2563EB";
                       }}
                       onMouseLeave={(e) => {
@@ -1795,7 +1865,11 @@ export default function BlogPostPage() {
           width: 3px;
           height: 14px;
           border-radius: 2px;
-          background: linear-gradient(180deg, #2563EB 0%, rgba(37,99,235,0.5) 100%);
+          background: linear-gradient(
+            180deg,
+            #2563eb 0%,
+            rgba(37, 99, 235, 0.5) 100%
+          );
           margin-right: 10px;
           vertical-align: middle;
         }
@@ -1806,27 +1880,43 @@ export default function BlogPostPage() {
         .toc-mobile-inner {
           padding: 20px 18px;
           border-radius: 16px;
-          background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 50%, rgba(0,0,0,0.02) 100%);
-          border: 1px solid rgba(255,255,255,0.08);
-          box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
+          background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.01) 50%,
+            rgba(0, 0, 0, 0.02) 100%
+          );
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow:
+            0 4px 24px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03);
           position: relative;
           overflow: hidden;
         }
         .toc-mobile-inner::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.4) 50%, transparent 100%);
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(37, 99, 235, 0.4) 50%,
+            transparent 100%
+          );
           opacity: 0.8;
         }
         .toc-mobile-label {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 11px;
           font-weight: 700;
-          color: rgba(255,255,255,0.6);
+          color: rgba(255, 255, 255, 0.6);
           margin-bottom: 14px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
@@ -1843,32 +1933,44 @@ export default function BlogPostPage() {
           padding: 12px 14px 12px 16px;
           border-radius: 12px;
           text-decoration: none;
-          transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          transition:
+            color 0.25s ease,
+            background 0.25s ease,
+            border-color 0.25s ease,
+            transform 0.2s ease;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 14px;
           font-weight: 500;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255, 255, 255, 0.7);
           background: transparent;
           border-left: 3px solid transparent;
         }
         .toc-mobile-link:hover {
-          color: rgba(255,255,255,0.95);
-          background: rgba(255,255,255,0.04);
+          color: rgba(255, 255, 255, 0.95);
+          background: rgba(255, 255, 255, 0.04);
         }
         .toc-mobile-link.toc-link--active {
           color: #ffffff;
-          background: linear-gradient(90deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%);
-          border-left-color: #2563EB;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+          background: linear-gradient(
+            90deg,
+            rgba(37, 99, 235, 0.15) 0%,
+            rgba(37, 99, 235, 0.05) 100%
+          );
+          border-left-color: #2563eb;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
         .toc-mobile-link.toc-link--sub {
           padding-left: 28px;
           font-size: 13px;
           font-weight: 400;
-          color: rgba(255,255,255,0.65);
+          color: rgba(255, 255, 255, 0.65);
         }
         .toc-mobile-link.toc-link--sub.toc-link--active {
-          color: rgba(255,255,255,0.95);
+          color: rgba(255, 255, 255, 0.95);
         }
         .toc {
           display: none;
@@ -1876,27 +1978,43 @@ export default function BlogPostPage() {
         .toc-inner {
           padding: 20px 16px;
           border-radius: 18px;
-          background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 50%, rgba(0,0,0,0.02) 100%);
-          border: 1px solid rgba(255,255,255,0.08);
-          box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
+          background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.01) 50%,
+            rgba(0, 0, 0, 0.02) 100%
+          );
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow:
+            0 4px 24px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03);
           position: relative;
           overflow: hidden;
         }
         .toc-inner::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.4) 50%, transparent 100%);
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(37, 99, 235, 0.4) 50%,
+            transparent 100%
+          );
           opacity: 0.8;
         }
         .toc-label {
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 11px;
           font-weight: 700;
-          color: rgba(255,255,255,0.6);
+          color: rgba(255, 255, 255, 0.6);
           margin-bottom: 14px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
@@ -1913,36 +2031,48 @@ export default function BlogPostPage() {
           padding: 10px 12px 10px 14px;
           border-radius: 12px;
           text-decoration: none;
-          transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, padding-left 0.22s ease;
-          font-family: var(--font-satoshi), system-ui, -apple-system, sans-serif;
+          transition:
+            color 0.25s ease,
+            background 0.25s ease,
+            border-color 0.25s ease,
+            padding-left 0.22s ease;
+          font-family:
+            var(--font-satoshi),
+            system-ui,
+            -apple-system,
+            sans-serif;
           font-size: 14px;
           font-weight: 500;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255, 255, 255, 0.7);
           background: transparent;
           border-left: 3px solid transparent;
         }
         .toc-link:hover {
-          color: rgba(255,255,255,0.95);
-          background: rgba(255,255,255,0.04);
+          color: rgba(255, 255, 255, 0.95);
+          background: rgba(255, 255, 255, 0.04);
           padding-left: 18px;
         }
         .toc-link.toc-link--active {
           color: #ffffff;
-          background: linear-gradient(90deg, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0.05) 100%);
-          border-left-color: #2563EB;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+          background: linear-gradient(
+            90deg,
+            rgba(37, 99, 235, 0.15) 0%,
+            rgba(37, 99, 235, 0.05) 100%
+          );
+          border-left-color: #2563eb;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
         .toc-link.toc-link--sub {
           padding-left: 24px;
           font-size: 13px;
           font-weight: 400;
-          color: rgba(255,255,255,0.65);
+          color: rgba(255, 255, 255, 0.65);
         }
         .toc-link.toc-link--sub:hover {
           padding-left: 28px;
         }
         .toc-link.toc-link--sub.toc-link--active {
-          color: rgba(255,255,255,0.95);
+          color: rgba(255, 255, 255, 0.95);
         }
         @media (min-width: 1024px) {
           .article-layout {
@@ -2029,7 +2159,7 @@ export default function BlogPostPage() {
             display: flex;
             align-items: center;
             padding: 12px 14px 12px 16px !important;
-            -webkit-tap-highlight-color: rgba(37,99,235,0.15);
+            -webkit-tap-highlight-color: rgba(37, 99, 235, 0.15);
           }
         }
         @media (max-width: 480px) {

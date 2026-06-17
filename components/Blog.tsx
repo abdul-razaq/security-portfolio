@@ -115,6 +115,17 @@ export function Blog() {
     });
   };
 
+  const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
+    if (!publishedAt || !updatedAt) return false;
+
+    const published = new Date(publishedAt).getTime();
+    const updated = new Date(updatedAt).getTime();
+
+    return (
+      !Number.isNaN(published) && !Number.isNaN(updated) && updated > published
+    );
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -533,6 +544,22 @@ export function Blog() {
                     <span style={{ whiteSpace: "nowrap" }}>
                       {formatDate(post.publishedAt)}
                     </span>
+                    {hasBeenUpdated(post.publishedAt, post.updatedAt) && (
+                      <>
+                        <span
+                          style={{
+                            width: "4px",
+                            height: "4px",
+                            borderRadius: "50%",
+                            background: "rgba(255,255,255,0.2)",
+                            flexShrink: 0,
+                          }}
+                        />
+                        <span style={{ whiteSpace: "nowrap" }}>
+                          Updated {formatDate(post.updatedAt!)}
+                        </span>
+                      </>
+                    )}
                     <span
                       style={{
                         width: "4px",

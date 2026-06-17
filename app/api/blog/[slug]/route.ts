@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
-import { client } from '@/sanity/lib/client';
+import { client } from "@/sanity/lib/client";
+import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
     const { slug } = await params;
@@ -18,28 +18,26 @@ export async function GET(
         tags,
         featured,
         publishedAt,
+        updatedAt,
         readTime,
         author,
         content,
         "mainImage": mainImage.asset->url,
         "mainImageAlt": mainImage.alt
       }`,
-      { slug }
+      { slug },
     );
 
     if (!post) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
     return NextResponse.json({ post }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching blog post:', error);
+    console.error("Error fetching blog post:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch blog post' },
-      { status: 404 }
+      { error: "Failed to fetch blog post" },
+      { status: 404 },
     );
   }
 }

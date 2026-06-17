@@ -47,6 +47,13 @@ export const infographicType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "updatedAt",
+      title: "Updated At",
+      type: "datetime",
+      description: "Automatically updated when the infographic changes.",
+      readOnly: true,
+    }),
+    defineField({
       name: "image",
       title: "Infographic Image",
       type: "image",

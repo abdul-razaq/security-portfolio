@@ -11,6 +11,7 @@ export interface BlogPost {
   tags: string[];
   featured: boolean;
   publishedAt: string;
+  updatedAt?: string;
   readTime: string;
   author: string;
   content?: any; // Portable Text blocks
@@ -25,6 +26,7 @@ export interface Infographic {
   summary: any[];
   tags: string[];
   publishedAt: string;
+  updatedAt?: string;
   image?: string;
   imageAlt?: string;
 }
