@@ -24,10 +24,11 @@ export const infographicType = defineType({
     defineField({
       name: "summary",
       title: "Summary",
-      type: "text",
-      rows: 5,
-      description: "Short description shown below the infographic image",
-      validation: (Rule) => Rule.required().max(2000),
+      type: "array",
+      of: [{ type: "block" }],
+      description:
+        "Rich-text summary for the infographic card. You can use headings, lists, bold, links, and emphasis.",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "tags",

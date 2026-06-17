@@ -22,7 +22,7 @@ export interface Infographic {
   _id: string;
   title: string;
   slug: string;
-  summary: string;
+  summary: any[];
   tags: string[];
   publishedAt: string;
   image?: string;

@@ -1,6 +1,7 @@
 "use client";
 
 import { getInfographics, type Infographic } from "@/lib/api";
+import { portableTextToPlainText } from "@/lib/portableText";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const INITIAL_VISIBLE = 6;
@@ -12,6 +13,143 @@ export function Infographics() {
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  const renderInlineText = (children: any[], markDefs: any[] = []) => {
+    const defs = new Map((markDefs || []).map((def) => [def._key, def]));
+
+    return children.map((child, index) => {
+      const text = child.text || "";
+      if (!text) return null;
+
+      let content = <>{text}</>;
+
+      if (child.marks?.includes("strong")) {
+        content = <strong>{content}</strong>;
+      }
+
+      if (child.marks?.includes("em")) {
+        content = <em>{content}</em>;
+      }
+
+      for (const mark of child.marks || []) {
+        if (mark === "strong" || mark === "em") continue;
+        const def = defs.get(mark);
+        if (def?.href) {
+          content = (
+            <a
+              href={def.href}
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "#93C5FD" }}
+            >
+              {content}
+            </a>
+          );
+        }
+      }
+
+      return <span key={`${child.text || "text"}-${index}`}>{content}</span>;
+    });
+  };
+
+  const renderSummary = (summary: any[]) => {
+    if (!Array.isArray(summary) || summary.length === 0) {
+      return null;
+    }
+
+    return summary.map((block, index) => {
+      if (block._type !== "block" || !Array.isArray(block.children)) {
+        return null;
+      }
+
+      const content = renderInlineText(block.children, block.markDefs);
+
+      if (block.listItem === "bullet") {
+        return (
+          <ul
+            key={`summary-list-${index}`}
+            style={{
+              margin: "0 0 10px 18px",
+              padding: 0,
+              color: "rgba(255,255,255,0.72)",
+            }}
+          >
+            <li style={{ lineHeight: 1.7 }}>{content}</li>
+          </ul>
+        );
+      }
+
+      switch (block.style) {
+        case "h1":
+          return (
+            <h1
+              key={`summary-heading-${index}`}
+              style={{
+                color: "#ffffff",
+                fontSize: "1.4rem",
+                margin: "0 0 10px",
+              }}
+            >
+              {content}
+            </h1>
+          );
+        case "h2":
+          return (
+            <h2
+              key={`summary-heading-${index}`}
+              style={{
+                color: "#ffffff",
+                fontSize: "1.2rem",
+                margin: "0 0 10px",
+              }}
+            >
+              {content}
+            </h2>
+          );
+        case "h3":
+          return (
+            <h3
+              key={`summary-heading-${index}`}
+              style={{
+                color: "#ffffff",
+                fontSize: "1rem",
+                margin: "0 0 8px",
+              }}
+            >
+              {content}
+            </h3>
+          );
+        case "blockquote":
+          return (
+            <blockquote
+              key={`summary-blockquote-${index}`}
+              style={{
+                margin: "0 0 10px",
+                paddingLeft: "12px",
+                borderLeft: "3px solid rgba(37,99,235,0.6)",
+                color: "rgba(255,255,255,0.78)",
+              }}
+            >
+              {content}
+            </blockquote>
+          );
+        default:
+          return (
+            <p
+              key={`summary-paragraph-${index}`}
+              style={{
+                color: "rgba(255,255,255,0.72)",
+                fontSize: "15px",
+                lineHeight: 1.7,
+                margin: "0 0 10px",
+              }}
+            >
+              {content}
+            </p>
+          );
+      }
+    });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -51,7 +189,12 @@ export function Infographics() {
     }
 
     return infographics.filter((item) => {
-      const searchableText = [item.title, item.summary, item.tags?.join(" ")]
+      const summaryText =
+        typeof item.summary === "string"
+          ? item.summary
+          : portableTextToPlainText(item.summary);
+
+      const searchableText = [item.title, summaryText, item.tags?.join(" ")]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
@@ -330,16 +473,13 @@ export function Infographics() {
                       >
                         {item.title}
                       </h3>
-                      <p
+                      <div
                         style={{
-                          color: "rgba(255,255,255,0.72)",
-                          fontSize: "15px",
-                          lineHeight: 1.7,
                           marginBottom: "14px",
                         }}
                       >
-                        {item.summary}
-                      </p>
+                        {renderSummary(item.summary)}
+                      </div>
                       {item.tags?.length > 0 && (
                         <div
                           style={{
