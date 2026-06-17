@@ -4,6 +4,9 @@ import { getInfographics, type Infographic } from "@/lib/api";
 import { portableTextToPlainText } from "@/lib/portableText";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+const comicFont =
+  "'Trebuchet MS', 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif";
+
 const INITIAL_VISIBLE = 6;
 const LOAD_STEP = 6;
 
@@ -52,7 +55,24 @@ export function Infographics() {
     });
   };
 
-  const renderSummary = (summary: any[]) => {
+  const renderSummary = (summary: any) => {
+    if (typeof summary === "string") {
+      return (
+        <p
+          style={{
+            color: "rgba(255,255,255,0.92)",
+            fontSize: "clamp(1rem, 1.8vw, 1.1rem)",
+            lineHeight: 1.8,
+            margin: "0 0 10px",
+            whiteSpace: "pre-wrap",
+            fontFamily: comicFont,
+          }}
+        >
+          {summary}
+        </p>
+      );
+    }
+
     if (!Array.isArray(summary) || summary.length === 0) {
       return null;
     }
@@ -69,12 +89,21 @@ export function Infographics() {
           <ul
             key={`summary-list-${index}`}
             style={{
-              margin: "0 0 10px 18px",
+              margin: "0 0 12px 1.2rem",
               padding: 0,
-              color: "rgba(255,255,255,0.72)",
+              color: "rgba(255,255,255,0.94)",
+              fontFamily: comicFont,
+              lineHeight: 1.8,
             }}
           >
-            <li style={{ lineHeight: 1.7 }}>{content}</li>
+            <li
+              style={{
+                lineHeight: 1.8,
+                fontSize: "clamp(0.98rem, 1.7vw, 1.08rem)",
+              }}
+            >
+              {content}
+            </li>
           </ul>
         );
       }
@@ -85,9 +114,11 @@ export function Infographics() {
             <h1
               key={`summary-heading-${index}`}
               style={{
-                color: "#ffffff",
-                fontSize: "1.4rem",
-                margin: "0 0 10px",
+                color: "rgba(255,255,255,0.98)",
+                fontSize: "clamp(1.7rem, 2.8vw, 2.2rem)",
+                margin: "0 0 12px",
+                fontFamily: comicFont,
+                lineHeight: 1.2,
               }}
             >
               {content}
@@ -98,9 +129,11 @@ export function Infographics() {
             <h2
               key={`summary-heading-${index}`}
               style={{
-                color: "#ffffff",
-                fontSize: "1.2rem",
+                color: "rgba(255,255,255,0.98)",
+                fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)",
                 margin: "0 0 10px",
+                fontFamily: comicFont,
+                lineHeight: 1.3,
               }}
             >
               {content}
@@ -111,9 +144,11 @@ export function Infographics() {
             <h3
               key={`summary-heading-${index}`}
               style={{
-                color: "#ffffff",
-                fontSize: "1rem",
+                color: "rgba(255,255,255,0.98)",
+                fontSize: "1.05rem",
                 margin: "0 0 8px",
+                fontFamily: comicFont,
+                lineHeight: 1.4,
               }}
             >
               {content}
@@ -124,10 +159,15 @@ export function Infographics() {
             <blockquote
               key={`summary-blockquote-${index}`}
               style={{
-                margin: "0 0 10px",
-                paddingLeft: "12px",
-                borderLeft: "3px solid rgba(37,99,235,0.6)",
-                color: "rgba(255,255,255,0.78)",
+                margin: "0 0 12px",
+                padding: "10px 14px",
+                borderLeft: "4px solid #60A5FA",
+                borderRadius: "8px",
+                background: "rgba(37,99,235,0.08)",
+                color: "rgba(255,255,255,0.95)",
+                fontFamily: comicFont,
+                lineHeight: 1.7,
+                fontSize: "clamp(0.98rem, 1.7vw, 1.08rem)",
               }}
             >
               {content}
@@ -138,10 +178,12 @@ export function Infographics() {
             <p
               key={`summary-paragraph-${index}`}
               style={{
-                color: "rgba(255,255,255,0.72)",
-                fontSize: "15px",
-                lineHeight: 1.7,
-                margin: "0 0 10px",
+                color: "rgba(255,255,255,0.96)",
+                fontSize: "clamp(1rem, 1.8vw, 1.1rem)",
+                lineHeight: 1.8,
+                margin: "0 0 12px",
+                fontFamily: comicFont,
+                textAlign: "left",
               }}
             >
               {content}
@@ -275,20 +317,26 @@ export function Infographics() {
           zIndex: 10,
           maxWidth: "var(--container-max)",
           margin: "0 auto",
-          padding: "0 var(--container-x)",
+          padding: "0 clamp(16px, 3.5vw, 32px)",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "48px",
+          }}
+        >
           <div
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "12px",
-              padding: "8px 20px",
+              padding: "8px 18px",
               borderRadius: "9999px",
               marginBottom: "24px",
               background: "rgba(37,99,235,0.1)",
               border: "1px solid rgba(37,99,235,0.2)",
+              maxWidth: "100%",
             }}
           >
             <span
@@ -313,11 +361,12 @@ export function Infographics() {
           </div>
           <h1
             style={{
-              fontSize: "clamp(42px, 6vw, 72px)",
+              fontSize: "clamp(36px, 5vw, 72px)",
               fontWeight: 700,
               color: "#ffffff",
               marginBottom: "18px",
               lineHeight: 1.1,
+              wordBreak: "break-word",
             }}
           >
             <span style={{ color: "#2563EB" }}>Application Security</span>{" "}
@@ -325,14 +374,16 @@ export function Infographics() {
           </h1>
           <p
             style={{
-              fontSize: "clamp(16px, 2vw, 20px)",
+              fontSize: "clamp(15px, 2vw, 20px)",
               color: "rgba(255,255,255,0.65)",
               maxWidth: "720px",
               margin: "0 auto",
+              padding: "0 8px",
+              lineHeight: 1.6,
             }}
           >
             A visual collection of security concepts, risk patterns, and
-            practical engineering guidance.
+            practical secure design and engineering guidance.
           </p>
         </div>
 
@@ -341,6 +392,7 @@ export function Infographics() {
             marginBottom: "40px",
             maxWidth: "760px",
             marginInline: "auto",
+            padding: "0 4px",
           }}
         >
           <div
@@ -351,7 +403,8 @@ export function Infographics() {
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "16px",
-              padding: "14px 18px",
+              padding: "14px 16px",
+              width: "100%",
             }}
           >
             <span style={{ color: "#94A3B8", fontSize: "18px" }}>🔎</span>
@@ -367,6 +420,7 @@ export function Infographics() {
                 outline: "none",
                 color: "#F8FAFC",
                 fontSize: "15px",
+                minWidth: 0,
               }}
             />
           </div>
@@ -391,19 +445,14 @@ export function Infographics() {
         {!loading && (
           <>
             <style jsx>{`
-              .infographic-grid {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 28px;
+              .infographic-stack {
+                display: flex;
+                flex-direction: column;
+                gap: 56px;
               }
-              @media (min-width: 768px) {
-                .infographic-grid {
-                  grid-template-columns: repeat(2, 1fr);
-                }
-              }
-              @media (min-width: 1024px) {
-                .infographic-grid {
-                  grid-template-columns: repeat(3, 1fr);
+              @media (max-width: 768px) {
+                .infographic-stack {
+                  gap: 40px;
                 }
               }
               @keyframes spin {
@@ -427,65 +476,129 @@ export function Infographics() {
                 No infographics match your search.
               </div>
             ) : (
-              <div className="infographic-grid">
+              <div className="infographic-stack">
                 {visibleInfographics.map((item) => (
                   <article
                     key={item._id}
                     style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "18px",
-                      overflow: "hidden",
-                      transition: "all 0.3s ease",
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "18px",
+                      alignItems: "stretch",
                     }}
                   >
-                    <div style={{ aspectRatio: "16 / 10", overflow: "hidden" }}>
-                      {item.image ? (
-                        <img
-                          src={item.image}
-                          alt={item.imageAlt || item.title}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            background:
-                              "linear-gradient(135deg, rgba(37,99,235,0.18), rgba(15,23,42,0.95))",
-                          }}
-                        />
-                      )}
-                    </div>
-                    <div style={{ padding: "22px" }}>
-                      <h3
-                        style={{
-                          color: "#ffffff",
-                          fontSize: "22px",
-                          marginBottom: "10px",
-                          lineHeight: 1.3,
-                        }}
-                      >
-                        {item.title}
-                      </h3>
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: "920px",
+                        margin: "0 auto",
+                        padding: "0 clamp(12px, 3vw, 24px)",
+                      }}
+                    >
                       <div
                         style={{
-                          marginBottom: "14px",
+                          display: "flex",
+                          alignItems: "flex-end",
+                          justifyContent: "space-between",
+                          gap: "8px 12px",
+                          flexWrap: "wrap",
+                          marginBottom: "18px",
                         }}
                       >
+                        <h3
+                          style={{
+                            color: "#ffffff",
+                            fontSize: "clamp(22px, 3vw, 36px)",
+                            margin: 0,
+                            lineHeight: 1.2,
+                            fontFamily: comicFont,
+                            textAlign: "left",
+                            width: "100%",
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                        {item.publishedAt && (
+                          <time
+                            style={{
+                              color: "rgba(255,255,255,0.55)",
+                              fontSize: "13px",
+                              fontFamily: comicFont,
+                              whiteSpace: "nowrap",
+                              alignSelf: "flex-start",
+                            }}
+                          >
+                            {new Date(item.publishedAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              },
+                            )}
+                          </time>
+                        )}
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: "1120px",
+                        margin: "0 auto",
+                        padding: "0 clamp(8px, 2vw, 18px)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          aspectRatio: "16 / 10",
+                          overflow: "hidden",
+                          borderRadius: "18px",
+                          background:
+                            "linear-gradient(135deg, rgba(37,99,235,0.18), rgba(15,23,42,0.95))",
+                          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.04)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "100%",
+                        }}
+                      >
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.imageAlt || item.title}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "contain",
+                              display: "block",
+                              background: "#0B1120",
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        width: "100%",
+                        maxWidth: "920px",
+                        margin: "0 auto",
+                        padding: "0 clamp(16px, 3vw, 24px) 36px",
+                      }}
+                    >
+                      <div style={{ marginBottom: "14px", width: "100%" }}>
                         {renderSummary(item.summary)}
                       </div>
+
                       {item.tags?.length > 0 && (
                         <div
                           style={{
                             display: "flex",
                             gap: "8px",
                             flexWrap: "wrap",
+                            alignItems: "center",
                           }}
                         >
                           {item.tags.map((tag) => (
@@ -498,6 +611,7 @@ export function Infographics() {
                                 border: "1px solid rgba(37,99,235,0.18)",
                                 borderRadius: "999px",
                                 padding: "6px 10px",
+                                fontFamily: comicFont,
                               }}
                             >
                               {tag}
