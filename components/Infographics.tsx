@@ -9,6 +9,7 @@ const comicFont =
 
 const INITIAL_VISIBLE = 6;
 const LOAD_STEP = 6;
+const MIN_UPDATE_DIFFERENCE_MS = 24 * 60 * 60 * 1000;
 
 const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
   if (!publishedAt || !updatedAt) return false;
@@ -16,9 +17,11 @@ const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
   const published = new Date(publishedAt).getTime();
   const updated = new Date(updatedAt).getTime();
 
-  return (
-    !Number.isNaN(published) && !Number.isNaN(updated) && updated > published
-  );
+  if (Number.isNaN(published) || Number.isNaN(updated)) {
+    return false;
+  }
+
+  return updated - published >= MIN_UPDATE_DIFFERENCE_MS;
 };
 
 export function Infographics() {
@@ -291,7 +294,8 @@ export function Infographics() {
       style={{
         background:
           "linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)",
-        overflow: "visible",
+        overflowX: "hidden",
+        overflowY: "visible",
       }}
     >
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -312,8 +316,9 @@ export function Infographics() {
             position: "absolute",
             top: "12%",
             right: "12%",
-            width: "420px",
-            height: "420px",
+            width: "min(420px, 56vw)",
+            height: "min(420px, 56vw)",
+            maxWidth: "100%",
             borderRadius: "50%",
             background:
               "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)",
@@ -324,8 +329,9 @@ export function Infographics() {
             position: "absolute",
             bottom: "10%",
             left: "8%",
-            width: "520px",
-            height: "520px",
+            width: "min(520px, 72vw)",
+            height: "min(520px, 72vw)",
+            maxWidth: "100%",
             borderRadius: "50%",
             background:
               "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)",
@@ -337,9 +343,11 @@ export function Infographics() {
         style={{
           position: "relative",
           zIndex: 10,
+          width: "100%",
           maxWidth: "var(--container-max)",
           margin: "0 auto",
           padding: "0 clamp(16px, 3.5vw, 32px)",
+          boxSizing: "border-box",
         }}
       >
         <div
@@ -427,6 +435,8 @@ export function Infographics() {
               borderRadius: "16px",
               padding: "14px 16px",
               width: "100%",
+              boxSizing: "border-box",
+              minWidth: 0,
             }}
           >
             <span style={{ color: "#94A3B8", fontSize: "18px" }}>🔎</span>
@@ -518,6 +528,7 @@ export function Infographics() {
                         maxWidth: "920px",
                         margin: "0 auto",
                         padding: "0 clamp(12px, 3vw, 24px)",
+                        boxSizing: "border-box",
                       }}
                     >
                       <div
@@ -614,6 +625,7 @@ export function Infographics() {
                         maxWidth: "1120px",
                         margin: "0 auto",
                         padding: "0 clamp(8px, 2vw, 18px)",
+                        boxSizing: "border-box",
                       }}
                     >
                       <div
@@ -676,6 +688,7 @@ export function Infographics() {
                         margin: "0 auto",
                         padding: "0 clamp(16px, 3vw, 24px) 36px",
                         overflow: "visible",
+                        boxSizing: "border-box",
                       }}
                     >
                       <div style={{ marginBottom: "14px", width: "100%" }}>

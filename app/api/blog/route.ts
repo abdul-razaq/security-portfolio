@@ -17,7 +17,7 @@ export async function GET(request: Request) {
       tags,
       featured,
       publishedAt,
-      updatedAt,
+      "updatedAt": _updatedAt,
       readTime,
       author,
       content,

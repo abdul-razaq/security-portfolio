@@ -18,7 +18,7 @@ export async function GET(
         tags,
         featured,
         publishedAt,
-        updatedAt,
+        "updatedAt": _updatedAt,
         readTime,
         author,
         content,

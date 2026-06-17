@@ -115,15 +115,19 @@ export function Blog() {
     });
   };
 
+  const MIN_UPDATE_DIFFERENCE_MS = 24 * 60 * 60 * 1000;
+
   const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
     if (!publishedAt || !updatedAt) return false;
 
     const published = new Date(publishedAt).getTime();
     const updated = new Date(updatedAt).getTime();
 
-    return (
-      !Number.isNaN(published) && !Number.isNaN(updated) && updated > published
-    );
+    if (Number.isNaN(published) || Number.isNaN(updated)) {
+      return false;
+    }
+
+    return updated - published >= MIN_UPDATE_DIFFERENCE_MS;
   };
 
   return (

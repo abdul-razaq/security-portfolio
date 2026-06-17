@@ -10,7 +10,7 @@ export async function GET() {
       summary,
       tags,
       publishedAt,
-      updatedAt,
+      "updatedAt": _updatedAt,
       "image": image.asset->url,
       "imageAlt": image.alt
     }`;
