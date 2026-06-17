@@ -15,6 +15,7 @@ export function Infographics() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const [activeImageId, setActiveImageId] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const renderInlineText = (children: any[], markDefs: any[] = []) => {
@@ -84,9 +85,15 @@ export function Infographics() {
 
       const content = renderInlineText(block.children, block.markDefs);
 
-      if (block.listItem === "bullet") {
+      if (
+        block.listItem === "bullet" ||
+        block.listItem === "number" ||
+        block.listItem === "ordered"
+      ) {
+        const ListTag = block.listItem === "bullet" ? "ul" : "ol";
+
         return (
-          <ul
+          <ListTag
             key={`summary-list-${index}`}
             style={{
               margin: "0 0 12px 1.2rem",
@@ -100,11 +107,12 @@ export function Infographics() {
               style={{
                 lineHeight: 1.8,
                 fontSize: "clamp(0.98rem, 1.7vw, 1.08rem)",
+                overflowWrap: "anywhere",
               }}
             >
               {content}
             </li>
-          </ul>
+          </ListTag>
         );
       }
 
@@ -184,6 +192,8 @@ export function Infographics() {
                 margin: "0 0 12px",
                 fontFamily: comicFont,
                 textAlign: "left",
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
               }}
             >
               {content}
@@ -270,6 +280,7 @@ export function Infographics() {
       style={{
         background:
           "linear-gradient(180deg, #020617 0%, #0F172A 50%, #020617 100%)",
+        overflow: "visible",
       }}
     >
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -486,6 +497,8 @@ export function Infographics() {
                       flexDirection: "column",
                       gap: "18px",
                       alignItems: "stretch",
+                      overflow: "visible",
+                      minWidth: 0,
                     }}
                   >
                     <div
@@ -551,9 +564,15 @@ export function Infographics() {
                       }}
                     >
                       <div
+                        onMouseEnter={() => setActiveImageId(item._id)}
+                        onMouseLeave={() => setActiveImageId(null)}
+                        onFocus={() => setActiveImageId(item._id)}
+                        onBlur={() => setActiveImageId(null)}
+                        onTouchStart={() => setActiveImageId(item._id)}
+                        onTouchEnd={() => setActiveImageId(null)}
                         style={{
                           aspectRatio: "16 / 10",
-                          overflow: "hidden",
+                          overflow: "visible",
                           borderRadius: "18px",
                           background:
                             "linear-gradient(135deg, rgba(37,99,235,0.18), rgba(15,23,42,0.95))",
@@ -562,6 +581,14 @@ export function Infographics() {
                           alignItems: "center",
                           justifyContent: "center",
                           width: "100%",
+                          minWidth: 0,
+                          cursor: "zoom-in",
+                          transition:
+                            "transform 220ms ease, box-shadow 220ms ease",
+                          transform:
+                            activeImageId === item._id
+                              ? "scale(1.03)"
+                              : "scale(1)",
                         }}
                       >
                         {item.image ? (
@@ -572,8 +599,17 @@ export function Infographics() {
                               width: "100%",
                               height: "100%",
                               objectFit: "contain",
+                              objectPosition: "center center",
                               display: "block",
                               background: "#0B1120",
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              transition: "transform 240ms ease",
+                              transform:
+                                activeImageId === item._id
+                                  ? "scale(1.04)"
+                                  : "scale(1)",
+                              transformOrigin: "center center",
                             }}
                           />
                         ) : null}
@@ -586,6 +622,7 @@ export function Infographics() {
                         maxWidth: "920px",
                         margin: "0 auto",
                         padding: "0 clamp(16px, 3vw, 24px) 36px",
+                        overflow: "visible",
                       }}
                     >
                       <div style={{ marginBottom: "14px", width: "100%" }}>
