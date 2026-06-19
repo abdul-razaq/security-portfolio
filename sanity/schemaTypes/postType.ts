@@ -43,7 +43,12 @@ export const postType = defineType({
           { title: "Exploitation", value: "Exploitation" },
           { title: "API Security", value: "API Security" },
           { title: "Methodology", value: "Methodology" },
-          { title: "Enumeration", value: "Enumeration" },
+          { title: "AppSec Projects", value: "AppSec Projects" },
+          { title: "Threat Modeling", value: "Threat Modeling" },
+          { title: "Product Security", value: "Product Security" },
+          { title: "Secure SDLC", value: "Secure SDLC" },
+          { title: "DevSecOps", value: "DevSecOps" },
+          { title: "Secure Code Review", value: "Secure Code Review" },
           {
             title: "Reconnaissance & Intelligence Gathering",
             value: "Reconnaissance & Intelligence Gathering",
