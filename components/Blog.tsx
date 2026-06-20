@@ -30,7 +30,7 @@ const formatKeywords = (text: string) => {
     },
     {
       pattern: /\b(critical|high|medium|low)\b/gi,
-      style: { color: "#DC6", fontWeight: 600 },
+      style: { color: "#DC2446", fontWeight: 600 },
     },
   ];
 
