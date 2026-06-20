@@ -22,24 +22,24 @@ const categories = [
 ];
 
 const formatKeywords = (text: string) => {
-  const keywords = [
-    {
-      pattern:
-        /(web application|API security|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security)/gi,
+  // const keywords = [
+  //   {
+  //     pattern:
+  //       /(web application|API security|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security)/gi,
 
-      style: { color: "#2563EB", fontWeight: 600 },
+  //     style: { color: "#2563EB", fontWeight: 600 },
 
-      matchIndex: 0,
-    },
+  //     matchIndex: 0,
+  //   },
 
-    {
-      pattern: /\b(?:critical|high|medium|low)\b/gi,
+  //   {
+  //     pattern: /\b(?:critical|high|medium|low)\b/gi,
 
-      style: { color: "#DC2626", fontWeight: 600 },
+  //     style: { color: "#DC2626", fontWeight: 600 },
 
-      matchIndex: 0,
-    },
-  ];
+  //     matchIndex: 0,
+  //   },
+  // ];
 
   let parts: Array<
     string | { text: string; style: React.CSSProperties; key: number }
