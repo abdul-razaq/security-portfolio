@@ -25,11 +25,11 @@ const formatKeywords = (text: string) => {
   const keywords = [
     {
       pattern:
-        /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi,
+        /(web application|API security|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security)/gi,
       style: { color: "#2563EB", fontWeight: 600 },
     },
     {
-      pattern: /(critical|high|medium|low)\b/gi,
+      pattern: /\b(critical|high|medium|low)\b/gi,
       style: { color: "#DC2626", fontWeight: 600 },
     },
   ];
