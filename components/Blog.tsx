@@ -29,7 +29,7 @@ const formatKeywords = (text: string) => {
       style: { color: "#2563EB", fontWeight: 600 },
     },
     {
-      pattern: /(critical|high|medium|low)/gi,
+      pattern: /(critical|high|medium|low)\b/gi,
       style: { color: "#DC2626", fontWeight: 600 },
     },
   ];
