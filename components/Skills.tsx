@@ -29,7 +29,7 @@ const defaultSkills: SkillCategory[] = [
         _id: "def-2",
         name: "Threat Modeling",
         description:
-          "Systematic risk identification using STRIDE, DREAD, and LINDDUN frameworks.",
+          "Systematic risk identification using STRIDE, MITRE's CAPEC, ATT&CK, OWASP Libraries and LINDDUN frameworks.",
         level: 90,
         category: "Defensive Security",
         icon: "🎯",
@@ -202,6 +202,15 @@ const defaultSkills: SkillCategory[] = [
         icon: "🧭",
       },
       {
+        _id: "capec-1",
+        name: "CAPEC Framework",
+        description:
+          "Common Attack Pattern Enumeration and Classification — a comprehensive dictionary of known attack patterns used to understand how adversaries exploit weaknesses in applications and systems.",
+        level: 88,
+        category: "MITRE CAPEC",
+        icon: "🗂️",
+      },
+      {
         _id: "meth-4",
         name: "LINDDUN",
         description:
@@ -218,6 +227,15 @@ const defaultSkills: SkillCategory[] = [
         level: 82,
         category: "Methodologies & Frameworks",
         icon: "⚖️",
+      },
+      {
+        _id: "attck-1",
+        name: "ATT&CK Framework",
+        description:
+          "MITRE ATT&CK — a globally-accessible knowledge base of adversary tactics, techniques, and procedures (TTPs) based on real-world observations, used for threat modeling and red/blue team operations.",
+        level: 90,
+        category: "MITRE ATT&CK",
+        icon: "🎯",
       },
     ],
   },

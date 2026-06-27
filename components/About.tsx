@@ -625,7 +625,7 @@ export function About() {
               <div className="about-highlights-list">
                 {[
                   "Embed security into software development lifecycle (Secure SDLC)",
-                  "Conduct threat modeling using frameworks like STRIDE and DREAD",
+                  "Conduct threat modeling using frameworks like STRIDE, CAPEC and OWASP Libraries",
                   "Perform penetration testing of web applications and APIs",
                   "Carry out manual secure code reviews for vulnerabilities",
                   "Implement DevSecOps practices with SAST/SCA/DAST tools",

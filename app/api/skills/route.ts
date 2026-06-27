@@ -5,7 +5,7 @@ import { client } from '@/sanity/lib/client';
 const DEFAULT_SKILLS = [
   // Defensive Security
   { _id: 'def-1', name: 'Secure SDLC', level: 95, description: 'Integrate security into every phase of software development from requirements to deployment.', category: 'Defensive Security', icon: '🔒', order: 1 },
-  { _id: 'def-2', name: 'Threat Modeling', level: 90, description: 'Systematic risk identification using STRIDE, DREAD, and LINDDUN frameworks.', category: 'Defensive Security', icon: '🎯', order: 2 },
+  { _id: 'def-2', name: 'Threat Modeling', level: 90, description: 'Systematic risk identification using STRIDE, MITRE\'s CAPEC, ATT&CK, and LINDDUN frameworks.', category: 'Defensive Security', icon: '🎯', order: 2 },
   { _id: 'def-3', name: 'Product Security', level: 88, description: 'Design and implement secure products with robust architectures and controls.', category: 'Defensive Security', icon: '📦', order: 3 },
   { _id: 'def-4', name: 'DevSecOps', level: 85, description: 'Embed security into CI/CD pipelines for automated vulnerability scanning.', category: 'Defensive Security', icon: '⚙️', order: 4 },
   { _id: 'def-5', name: 'Secure Code Review', level: 92, description: 'Manual and automated code audits to identify and remediate security vulnerabilities.', category: 'Defensive Security', icon: '🔍', order: 5 },

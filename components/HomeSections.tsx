@@ -117,7 +117,7 @@ export function AboutSection() {
       icon: "🎯",
       title: "Threat Modeling",
       description:
-        "Systematic risk identification using STRIDE, DREAD, and LINDDUN for privacy-focused threat analysis",
+        "Systematic risk identification using STRIDE, MITRE's CAPEC, ATT&CK, OWASP Libraries and LINDDUN for privacy-focused threat analysis",
     },
     {
       icon: "🛡️",
@@ -1230,7 +1230,7 @@ const services = [
     icon: "�️",
     title: "Threat Modeling & Secure SDLC",
     description:
-      "Embed security into the software development lifecycle from day one. I conduct threat modeling using STRIDE, DREAD, and LINDDUN frameworks to identify risks before code is written, and implement secure SDLC practices.",
+      "Embed security into the software development lifecycle from day one. I conduct threat modeling using STRIDE, MITRE's CAPEC, ATT&CK, OWASP Libraries and LINDDUN frameworks to identify risks before code is written, and implement secure SDLC practices.",
     features: [
       "Threat Modeling Workshops",
       "Security Requirements Engineering",
