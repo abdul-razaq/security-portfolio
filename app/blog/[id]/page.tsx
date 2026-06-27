@@ -20,11 +20,13 @@ const formatKeywords = (text: string) => {
     {
       pattern:
         /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi,
-      style: { color: "#2563EB", fontWeight: 600 },
+      // style: { color: "#2563EB", fontWeight: 600 },
+      style: undefined,
     },
     {
       pattern: /(critical|high|medium|low)/gi,
-      style: { color: "#DC2626", fontWeight: 600 },
+      // style: { color: "#DC2626", fontWeight: 600 },
+      style: undefined,
     },
   ];
 
