@@ -1,13 +1,17 @@
 "use client";
 
 import { getBlogPost, type BlogPost } from "@/lib/api";
-import { portableTextToMarkdown } from "@/lib/portableText";
+import { PortableText, PortableTextComponents } from "@portabletext/react";
+import createImageUrlBuilder from "@sanity/image-url";
+import { dataset, projectId } from "@/sanity/env";
 import { Lora } from "next/font/google";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-// Reading-optimized serif for long-form body text (professional blog typography)
+const builder = createImageUrlBuilder({ projectId, dataset });
+const urlFor = (source: any) => builder.image(source).url();
+
 const lora = Lora({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
@@ -15,82 +19,444 @@ const lora = Lora({
   display: "swap",
 });
 
-const formatKeywords = (text: string) => {
-  const keywords = [
-    {
-      pattern:
-        /(web application|API|penetration testing|vulnerability analysis|exploitation|reconnaissance|threat modeling|secure sdlc|devsecops|product security|offensive security|API security)/gi,
-      // style: { color: "#2563EB", fontWeight: 600 },
-      style: undefined,
-    },
-    {
-      pattern: /(critical|high|medium|low)/gi,
-      // style: { color: "#DC2626", fontWeight: 600 },
-      style: undefined,
-    },
-  ];
+// ─── Portable Text Components ───────────────────────────────────────────────
 
-  let parts: Array<
-    string | { text: string; style: React.CSSProperties; key: number }
-  > = [text];
-  let keyCounter = 0;
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
 
-  keywords.forEach(({ pattern, style }) => {
-    const newParts: typeof parts = [];
-    parts.forEach((part) => {
-      if (typeof part === "string") {
-        let lastIndex = 0;
-        let match: RegExpExecArray | null;
-        const regex = new RegExp(pattern.source, pattern.flags);
-        while ((match = regex.exec(part)) !== null) {
-          if (match.index > lastIndex) {
-            newParts.push(part.slice(lastIndex, match.index));
-          }
-          newParts.push({ text: match[0], style, key: keyCounter++ });
-          lastIndex = match.index + match[0].length;
-        }
-        if (lastIndex < part.length) {
-          newParts.push(part.slice(lastIndex));
-        }
-      } else {
-        newParts.push(part);
-      }
-    });
-    parts = newParts;
-  });
+const codeBlockStyle: React.CSSProperties = {
+  margin: "1.5em 0",
+  padding: "22px",
+  borderRadius: "14px",
+  background:
+    "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
+  border: "1px solid rgba(37,99,235,0.25)",
+  overflowX: "auto",
+  whiteSpace: "pre",
+  fontFamily:
+    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+  fontSize: "0.9em",
+  lineHeight: 1.6,
+  color: "#ffffff",
+  boxShadow:
+    "0 8px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+};
 
-  return parts.map((part, i) =>
-    typeof part === "string" ? (
-      part
-    ) : (
-      <span key={part.key} style={part.style}>
-        {part.text}
+const makePortableTextComponents = (
+  onLightbox: (src: string) => void,
+): PortableTextComponents => ({
+  // ── Block types ──────────────────────────────────────────────────────────
+  block: {
+    normal: ({ children }) => (
+      <p
+        style={{
+          fontFamily: "var(--font-reading), Georgia, 'Times New Roman', serif",
+          marginBottom: "1em",
+          lineHeight: 1.65,
+          letterSpacing: "0.01em",
+          color: "rgba(255,255,255,0.92)",
+          fontWeight: 400,
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
+      >
+        {children}
+      </p>
+    ),
+    h1: ({ children, value }) => (
+      <h1
+        id={slugify(value?.children?.[0]?.text ?? "")}
+        style={{
+          fontFamily:
+            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+          fontSize: "clamp(36px, 4vw, 46px)",
+          fontWeight: 700,
+          color: "#ffffff",
+          marginTop: "2em",
+          marginBottom: "0.35em",
+          lineHeight: 1.2,
+          letterSpacing: "-0.02em",
+          position: "relative",
+          paddingLeft: "20px",
+        }}
+      >
+        <span
+          style={{
+            position: "absolute",
+            left: 0,
+            top: "0.3em",
+            width: "4px",
+            height: "0.8em",
+            background:
+              "linear-gradient(180deg, #2563EB 0%, rgba(37,99,235,0.3) 100%)",
+            borderRadius: "2px",
+          }}
+        />
+        {children}
+      </h1>
+    ),
+    h2: ({ children, value }) => (
+      <h2
+        id={slugify(value?.children?.[0]?.text ?? "")}
+        style={{
+          fontFamily:
+            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+          fontSize: "clamp(28px, 3.5vw, 36px)",
+          fontWeight: 700,
+          color: "#ffffff",
+          marginTop: "1.75em",
+          marginBottom: "0.35em",
+          lineHeight: 1.3,
+          letterSpacing: "-0.015em",
+        }}
+      >
+        {children}
+      </h2>
+    ),
+    h3: ({ children, value }) => (
+      <h3
+        id={slugify(value?.children?.[0]?.text ?? "")}
+        style={{
+          fontFamily:
+            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+          fontSize: "clamp(22px, 2.8vw, 26px)",
+          fontWeight: 600,
+          color: "#ffffff",
+          marginTop: "1.25em",
+          marginBottom: "0.35em",
+          lineHeight: 1.35,
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {children}
+      </h3>
+    ),
+    h4: ({ children }) => (
+      <h4
+        style={{
+          fontFamily:
+            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+          fontSize: "clamp(18px, 2.2vw, 22px)",
+          fontWeight: 600,
+          color: "#ffffff",
+          marginTop: "1em",
+          marginBottom: "0.3em",
+          lineHeight: 1.4,
+        }}
+      >
+        {children}
+      </h4>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote
+        style={{
+          margin: "1.25em 0",
+          padding: "0.75em 1.25em",
+          borderLeft: "3px solid rgba(37,99,235,0.5)",
+          background: "rgba(255,255,255,0.03)",
+          borderRadius: "0 12px 12px 0",
+          color: "rgba(255,255,255,0.88)",
+          fontStyle: "italic",
+          lineHeight: 1.65,
+        }}
+      >
+        {children}
+      </blockquote>
+    ),
+  },
+
+  // ── Inline marks ─────────────────────────────────────────────────────────
+  marks: {
+    strong: ({ children }) => (
+      <strong style={{ color: "#ffffff", fontWeight: 600 }}>{children}</strong>
+    ),
+    em: ({ children }) => (
+      <em style={{ color: "rgba(255,255,255,0.88)", fontStyle: "italic" }}>
+        {children}
+      </em>
+    ),
+    underline: ({ children }) => (
+      <span style={{ textDecoration: "underline" }}>{children}</span>
+    ),
+    "strike-through": ({ children }) => (
+      <span style={{ textDecoration: "line-through", opacity: 0.7 }}>
+        {children}
       </span>
     ),
-  );
+    code: ({ children }) => (
+      <code
+        style={{
+          background: "rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "6px",
+          padding: "2px 6px",
+          fontFamily:
+            'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+          fontSize: "0.9em",
+          color: "rgba(255,255,255,0.9)",
+        }}
+      >
+        {children}
+      </code>
+    ),
+    link: ({ children, value }) => (
+      <a
+        href={value?.href}
+        target={value?.blank ? "_blank" : undefined}
+        rel={value?.blank ? "noopener noreferrer" : undefined}
+        style={{
+          color: "#3B82F6",
+          textDecoration: "underline",
+          textUnderlineOffset: "3px",
+          textDecorationColor: "rgba(59,130,246,0.4)",
+          transition: "color 0.2s ease, text-decoration-color 0.2s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = "#60A5FA";
+          e.currentTarget.style.textDecorationColor = "rgba(96,165,250,0.6)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = "#3B82F6";
+          e.currentTarget.style.textDecorationColor = "rgba(59,130,246,0.4)";
+        }}
+      >
+        {children}
+      </a>
+    ),
+  },
+
+  // ── List types ────────────────────────────────────────────────────────────
+  list: {
+    bullet: ({ children }) => (
+      <ul
+        style={{
+          margin: "0.75em 0",
+          paddingLeft: "0",
+          listStyle: "none",
+        }}
+      >
+        {children}
+      </ul>
+    ),
+    number: ({ children }) => (
+      <ol
+        style={{
+          margin: "0.75em 0",
+          paddingLeft: "1.5em",
+          color: "rgba(255,255,255,0.92)",
+        }}
+      >
+        {children}
+      </ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => (
+      <li
+        style={{
+          fontFamily: "var(--font-reading), Georgia, 'Times New Roman', serif",
+          marginBottom: "0.4em",
+          paddingLeft: "24px",
+          position: "relative",
+          lineHeight: 1.65,
+          color: "rgba(255,255,255,0.92)",
+          fontWeight: 400,
+        }}
+      >
+        <span
+          style={{
+            position: "absolute",
+            left: "4px",
+            top: "0.65em",
+            width: "5px",
+            height: "5px",
+            borderRadius: "50%",
+            background: "#2563EB",
+            boxShadow: "0 0 8px rgba(37,99,235,0.5)",
+          }}
+        />
+        {children}
+      </li>
+    ),
+    number: ({ children }) => (
+      <li
+        style={{
+          fontFamily: "var(--font-reading), Georgia, 'Times New Roman', serif",
+          marginBottom: "0.4em",
+          lineHeight: 1.65,
+          color: "rgba(255,255,255,0.92)",
+          fontWeight: 400,
+        }}
+      >
+        {children}
+      </li>
+    ),
+  },
+
+  // ── Custom block types (code blocks, images, etc.) ────────────────────────
+  types: {
+    // Sanity code block (requires @sanity/code-input or similar schema)
+    code: ({ value }) => (
+      <div style={{ position: "relative", margin: "1.5em 0" }}>
+        <button
+          onClick={(e) => {
+            navigator.clipboard.writeText(value?.code ?? "");
+            const btn = e.currentTarget;
+            const orig = btn.innerText;
+            btn.innerText = "Copied!";
+            setTimeout(() => (btn.innerText = orig), 1200);
+          }}
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+            padding: "6px 10px",
+            borderRadius: "8px",
+            fontSize: "12px",
+            fontWeight: 600,
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            color: "#ffffff",
+            cursor: "pointer",
+            zIndex: 1,
+          }}
+        >
+          Copy
+        </button>
+        {value?.language && (
+          <span
+            style={{
+              position: "absolute",
+              top: "12px",
+              left: "12px",
+              padding: "4px 8px",
+              borderRadius: "8px",
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: "#2563EB",
+              background: "rgba(37,99,235,0.10)",
+              border: "1px solid rgba(37,99,235,0.25)",
+              zIndex: 1,
+            }}
+          >
+            {value.language}
+          </span>
+        )}
+        <pre
+          style={{
+            ...codeBlockStyle,
+            paddingTop: value?.language ? "44px" : "22px",
+          }}
+        >
+          <code>{value?.code}</code>
+        </pre>
+      </div>
+    ),
+
+    // Sanity image block
+    image: ({ value }) => {
+      if (!value?.asset) return null;
+      const src = urlFor(value);
+      const alt = value.alt ?? "";
+      return (
+        <figure style={{ margin: "2em 0", textAlign: "center" }}>
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.08)",
+              boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+              cursor: "zoom-in",
+            }}
+            onClick={() => onLightbox(src)}
+          />
+          {alt && (
+            <figcaption
+              style={{
+                marginTop: "10px",
+                fontFamily:
+                  "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                fontSize: "13px",
+                color: "rgba(255,255,255,0.5)",
+                letterSpacing: "-0.005em",
+              }}
+            >
+              {alt}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
+  },
+});
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+const formatDate = (dateString: string) =>
+  new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+const MIN_UPDATE_DIFF_MS = 24 * 60 * 60 * 1000;
+
+const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
+  if (!publishedAt || !updatedAt) return false;
+  const pub = new Date(publishedAt).getTime();
+  const upd = new Date(updatedAt).getTime();
+  if (Number.isNaN(pub) || Number.isNaN(upd)) return false;
+  return upd - pub >= MIN_UPDATE_DIFF_MS;
 };
+
+// Extract h2/h3 headings from Portable Text for the TOC
+const extractTocItems = (content: any[]) => {
+  if (!Array.isArray(content)) return [];
+  return content
+    .filter(
+      (block) => block._type === "block" && ["h2", "h3"].includes(block.style),
+    )
+    .map((block) => {
+      const text = block.children?.map((c: any) => c.text).join("") ?? "";
+      return { id: slugify(text), text, level: block.style === "h2" ? 2 : 3 };
+    });
+};
+
+// ─── Page Component ───────────────────────────────────────────────────────────
 
 export default function BlogPostPage() {
   const params = useParams();
+  const slug = params.id as string;
+
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
-  const slug = params.id as string;
   const [currentSection, setCurrentSection] = useState("");
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
+  // Stable reference so PortableText components don't re-create on every render
+  const ptComponents = makePortableTextComponents(setLightboxSrc);
+
   useEffect(() => {
     setIsVisible(true);
-
     const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.scrollY;
-      const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+      const progress =
+        (window.scrollY /
+          (document.documentElement.scrollHeight - window.innerHeight)) *
+        100;
       setScrollProgress(Math.min(100, Math.max(0, progress)));
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -99,17 +465,15 @@ export default function BlogPostPage() {
     async function fetchPost() {
       setLoading(true);
       try {
-        const fetchedPost = await getBlogPost(slug);
-        setPost(fetchedPost);
-      } catch (error) {
-        console.error("Error loading blog post:", error);
+        const fetched = await getBlogPost(slug);
+        setPost(fetched);
+      } catch (err) {
+        console.error("Error loading blog post:", err);
       } finally {
         setLoading(false);
       }
     }
-    if (slug) {
-      fetchPost();
-    }
+    if (slug) fetchPost();
   }, [slug]);
 
   useEffect(() => {
@@ -123,63 +487,54 @@ export default function BlogPostPage() {
               a.target.getBoundingClientRect().top,
           );
         if (visible.length > 0 && visible[0].target.id) {
-          const newId = visible[0].target.id;
-          setCurrentSection((prev) => (prev !== newId ? newId : prev));
+          setCurrentSection((prev) =>
+            prev !== visible[0].target.id ? visible[0].target.id : prev,
+          );
         }
       },
       { rootMargin: "-20% 0px -60% 0px", threshold: [0, 1] },
     );
-    const headings = Array.from(
-      document.querySelectorAll("h2[id], h3[id]"),
-    ) as HTMLElement[];
-    headings.forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll("h2[id], h3[id]")
+      .forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [post?.slug]);
 
+  // ── Loading ────────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <section
         style={{
           minHeight: "100vh",
           paddingTop: "clamp(100px, 12vw, 140px)",
-          paddingBottom: "clamp(80px, 10vw, 120px)",
           background: "#020617",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <div style={{ textAlign: "center" }}>
-          <div
-            style={{
-              display: "inline-block",
-              width: "48px",
-              height: "48px",
-              border: "3px solid rgba(37,99,235,0.3)",
-              borderTopColor: "#2563EB",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite",
-            }}
-          />
-        </div>
-        <style jsx>{`
-          @keyframes spin {
-            to {
-              transform: rotate(360deg);
-            }
-          }
-        `}</style>
+        <div
+          style={{
+            width: "48px",
+            height: "48px",
+            border: "3px solid rgba(37,99,235,0.3)",
+            borderTopColor: "#2563EB",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+          }}
+        />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </section>
     );
   }
 
+  // ── 404 ───────────────────────────────────────────────────────────────────
   if (!post) {
     return (
       <section
         style={{
           minHeight: "100vh",
           paddingTop: "clamp(100px, 12vw, 140px)",
-          paddingBottom: "clamp(80px, 10vw, 120px)",
           background: "#020617",
           display: "flex",
           alignItems: "center",
@@ -198,7 +553,7 @@ export default function BlogPostPage() {
             Post Not <span style={{ color: "#2563EB" }}>Found</span>
           </h1>
           <p style={{ fontSize: "18px", color: "#666", marginBottom: "32px" }}>
-            The blog post you're looking for doesn't exist.
+            The blog post you&apos;re looking for doesn&apos;t exist.
           </p>
           <Link
             href="/blog"
@@ -222,459 +577,18 @@ export default function BlogPostPage() {
     );
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const tocItems = extractTocItems(post.content);
 
-  const MIN_UPDATE_DIFFERENCE_MS = 24 * 60 * 60 * 1000;
-
-  const hasBeenUpdated = (publishedAt?: string, updatedAt?: string) => {
-    if (!publishedAt || !updatedAt) return false;
-
-    const published = new Date(publishedAt).getTime();
-    const updated = new Date(updatedAt).getTime();
-
-    if (Number.isNaN(published) || Number.isNaN(updated)) {
-      return false;
-    }
-
-    return updated - published >= MIN_UPDATE_DIFFERENCE_MS;
-  };
-
-  const slugify = (text: string) =>
-    text
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/\s+/g, "-");
-  // Parse content into structured format
-  const parseContent = (content: any) => {
-    if (!content) return [];
-
-    // If content is already a string (markdown), split it
-    if (typeof content === "string") {
-      const lines = content.split("\n");
-      const parsed: Array<{
-        type: string;
-        content: string;
-        level?: number;
-        meta?: any;
-      }> = [];
-      let i = 0;
-
-      const isCodeLike = (ln: string) => {
-        const l = ln.trim();
-        if (!l) return false;
-        if (/^```/.test(l)) return true;
-        if (/^<\w+/.test(l)) return true; // HTML/XML start
-        if (/^\s*<?php/.test(l)) return true; // PHP start
-        if (/^\s*\{/.test(l) || /\}\s*$/.test(l)) return true; // brace blocks
-        if (
-          /;\s*$/.test(l) &&
-          /(const|let|var|function|class|return|import|export|new)\b/.test(l)
-        )
-          return true; // JS/TS lines
-        if (/^\s*(def|class)\b.*:\s*$/.test(l)) return true; // Python signature
-        if (/^\s*(from|import)\b/.test(l)) return true; // Python import
-        if (/^\s*["'][^"']+["']\s*:\s*.+[,}]?$/.test(l)) return true; // JSON kv
-        if (
-          /^\s*(sudo|curl|wget|git|npm|yarn|pnpm)\b/.test(l) ||
-          /^\$[a-z_]/.test(l)
-        )
-          return true; // Bash
-        return false;
-      };
-
-      const isStrongCodeStart = (ln: string) => {
-        const l = ln.trim();
-        return (
-          /^<\w+/.test(l) ||
-          /^\s*<?php/.test(l) ||
-          /^\s*(def|class)\b.*:\s*$/.test(l) ||
-          /^\s*(from|import)\b/.test(l) ||
-          (/;\s*$/.test(l) &&
-            /(const|let|var|function|class|return|import|export|new)\b/.test(
-              l,
-            )) ||
-          /^\s*["'][^"']+["']\s*:\s*.+[,}]?$/.test(l)
-        );
-      };
-
-      const guessLang = (block: string) => {
-        const s = block.toLowerCase();
-        if (s.includes("<?php")) return "php";
-        if (/<[a-z]/.test(s)) return "html";
-        if (/^\s*[\{\[]/.test(s) && /":/.test(s)) return "json";
-        if (
-          /^\s*(const|let|var|import|export|function|class)\b/.test(s) ||
-          /;\s*$/.test(s) ||
-          /=>/.test(s)
-        )
-          return "js";
-        if (/^\s*(def|from|import|class|print)\b/.test(s) || /:\s*$/.test(s))
-          return "python";
-        if (
-          /^\s*(sudo|curl|wget|git|npm|yarn|pnpm)\b/.test(s) ||
-          /^\$[a-z_]/.test(s)
-        )
-          return "bash";
-        if (/{\s*$/.test(s) && /}/.test(s) && /;/.test(s)) return "css"; // very rough
-        return "text";
-      };
-      const normalizeLangLabel = (s: string) => {
-        const l = s.trim().toLowerCase();
-        if (["php"].includes(l)) return "php";
-        if (["javascript", "js"].includes(l)) return "js";
-        if (["typescript", "ts"].includes(l)) return "ts";
-        if (["python", "py"].includes(l)) return "python";
-        if (["html", "xml"].includes(l)) return "html";
-        if (["css"].includes(l)) return "css";
-        if (["bash", "sh", "shell"].includes(l)) return "bash";
-        return "";
-      };
-
-      while (i < lines.length) {
-        const line = lines[i];
-
-        if (line.startsWith("# ")) {
-          parsed.push({ type: "h1", content: line.replace("# ", "") });
-          i++;
-          continue;
-        }
-        if (line.startsWith("## ")) {
-          parsed.push({ type: "h2", content: line.replace("## ", "") });
-          i++;
-          continue;
-        }
-        if (line.startsWith("### ")) {
-          parsed.push({ type: "h3", content: line.replace("### ", "") });
-          i++;
-          continue;
-        }
-        if (line.startsWith("> ")) {
-          parsed.push({ type: "blockquote", content: line.replace("> ", "") });
-          i++;
-          continue;
-        }
-        if (line.startsWith("```")) {
-          const lang = line.replace("```", "").trim() || "text";
-          const codeLines: string[] = [];
-          i++;
-          while (i < lines.length && !lines[i].startsWith("```")) {
-            codeLines.push(lines[i]);
-            i++;
-          }
-          parsed.push({
-            type: "codeblock",
-            content: codeLines.join("\n"),
-            meta: { lang },
-          });
-          if (i < lines.length && lines[i].startsWith("```")) {
-            i++;
-          }
-          continue;
-        }
-        if (line.startsWith("- ")) {
-          parsed.push({ type: "li", content: line.replace("- ", "") });
-          i++;
-          continue;
-        }
-        if (line.startsWith("![")) {
-          const match = line.match(/!\[(.*?)\]\((.*?)\)/);
-          if (match) {
-            parsed.push({
-              type: "image",
-              content: match[2],
-              meta: { alt: match[1] },
-            });
-            i++;
-            continue;
-          }
-        }
-        if (line.startsWith("**") && line.endsWith("**")) {
-          parsed.push({ type: "strong", content: line.replace(/\*\*/g, "") });
-          i++;
-          continue;
-        }
-        // Skip blank lines — spacing is handled by element margins only (avoids double gaps from Markdown line breaks)
-        if (line.trim() === "") {
-          i++;
-          continue;
-        }
-        // Auto-detect unfenced code blocks
-        if (isCodeLike(line)) {
-          const codeLines: string[] = [];
-          let label: string | undefined;
-          if (i > 0) {
-            const prevRaw = lines[i - 1];
-            const prev = prevRaw.trim();
-            const normalized = normalizeLangLabel(prev);
-            if (normalized) {
-              label = normalized;
-              if (
-                parsed.length > 0 &&
-                parsed[parsed.length - 1].type === "p" &&
-                parsed[parsed.length - 1].content.trim() === prevRaw.trim()
-              ) {
-                parsed.pop();
-              }
-            }
-          }
-          while (
-            i < lines.length &&
-            (isCodeLike(lines[i]) || lines[i].trim() === "")
-          ) {
-            codeLines.push(lines[i]);
-            i++;
-          }
-          const code = codeLines.join("\n");
-          if (codeLines.length >= 2 || isStrongCodeStart(line)) {
-            parsed.push({
-              type: "codeblock",
-              content: code,
-              meta: { lang: label || guessLang(code) },
-            });
-            continue;
-          }
-        }
-        // Paragraph fallback
-        parsed.push({ type: "p", content: line });
-        i++;
-      }
-
-      return parsed;
-    }
-
-    // If content is Portable Text, convert to markdown first
-    const markdown = portableTextToMarkdown(content);
-    return parseContent(markdown);
-  };
-
-  const escapeHtml = (s: string) =>
-    s
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-
-  const highlightCodeHTML = (lang: string | undefined, code: string) => {
-    const l = (lang || "text").toLowerCase();
-    const src = escapeHtml(code);
-
-    const wrap = (cls: string, text: string) =>
-      `<span style="color:${cls};">${text}</span>`;
-
-    if (["js", "ts", "javascript", "typescript", "json"].includes(l)) {
-      const keywordSet =
-        "const|let|var|function|return|if|else|for|while|import|from|export|class|extends|new|try|catch|finally|switch|case|break|continue|throw|await|async|interface|type";
-      const token =
-        /\/\/.*|\/\*[\s\S]*?\*\/|"(?:[^"\n\\]|\\.)*"|'(?:[^'\n\\]|\\.)*'|`[\s\S]*?`|\b(?:true|false|null|undefined)\b|\b(?:const|let|var|function|return|if|else|for|while|import|from|export|class|extends|new|try|catch|finally|switch|case|break|continue|throw|await|async|interface|type)\b|\b\d+(?:\.\d+)?\b/g;
-      const parts: string[] = [];
-      let last = 0;
-      for (const m of src.matchAll(token)) {
-        const start = m.index ?? 0;
-        const text = m[0];
-        if (start > last) parts.push(src.slice(last, start));
-        let colored = text;
-        if (text.startsWith("//") || text.startsWith("/*")) {
-          colored = wrap("rgba(255,255,255,0.5)", text);
-        } else if (
-          (text.startsWith('"') && text.endsWith('"')) ||
-          (text.startsWith("'") && text.endsWith("'")) ||
-          (text.startsWith("`") && text.endsWith("`"))
-        ) {
-          colored = wrap("#a8e6a2", text);
-        } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
-          colored = wrap("#2563EB", text);
-        } else if (/^(true|false|null|undefined)$/.test(text)) {
-          colored = wrap("#bda0ff", text);
-        } else if (/^\d+(?:\.\d+)?$/.test(text)) {
-          colored = wrap("#f7c873", text);
-        }
-        parts.push(colored);
-        last = start + text.length;
-      }
-      parts.push(src.slice(last));
-      return parts.join("");
-    }
-
-    if (["html", "xml"].includes(l)) {
-      const token =
-        /<!--[\s\S]*?-->|<\/?[a-zA-Z][\w:-]*(?:\s+[a-zA-Z_:][-a-zA-Z0-9_:.]*=(?:"[^"]*"|'[^']*'))*\s*\/?>|"[^\n"]*"|'[^\n']*'/g;
-      const parts: string[] = [];
-      let last = 0;
-      for (const m of src.matchAll(token)) {
-        const start = m.index ?? 0;
-        const text = m[0];
-        if (start > last) parts.push(src.slice(last, start));
-        let colored = text;
-        if (text.startsWith("<!--")) {
-          colored = wrap("rgba(255,255,255,0.5)", text);
-        } else if (text.startsWith('"') || text.startsWith("'")) {
-          colored = wrap("#a8e6a2", text);
-        } else {
-          colored = wrap("#2563EB", text);
-        }
-        parts.push(colored);
-        last = start + text.length;
-      }
-      parts.push(src.slice(last));
-      return parts.join("");
-    }
-
-    if (["css"].includes(l)) {
-      const token =
-        /\/\*[\s\S]*?\*\/|:[\s]*[^;{}]+;|{|\}|[.#][a-zA-Z0-9_-]+|[a-zA-Z-]+\s*(?=\:)/g;
-      const parts: string[] = [];
-      let last = 0;
-      for (const m of src.matchAll(token)) {
-        const start = m.index ?? 0;
-        const text = m[0];
-        if (start > last) parts.push(src.slice(last, start));
-        let colored = text;
-        if (text.startsWith("/*")) {
-          colored = wrap("rgba(255,255,255,0.5)", text);
-        } else if (/^[{]}$/.test(text)) {
-          colored = wrap("#ffffff", text);
-        } else if (/^[.#]/.test(text)) {
-          colored = wrap("#2563EB", text);
-        } else if (/^\s*[a-zA-Z-]+\s*(?=\:)/.test(text)) {
-          colored = wrap("#f7c873", text);
-        } else if (/^:\s*[^;{}]+;/.test(text)) {
-          colored = wrap("#a8e6a2", text);
-        }
-        parts.push(colored);
-        last = start + text.length;
-      }
-      parts.push(src.slice(last));
-      return parts.join("");
-    }
-
-    if (["bash", "sh"].includes(l)) {
-      const token = /#[^\n]*|"(?:[^"\n\\]|\\.)*"|'(?:[^'\n\\]|\\.)*'|\s-\w+/g;
-      const parts: string[] = [];
-      let last = 0;
-      for (const m of src.matchAll(token)) {
-        const start = m.index ?? 0;
-        const text = m[0];
-        if (start > last) parts.push(src.slice(last, start));
-        let colored = text;
-        if (text.startsWith("#")) {
-          colored = wrap("rgba(255,255,255,0.5)", text);
-        } else if (text.startsWith('"') || text.startsWith("'")) {
-          colored = wrap("#a8e6a2", text);
-        } else if (/^\s-\w+/.test(text)) {
-          colored = wrap("#2563EB", text);
-        }
-        parts.push(colored);
-        last = start + text.length;
-      }
-      parts.push(src.slice(last));
-      return parts.join("");
-    }
-
-    if (["py", "python"].includes(l)) {
-      const keywordSet =
-        "def|class|return|import|from|as|if|elif|else|for|while|try|except|finally|with|lambda|pass|break|continue|yield|global|nonlocal|assert|raise|del|in|is|and|or|not|True|False|None";
-      const token =
-        /#[^\n]*|"""[\s\S]*?"""|'''\s*[\s\S]*?'''|"(?:[^"\n\\]|\\.)*"|'(?:[^'\n\\]|\\.)*'|\b(?:def|class|return|import|from|as|if|elif|else|for|while|try|except|finally|with|lambda|pass|break|continue|yield|global|nonlocal|assert|raise|del|in|is|and|or|not|True|False|None)\b|\b\d+(?:\.\d+)?\b/g;
-      const parts: string[] = [];
-      let last = 0;
-      for (const m of src.matchAll(token)) {
-        const start = m.index ?? 0;
-        const text = m[0];
-        if (start > last) parts.push(src.slice(last, start));
-        let colored = text;
-        if (
-          text.startsWith("#") ||
-          text.startsWith('"""') ||
-          text.startsWith("'''")
-        ) {
-          colored = wrap("rgba(255,255,255,0.5)", text);
-        } else if (text.startsWith('"') || text.startsWith("'")) {
-          colored = wrap("#a8e6a2", text);
-        } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
-          colored = wrap("#2563EB", text);
-        } else if (/^\d+(?:\.\d+)?$/.test(text)) {
-          colored = wrap("#f7c873", text);
-        }
-        parts.push(colored);
-        last = start + text.length;
-      }
-      parts.push(src.slice(last));
-      return parts.join("");
-    }
-
-    if (["php"].includes(l)) {
-      const keywordSet =
-        "abstract|and|array|as|break|callable|case|catch|class|clone|const|continue|declare|default|do|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|endwhile|enum|eval|extends|final|finally|for|foreach|function|global|goto|if|implements|include|include_once|instanceof|insteadof|interface|isset|list|match|namespace|new|or|print|private|protected|public|readonly|require|require_once|return|static|switch|throw|trait|try|unset|use|var|while|xor|yield|true|false|null";
-      const token =
-        /\/\/.*|\/\*[\s\S]*?\*\/|\#.*|"(?:[^"\n\\]|\\.)*"|'(?:[^'\n\\]|\\.)*'|\b(?:abstract|and|array|as|break|callable|case|catch|class|clone|const|continue|declare|default|do|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|endwhile|enum|eval|extends|final|finally|for|foreach|function|global|goto|if|implements|include|include_once|instanceof|insteadof|interface|isset|list|match|namespace|new|or|print|private|protected|public|readonly|require|require_once|return|static|switch|throw|trait|try|unset|use|var|while|xor|yield|null|true|false)\b|\$[a-zA-Z_][a-zA-Z0-9_]*|\b\d+(?:\.\d+)?\b/g;
-      const parts: string[] = [];
-      let last = 0;
-      for (const m of src.matchAll(token)) {
-        const start = m.index ?? 0;
-        const text = m[0];
-        if (start > last) parts.push(src.slice(last, start));
-        let colored = text;
-        if (
-          text.startsWith("//") ||
-          text.startsWith("/*") ||
-          text.startsWith("#")
-        ) {
-          colored = wrap("rgba(255,255,255,0.5)", text);
-        } else if (text.startsWith('"') || text.startsWith("'")) {
-          colored = wrap("#a8e6a2", text);
-        } else if (new RegExp(`^(${keywordSet})$`).test(text)) {
-          colored = wrap("#2563EB", text);
-        } else if (/^\$[a-zA-Z_][a-zA-Z0-9_]*$/.test(text)) {
-          colored = wrap("#bda0ff", text);
-        } else if (/^\d+(?:\.\d+)?$/.test(text)) {
-          colored = wrap("#f7c873", text);
-        }
-        parts.push(colored);
-        last = start + text.length;
-      }
-      parts.push(src.slice(last));
-      return parts.join("");
-    }
-
-    return src;
-  };
-
-  const parsedContent = parseContent(post.content);
-  const tocItems = parsedContent
-    .filter((it) => it.type === "h2" || it.type === "h3")
-    .map((it) => ({
-      id: slugify(it.content),
-      text: it.content,
-      level: it.type === "h2" ? 2 : 3,
-    }));
   const siteBase =
     typeof window !== "undefined"
       ? window.location.origin
       : process.env.NEXT_PUBLIC_SITE_URL || "";
-  const shareUrl = post ? `${siteBase}/blog/${post.slug}` : siteBase;
-  // X/Twitter: compose title + excerpt, truncate to 256 so tweet (text + space + t.co URL) stays under 280
-  const xTweetText =
-    post?.title && post?.excerpt
-      ? `${post.title} – ${post.excerpt}`
-      : post?.title || post?.excerpt || "";
-  const xTweetTextTruncated =
-    xTweetText.length > 256 ? `${xTweetText.slice(0, 253)}…` : xTweetText;
-  const shareToX = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-    shareUrl,
-  )}&text=${encodeURIComponent(xTweetTextTruncated)}`;
-  const shareToLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-    shareUrl,
-  )}`;
+  const shareUrl = `${siteBase}/blog/${post.slug}`;
+  const xText = `${post.title ?? ""}${post.excerpt ? ` – ${post.excerpt}` : ""}`;
+  const shareToX = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(xText.length > 256 ? `${xText.slice(0, 253)}…` : xText)}`;
+  const shareToLinkedIn = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
 
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <article
       className={lora.variable}
@@ -711,9 +625,8 @@ export default function BlogPostPage() {
         />
       </div>
 
-      {/* Premium Background Effects */}
+      {/* Background Effects */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        {/* Top border glow */}
         <div
           style={{
             position: "absolute",
@@ -726,8 +639,6 @@ export default function BlogPostPage() {
             opacity: 0.5,
           }}
         />
-
-        {/* Floating orbs */}
         <div
           style={{
             position: "absolute",
@@ -756,8 +667,6 @@ export default function BlogPostPage() {
             animation: "float 25s ease-in-out infinite reverse",
           }}
         />
-
-        {/* Grid pattern */}
         <div
           style={{
             position: "absolute",
@@ -838,6 +747,7 @@ export default function BlogPostPage() {
 
         {/* Article Layout */}
         <div className="article-layout">
+          {/* Mobile TOC */}
           {tocItems.length > 0 && (
             <div className="toc-mobile">
               <div className="toc-mobile-inner">
@@ -862,7 +772,8 @@ export default function BlogPostPage() {
               </div>
             </div>
           )}
-          {/* Desktop TOC (sidebar) */}
+
+          {/* Desktop TOC */}
           {tocItems.length > 0 && (
             <aside className="toc">
               <div className="toc-inner">
@@ -884,6 +795,7 @@ export default function BlogPostPage() {
               </div>
             </aside>
           )}
+
           <div className="article-content">
             {/* Article Header */}
             <header
@@ -947,7 +859,7 @@ export default function BlogPostPage() {
                   ))}
               </div>
 
-              {/* Title — serif for editorial hierarchy, pairs with body */}
+              {/* Title */}
               <h1
                 className="blog-post-title"
                 style={{
@@ -959,37 +871,31 @@ export default function BlogPostPage() {
                   marginBottom: "32px",
                   lineHeight: 1.15,
                   letterSpacing: "-0.015em",
-                  textRendering: "optimizeLegibility",
-                  fontFeatureSettings: "'kern' 1, 'liga' 1",
-                  WebkitFontSmoothing: "antialiased",
-                  MozOsxFontSmoothing: "grayscale",
                 }}
               >
                 {post.title}
               </h1>
 
-              {/* Excerpt — same reading serif as title/body for legibility */}
-              <p
-                className="blog-post-excerpt"
-                style={{
-                  fontFamily:
-                    "var(--font-reading), Georgia, 'Times New Roman', serif",
-                  fontSize: "clamp(18px, 2.2vw, 20px)",
-                  lineHeight: 1.65,
-                  color: "rgba(255,255,255,0.88)",
-                  marginBottom: "32px",
-                  fontWeight: 400,
-                  letterSpacing: "0.01em",
-                  textRendering: "optimizeLegibility",
-                  fontFeatureSettings: "'kern' 1, 'liga' 1",
-                  WebkitFontSmoothing: "antialiased",
-                  MozOsxFontSmoothing: "grayscale",
-                }}
-              >
-                {post.excerpt}
-              </p>
+              {/* Excerpt */}
+              {post.excerpt && (
+                <p
+                  className="blog-post-excerpt"
+                  style={{
+                    fontFamily:
+                      "var(--font-reading), Georgia, 'Times New Roman', serif",
+                    fontSize: "clamp(18px, 2.2vw, 20px)",
+                    lineHeight: 1.65,
+                    color: "rgba(255,255,255,0.88)",
+                    marginBottom: "32px",
+                    fontWeight: 400,
+                    letterSpacing: "0.01em",
+                  }}
+                >
+                  {post.excerpt}
+                </p>
+              )}
 
-              {/* Meta Information */}
+              {/* Meta */}
               <div
                 style={{
                   display: "flex",
@@ -1005,11 +911,7 @@ export default function BlogPostPage() {
               >
                 {/* Author */}
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                  }}
+                  style={{ display: "flex", alignItems: "center", gap: "12px" }}
                 >
                   <div
                     style={{
@@ -1037,7 +939,6 @@ export default function BlogPostPage() {
                         fontSize: "14px",
                         color: "rgba(255,255,255,0.4)",
                         marginBottom: "2px",
-                        letterSpacing: "0.01em",
                       }}
                     >
                       Written by
@@ -1049,7 +950,6 @@ export default function BlogPostPage() {
                         fontSize: "16px",
                         fontWeight: 600,
                         color: "#ffffff",
-                        letterSpacing: "-0.01em",
                       }}
                     >
                       {post.author || "AbdulRazaq Suleiman"}
@@ -1065,7 +965,7 @@ export default function BlogPostPage() {
                   }}
                 />
 
-                {/* Date */}
+                {/* Published */}
                 <div>
                   <div
                     style={{
@@ -1074,7 +974,6 @@ export default function BlogPostPage() {
                       fontSize: "14px",
                       color: "rgba(255,255,255,0.4)",
                       marginBottom: "2px",
-                      letterSpacing: "0.01em",
                     }}
                   >
                     Published
@@ -1086,7 +985,6 @@ export default function BlogPostPage() {
                       fontSize: "16px",
                       fontWeight: 500,
                       color: "rgba(255,255,255,0.8)",
-                      letterSpacing: "-0.01em",
                     }}
                   >
                     {formatDate(post.publishedAt)}
@@ -1102,7 +1000,6 @@ export default function BlogPostPage() {
                         background: "rgba(255,255,255,0.1)",
                       }}
                     />
-
                     <div>
                       <div
                         style={{
@@ -1111,7 +1008,6 @@ export default function BlogPostPage() {
                           fontSize: "14px",
                           color: "rgba(255,255,255,0.4)",
                           marginBottom: "2px",
-                          letterSpacing: "0.01em",
                         }}
                       >
                         Updated
@@ -1123,7 +1019,6 @@ export default function BlogPostPage() {
                           fontSize: "16px",
                           fontWeight: 500,
                           color: "rgba(255,255,255,0.8)",
-                          letterSpacing: "-0.01em",
                         }}
                       >
                         {formatDate(post.updatedAt!)}
@@ -1140,7 +1035,7 @@ export default function BlogPostPage() {
                   }}
                 />
 
-                {/* Read Time */}
+                {/* Read time */}
                 <div>
                   <div
                     style={{
@@ -1149,7 +1044,6 @@ export default function BlogPostPage() {
                       fontSize: "14px",
                       color: "rgba(255,255,255,0.4)",
                       marginBottom: "2px",
-                      letterSpacing: "0.01em",
                     }}
                   >
                     Reading time
@@ -1161,7 +1055,6 @@ export default function BlogPostPage() {
                       fontSize: "16px",
                       fontWeight: 500,
                       color: "rgba(255,255,255,0.8)",
-                      letterSpacing: "-0.01em",
                     }}
                   >
                     {post.readTime || "5 min read"}
@@ -1193,7 +1086,6 @@ export default function BlogPostPage() {
                         background: "rgba(255,255,255,0.05)",
                         border: "1px solid rgba(255,255,255,0.08)",
                         transition: "all 0.3s ease",
-                        letterSpacing: "-0.005em",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
@@ -1217,7 +1109,7 @@ export default function BlogPostPage() {
               )}
             </header>
 
-            {/* Article Content */}
+            {/* ── Article Body — rendered via PortableText ── */}
             <div
               style={{
                 transition: "all 1s ease 0.4s",
@@ -1233,404 +1125,28 @@ export default function BlogPostPage() {
                   fontSize: "clamp(18px, 2vw, 20px)",
                   lineHeight: 1.65,
                   color: "rgba(255,255,255,0.92)",
-                  textRendering: "optimizeLegibility",
-                  fontFeatureSettings: "'kern' 1, 'liga' 1",
                   letterSpacing: "0.01em",
-                  WebkitFontSmoothing: "antialiased",
-                  MozOsxFontSmoothing: "grayscale",
                   fontWeight: 400,
                   maxWidth: "75ch",
                   marginLeft: "auto",
                   marginRight: "auto",
-                  paddingLeft: "4px",
-                  paddingRight: "4px",
-                  textAlign: "left",
                 }}
               >
-                {parsedContent.map((item, i) => {
-                  if (item.type === "h1") {
-                    return (
-                      <h1
-                        key={i}
-                        style={{
-                          fontFamily:
-                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                          fontSize: "clamp(36px, 4vw, 46px)",
-                          fontWeight: 700,
-                          color: "#ffffff",
-                          marginTop: "2em",
-                          marginBottom: "0.35em",
-                          lineHeight: 1.2,
-                          letterSpacing: "-0.02em",
-                          position: "relative",
-                          paddingLeft: "20px",
-                          textRendering: "optimizeLegibility",
-                          fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          WebkitFontSmoothing: "antialiased",
-                          MozOsxFontSmoothing: "grayscale",
-                        }}
-                      >
-                        <span
-                          style={{
-                            position: "absolute",
-                            left: 0,
-                            top: "0.3em",
-                            width: "4px",
-                            height: "0.8em",
-                            background:
-                              "linear-gradient(180deg, #2563EB 0%, rgba(37,99,235,0.3) 100%)",
-                            borderRadius: "2px",
-                          }}
-                        />
-                        {item.content}
-                      </h1>
-                    );
-                  }
-                  if (item.type === "h2") {
-                    return (
-                      <h2
-                        key={i}
-                        id={slugify(item.content)}
-                        style={{
-                          fontFamily:
-                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                          fontSize: "clamp(28px, 3.5vw, 36px)",
-                          fontWeight: 700,
-                          color: "#ffffff",
-                          marginTop: "1.75em",
-                          marginBottom: "0.35em",
-                          lineHeight: 1.3,
-                          letterSpacing: "-0.015em",
-                          textRendering: "optimizeLegibility",
-                          fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          WebkitFontSmoothing: "antialiased",
-                          MozOsxFontSmoothing: "grayscale",
-                        }}
-                      >
-                        {item.content}
-                      </h2>
-                    );
-                  }
-                  if (item.type === "h3") {
-                    return (
-                      <h3
-                        key={i}
-                        id={slugify(item.content)}
-                        style={{
-                          fontFamily:
-                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                          fontSize: "clamp(22px, 2.8vw, 26px)",
-                          fontWeight: 600,
-                          color: "#ffffff",
-                          marginTop: "1.25em",
-                          marginBottom: "0.35em",
-                          lineHeight: 1.35,
-                          letterSpacing: "-0.01em",
-                          textRendering: "optimizeLegibility",
-                          fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          WebkitFontSmoothing: "antialiased",
-                          MozOsxFontSmoothing: "grayscale",
-                        }}
-                      >
-                        {item.content}
-                      </h3>
-                    );
-                  }
-                  if (item.type === "blockquote") {
-                    return (
-                      <blockquote
-                        key={i}
-                        style={{
-                          margin: "0.75em 0",
-                          padding: "0.75em 1em",
-                          borderLeft: "3px solid rgba(37,99,235,0.5)",
-                          background: "rgba(255,255,255,0.03)",
-                          borderRadius: "12px",
-                          color: "rgba(255,255,255,0.88)",
-                          fontStyle: "italic",
-                          lineHeight: 1.65,
-                          letterSpacing: "0.01em",
-                        }}
-                      >
-                        {item.content}
-                      </blockquote>
-                    );
-                  }
-                  if (item.type === "li") {
-                    return (
-                      <li
-                        key={i}
-                        style={{
-                          fontFamily:
-                            "var(--font-reading), Georgia, 'Times New Roman', serif",
-                          marginLeft: "26px",
-                          marginBottom: "0.35em",
-                          paddingLeft: "8px",
-                          position: "relative",
-                          lineHeight: 1.65,
-                          letterSpacing: "0.01em",
-                          textRendering: "optimizeLegibility",
-                          fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          color: "rgba(255,255,255,0.92)",
-                          WebkitFontSmoothing: "antialiased",
-                          MozOsxFontSmoothing: "grayscale",
-                          fontWeight: 400,
-                        }}
-                      >
-                        <span
-                          style={{
-                            position: "absolute",
-                            left: "-20px",
-                            top: "0.65em",
-                            width: "5px",
-                            height: "5px",
-                            borderRadius: "50%",
-                            background: "#2563EB",
-                            boxShadow: "0 0 8px rgba(37,99,235,0.5)",
-                          }}
-                        />
-                        {item.content}
-                      </li>
-                    );
-                  }
-                  if (item.type === "strong") {
-                    return (
-                      <strong
-                        key={i}
-                        style={{
-                          fontFamily:
-                            "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                          color: "#ffffff",
-                          fontWeight: 600,
-                          letterSpacing: "-0.005em",
-                          WebkitFontSmoothing: "antialiased",
-                          MozOsxFontSmoothing: "grayscale",
-                          textRendering: "optimizeLegibility",
-                        }}
-                      >
-                        {item.content}
-                      </strong>
-                    );
-                  }
-                  if (item.type === "spacer") {
-                    return <div key={i} style={{ height: "1.25em" }} />;
-                  }
-                  if (item.type === "codeblock") {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          position: "relative",
-                          margin: "1em 0",
-                        }}
-                      >
-                        <button
-                          onClick={(e) => {
-                            navigator.clipboard.writeText(item.content || "");
-                            const target = e.currentTarget;
-                            const original = target.innerText;
-                            target.innerText = "Copied";
-                            setTimeout(
-                              () => (target.innerText = original),
-                              1200,
-                            );
-                          }}
-                          style={{
-                            position: "absolute",
-                            top: "12px",
-                            right: "12px",
-                            padding: "6px 10px",
-                            borderRadius: "8px",
-                            fontSize: "12px",
-                            fontWeight: 600,
-                            background: "rgba(255,255,255,0.08)",
-                            border: "1px solid rgba(255,255,255,0.15)",
-                            color: "#ffffff",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Copy
-                        </button>
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "12px",
-                            left: "12px",
-                            padding: "4px 8px",
-                            borderRadius: "8px",
-                            fontSize: "11px",
-                            fontWeight: 700,
-                            letterSpacing: "0.06em",
-                            textTransform: "uppercase",
-                            color: "#2563EB",
-                            background: "rgba(128,0,32,0.10)",
-                            border: "1px solid rgba(128,0,32,0.25)",
-                          }}
-                        >
-                          {(item.meta?.lang || "code").toString()}
-                        </span>
-                        <pre
-                          style={{
-                            margin: 0,
-                            padding: "22px 22px 22px 22px",
-                            borderRadius: "14px",
-                            background:
-                              "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
-                            border: "1px solid rgba(37,99,235,0.25)",
-                            overflowX: "auto",
-                            whiteSpace: "pre-wrap",
-                            wordBreak: "break-word",
-                            fontFamily:
-                              'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                            fontSize: "0.9em",
-                            lineHeight: 1.6,
-                            color: "#ffffff",
-                            boxShadow:
-                              "0 8px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
-                          }}
-                        >
-                          <code
-                            dangerouslySetInnerHTML={{
-                              __html: highlightCodeHTML(
-                                item.meta?.lang,
-                                item.content,
-                              ),
-                            }}
-                          />
-                        </pre>
-                      </div>
-                    );
-                  }
-                  if (item.type === "image") {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          margin: "1em 0",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          gap: "10px",
-                        }}
-                      >
-                        <img
-                          src={item.content}
-                          alt={(item.meta && item.meta.alt) || ""}
-                          style={{
-                            maxWidth: "100%",
-                            borderRadius: "16px",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
-                            cursor: "zoom-in",
-                          }}
-                          onClick={() => setLightboxSrc(item.content)}
-                        />
-                        {item.meta && item.meta.alt && (
-                          <span
-                            style={{
-                              fontFamily:
-                                "var(--font-satoshi), system-ui, -apple-system, sans-serif",
-                              fontSize: "13px",
-                              color: "rgba(255,255,255,0.5)",
-                              letterSpacing: "-0.005em",
-                            }}
-                          >
-                            {item.meta.alt}
-                          </span>
-                        )}
-                      </div>
-                    );
-                  }
-                  if (item.type === "p") {
-                    // Check for bold text within paragraph
-                    const parts = item.content.split(/(\*\*.*?\*\*)/g);
-                    return (
-                      <p
-                        key={i}
-                        style={{
-                          fontFamily:
-                            "var(--font-reading), Georgia, 'Times New Roman', serif",
-                          marginBottom: "0.75em",
-                          lineHeight: 1.65,
-                          letterSpacing: "0.01em",
-                          textRendering: "optimizeLegibility",
-                          fontFeatureSettings: "'kern' 1, 'liga' 1",
-                          color: "rgba(255,255,255,0.92)",
-                          WebkitFontSmoothing: "antialiased",
-                          MozOsxFontSmoothing: "grayscale",
-                          fontWeight: 400,
-                        }}
-                      >
-                        {parts.map((part, j) => {
-                          if (part.startsWith("**") && part.endsWith("**")) {
-                            return (
-                              <strong
-                                key={j}
-                                style={{
-                                  fontFamily: "inherit",
-                                  color: "#ffffff",
-                                  fontWeight: 600,
-                                  letterSpacing: "0.01em",
-                                }}
-                              >
-                                {formatKeywords(part.replace(/\*\*/g, ""))}
-                              </strong>
-                            );
-                          }
-                          if (/`[^`]+`/.test(part)) {
-                            const segments = part.split(/(`[^`]+`)/g);
-                            return segments.map((seg, k) => {
-                              if (seg.startsWith("`") && seg.endsWith("`")) {
-                                return (
-                                  <code
-                                    key={`${j}-${k}`}
-                                    style={{
-                                      background: "rgba(255,255,255,0.06)",
-                                      border: "1px solid rgba(255,255,255,0.1)",
-                                      borderRadius: "6px",
-                                      padding: "2px 6px",
-                                      fontFamily:
-                                        'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                                      fontSize: "0.95em",
-                                      color: "rgba(255,255,255,0.9)",
-                                    }}
-                                  >
-                                    {seg.slice(1, -1)}
-                                  </code>
-                                );
-                              }
-                              return (
-                                <span
-                                  key={`${j}-${k}`}
-                                  style={{
-                                    color: "rgba(255,255,255,0.95)",
-                                    WebkitFontSmoothing: "antialiased",
-                                    MozOsxFontSmoothing: "grayscale",
-                                  }}
-                                >
-                                  {formatKeywords(seg)}
-                                </span>
-                              );
-                            });
-                          }
-                          return (
-                            <span
-                              key={j}
-                              style={{
-                                color: "rgba(255,255,255,0.95)",
-                                WebkitFontSmoothing: "antialiased",
-                                MozOsxFontSmoothing: "grayscale",
-                              }}
-                            >
-                              {formatKeywords(part)}
-                            </span>
-                          );
-                        })}
-                      </p>
-                    );
-                  }
-                  return null;
-                })}
+                {Array.isArray(post.content) && post.content.length > 0 ? (
+                  <PortableText
+                    value={post.content}
+                    components={ptComponents}
+                  />
+                ) : (
+                  <p
+                    style={{
+                      color: "rgba(255,255,255,0.4)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    No content available.
+                  </p>
+                )}
               </div>
             </div>
 
@@ -1652,7 +1168,7 @@ export default function BlogPostPage() {
                   gap: "32px",
                 }}
               >
-                {/* Share Section */}
+                {/* Share */}
                 <div>
                   <h3
                     style={{
@@ -1662,17 +1178,12 @@ export default function BlogPostPage() {
                       fontWeight: 600,
                       color: "#ffffff",
                       marginBottom: "20px",
-                      letterSpacing: "-0.01em",
                     }}
                   >
                     Share this article
                   </h3>
                   <div
-                    style={{
-                      display: "flex",
-                      gap: "12px",
-                      flexWrap: "wrap",
-                    }}
+                    style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}
                   >
                     {[
                       {
@@ -1735,7 +1246,7 @@ export default function BlogPostPage() {
                   </div>
                 </div>
 
-                {/* Back to Blog */}
+                {/* Back to Blog CTA */}
                 <div
                   style={{
                     padding: "32px",
@@ -1754,7 +1265,6 @@ export default function BlogPostPage() {
                       fontWeight: 600,
                       color: "#ffffff",
                       marginBottom: "16px",
-                      letterSpacing: "-0.01em",
                     }}
                   >
                     Enjoyed this article?
@@ -1767,7 +1277,6 @@ export default function BlogPostPage() {
                       color: "rgba(255,255,255,0.5)",
                       marginBottom: "24px",
                       lineHeight: 1.7,
-                      letterSpacing: "-0.01em",
                     }}
                   >
                     Explore more security articles and case studies.
@@ -1820,6 +1329,7 @@ export default function BlogPostPage() {
         </div>
       </div>
 
+      {/* Lightbox */}
       {lightboxSrc && (
         <div
           onClick={() => setLightboxSrc(null)}
@@ -1862,10 +1372,10 @@ export default function BlogPostPage() {
         .blog-page-container {
           padding: 0 clamp(14px, 4vw, 24px);
         }
-        /* Mobile-first layout */
         .article-layout {
           display: block;
         }
+
         .toc-label-accent {
           display: inline-block;
           width: 3px;
@@ -1879,6 +1389,8 @@ export default function BlogPostPage() {
           margin-right: 10px;
           vertical-align: middle;
         }
+
+        /* Mobile TOC */
         .toc-mobile {
           display: block;
           margin-bottom: 28px;
@@ -1912,7 +1424,6 @@ export default function BlogPostPage() {
             rgba(37, 99, 235, 0.4) 50%,
             transparent 100%
           );
-          opacity: 0.8;
         }
         .toc-mobile-label {
           font-family:
@@ -1940,10 +1451,9 @@ export default function BlogPostPage() {
           border-radius: 12px;
           text-decoration: none;
           transition:
-            color 0.25s ease,
-            background 0.25s ease,
-            border-color 0.25s ease,
-            transform 0.2s ease;
+            color 0.25s,
+            background 0.25s,
+            border-color 0.25s;
           font-family:
             var(--font-satoshi),
             system-ui,
@@ -1960,14 +1470,13 @@ export default function BlogPostPage() {
           background: rgba(255, 255, 255, 0.04);
         }
         .toc-mobile-link.toc-link--active {
-          color: #ffffff;
+          color: #fff;
           background: linear-gradient(
             90deg,
             rgba(37, 99, 235, 0.15) 0%,
             rgba(37, 99, 235, 0.05) 100%
           );
           border-left-color: #2563eb;
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
         .toc-mobile-link.toc-link--sub {
           padding-left: 28px;
@@ -1978,6 +1487,8 @@ export default function BlogPostPage() {
         .toc-mobile-link.toc-link--sub.toc-link--active {
           color: rgba(255, 255, 255, 0.95);
         }
+
+        /* Desktop TOC */
         .toc {
           display: none;
         }
@@ -2010,7 +1521,6 @@ export default function BlogPostPage() {
             rgba(37, 99, 235, 0.4) 50%,
             transparent 100%
           );
-          opacity: 0.8;
         }
         .toc-label {
           font-family:
@@ -2038,10 +1548,10 @@ export default function BlogPostPage() {
           border-radius: 12px;
           text-decoration: none;
           transition:
-            color 0.25s ease,
-            background 0.25s ease,
-            border-color 0.25s ease,
-            padding-left 0.22s ease;
+            color 0.25s,
+            background 0.25s,
+            border-color 0.25s,
+            padding-left 0.22s;
           font-family:
             var(--font-satoshi),
             system-ui,
@@ -2059,14 +1569,13 @@ export default function BlogPostPage() {
           padding-left: 18px;
         }
         .toc-link.toc-link--active {
-          color: #ffffff;
+          color: #fff;
           background: linear-gradient(
             90deg,
             rgba(37, 99, 235, 0.15) 0%,
             rgba(37, 99, 235, 0.05) 100%
           );
           border-left-color: #2563eb;
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
         .toc-link.toc-link--sub {
           padding-left: 24px;
@@ -2080,6 +1589,7 @@ export default function BlogPostPage() {
         .toc-link.toc-link--sub.toc-link--active {
           color: rgba(255, 255, 255, 0.95);
         }
+
         @media (min-width: 1024px) {
           .article-layout {
             display: grid;
@@ -2099,6 +1609,8 @@ export default function BlogPostPage() {
             -webkit-overflow-scrolling: touch;
           }
         }
+
+        /* Prose utilities */
         .blog-prose > *:first-child {
           margin-top: 0;
         }
@@ -2118,6 +1630,8 @@ export default function BlogPostPage() {
           max-width: 100%;
           height: auto;
         }
+
+        /* Mobile overrides */
         @media (max-width: 767px) {
           .blog-back-wrap {
             margin-bottom: 32px !important;
@@ -2131,40 +1645,21 @@ export default function BlogPostPage() {
           }
           .blog-post-title {
             font-size: clamp(26px, 7vw, 36px) !important;
-            line-height: 1.2 !important;
             margin-bottom: 20px !important;
             word-wrap: break-word;
-            overflow-wrap: break-word;
           }
           .blog-post-excerpt {
             font-size: 17px !important;
-            line-height: 1.6 !important;
             margin-bottom: 24px !important;
             word-wrap: break-word;
-            overflow-wrap: break-word;
           }
           .blog-prose {
             font-size: 17px;
-          }
-          .blog-prose h1 {
-            font-size: clamp(24px, 6vw, 32px) !important;
-          }
-          .blog-prose h2 {
-            font-size: clamp(22px, 5.5vw, 28px) !important;
-          }
-          .blog-prose h3 {
-            font-size: clamp(18px, 4.5vw, 22px) !important;
-          }
-          .blog-prose p,
-          .blog-prose li,
-          .blog-prose blockquote {
-            line-height: 1.65 !important;
           }
           .toc-mobile-link {
             min-height: 44px;
             display: flex;
             align-items: center;
-            padding: 12px 14px 12px 16px !important;
             -webkit-tap-highlight-color: rgba(37, 99, 235, 0.15);
           }
         }
