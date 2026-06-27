@@ -652,7 +652,7 @@ export function Infographics() {
                             "transform 220ms ease, box-shadow 220ms ease",
                           transform:
                             activeImageId === item._id
-                              ? "scale(1.03)"
+                              ? "scale(1.30)"
                               : "scale(1)",
                         }}
                       >
@@ -672,7 +672,7 @@ export function Infographics() {
                               transition: "transform 240ms ease",
                               transform:
                                 activeImageId === item._id
-                                  ? "scale(1.04)"
+                                  ? "scale(1.30)"
                                   : "scale(1)",
                               transformOrigin: "center center",
                             }}
