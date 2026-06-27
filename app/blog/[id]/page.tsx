@@ -10,7 +10,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const builder = createImageUrlBuilder({ projectId, dataset });
-const urlFor = (source: any) => builder.image(source).url();
+// urlFor: pass a Sanity image object (with .asset ref), returns an optimised URL
+const urlFor = (source: any) => builder.image(source).auto("format").url();
 
 const lora = Lora({
   weight: ["400", "500", "600", "700"],
@@ -1108,6 +1109,83 @@ export default function BlogPostPage() {
                 </div>
               )}
             </header>
+
+            {/* ── Cover / Hero Image ── */}
+            {(post.mainImage || post.coverImage) &&
+              (() => {
+                const imgSrc = urlFor(post.mainImage ?? post.coverImage);
+                const imgAlt =
+                  (post.mainImage ?? post.coverImage)?.alt ?? post.title ?? "";
+                return (
+                  <div
+                    style={{
+                      marginBottom: "64px",
+                      transition: "all 1s ease 0.3s",
+                      opacity: isVisible ? 1 : 0,
+                      transform: isVisible
+                        ? "translateY(0)"
+                        : "translateY(30px)",
+                    }}
+                  >
+                    <figure style={{ margin: 0 }}>
+                      <div
+                        style={{
+                          position: "relative",
+                          borderRadius: "20px",
+                          overflow: "hidden",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                          boxShadow:
+                            "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(37,99,235,0.1)",
+                          cursor: "zoom-in",
+                        }}
+                        onClick={() => setLightboxSrc(imgSrc)}
+                      >
+                        <img
+                          src={imgSrc}
+                          alt={imgAlt}
+                          loading="eager"
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            maxHeight: "560px",
+                            objectFit: "cover",
+                            display: "block",
+                          }}
+                        />
+                        {/* Subtle bottom gradient so content below doesn't clash */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: "80px",
+                            background:
+                              "linear-gradient(to bottom, transparent, rgba(2,6,23,0.4))",
+                            pointerEvents: "none",
+                          }}
+                        />
+                      </div>
+                      {imgAlt && imgAlt !== post.title && (
+                        <figcaption
+                          style={{
+                            marginTop: "12px",
+                            textAlign: "center",
+                            fontFamily:
+                              "var(--font-satoshi), system-ui, -apple-system, sans-serif",
+                            fontSize: "13px",
+                            color: "rgba(255,255,255,0.4)",
+                            letterSpacing: "-0.005em",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          {imgAlt}
+                        </figcaption>
+                      )}
+                    </figure>
+                  </div>
+                );
+              })()}
 
             {/* ── Article Body — rendered via PortableText ── */}
             <div
